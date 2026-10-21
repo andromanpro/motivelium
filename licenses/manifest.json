@@ -6,6 +6,32 @@
   "applicationLicense": "MIT",
   "npm": [
     {
+      "name": "@modelcontextprotocol/core",
+      "version": "2.3.1",
+      "license": "Apache-2.0",
+      "source": "git+https://github.com/modelcontextprotocol/typescript-sdk.git",
+      "lockIntegrity": "sha512-laVmIhPGpWi7rG9q+0UigblRN0Hws/Yjlb6qLFtVqryXVLkc4h+yN8z731POD2LnAGQlFe7/tXhUm7Bi0YB91g==",
+      "notices": [
+        {
+          "file": "licenses/npm/@modelcontextprotocol/core/LICENSE",
+          "sha256": "0382b0057770ca05e9c350a50aa3b1c1fea84da0bc81d723bf00b9aa841be58a"
+        }
+      ]
+    },
+    {
+      "name": "@modelcontextprotocol/server",
+      "version": "2.3.1",
+      "license": "Apache-2.0",
+      "source": "git+https://github.com/modelcontextprotocol/typescript-sdk.git",
+      "lockIntegrity": "sha512-e59MfWuSssj6DoQ96JCTqdW1AXT5/XtnTl0WWd6MU1Ka434fFUGGosCLJbGNySDhHGvxQWoRWK137FXYFkYNWw==",
+      "notices": [
+        {
+          "file": "licenses/npm/@modelcontextprotocol/server/LICENSE",
+          "sha256": "0382b0057770ca05e9c350a50aa3b1c1fea84da0bc81d723bf00b9aa841be58a"
+        }
+      ]
+    },
+    {
       "name": "buffer-crc32",
       "version": "1.0.0",
       "license": "MIT",
@@ -239,6 +265,19 @@
         {
           "file": "licenses/npm/yazl/LICENSE",
           "sha256": "b303783d5eb7ca50b853ffa5f145e4e7998fab339831d848f507ca6cd970577a"
+        }
+      ]
+    },
+    {
+      "name": "zod",
+      "version": "4.6.7",
+      "license": "MIT",
+      "source": "git+https://github.com/colinhacks/zod.git",
+      "lockIntegrity": "sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg==",
+      "notices": [
+        {
+          "file": "licenses/npm/zod/LICENSE",
+          "sha256": "3f1189b28e3866e0d979968d466b78f813f76827cfdca1fbb124cc0a5c8841f8"
         }
       ]
     }

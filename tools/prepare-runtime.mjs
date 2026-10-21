@@ -4,7 +4,7 @@ const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'),args=
 if(!args.includes('--out')||!args[args.indexOf('--out')+1])throw Error('Usage: node tools/prepare-runtime.mjs --out NEW_FOLDER');
 try{await fs.lstat(out);throw Error('Destination already exists: '+out)}catch(e){if(e.code!=='ENOENT')throw e;}
 const files=['server.mjs','launch.mjs','launch.py','START.cmd','SETUP.cmd','package.json','package-lock.json','README.md','LICENSE','THIRD_PARTY.md','licenses','CHANGELOG.md','third-party.txt',
- 'tools/setup.mjs','tools/prepare-runtime.mjs','docs/INSTALLATION.md','docs/RELEASE_0_1.md','docs/KNOWN_ISSUES.md','docs/ALPHA_TEST.md','docs/EXAMPLES.md','server','studio/package.json','studio/package-lock.json','studio/build.mjs','studio/tsconfig.json','studio/src','studio/domain','studio/effects','studio/render','studio/agent',
+ 'tools/setup.mjs','tools/prepare-runtime.mjs','docs/INSTALLATION.md','docs/RELEASE_0_1.md','docs/KNOWN_ISSUES.md','docs/ALPHA_TEST.md','docs/EXAMPLES.md','docs/MCP.md','mcp','server','studio/package.json','studio/package-lock.json','studio/build.mjs','studio/tsconfig.json','studio/src','studio/domain','studio/effects','studio/render','studio/agent',
  'www/studio','www/catalog','www/shaders','www/licenses','www/models','www/showcase/assets','www/energy/assets','www/matter/assets','www/projects/iikona/assets/monitoring-journal-historical.png',
  'templates/catalog.json','templates/SOURCES.md','templates/spectrum','templates/route','templates/signal'];
 await fs.mkdir(out,{recursive:true});

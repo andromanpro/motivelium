@@ -6,6 +6,8 @@
 
 | Пакет | Версия | Лицензия |
 |---|---|---|
+| @modelcontextprotocol/core | 2.3.1 | Apache-2.0 |
+| @modelcontextprotocol/server | 2.3.1 | Apache-2.0 |
 | buffer-crc32 | 1.0.0 | MIT |
 | commander | 2.20.3 | MIT |
 | d3-array | 1.2.4 | BSD-3-Clause |
@@ -23,8 +25,11 @@
 | topojson-client | 3.1.0 | ISC |
 | yauzl | 3.4.0 | MIT |
 | yazl | 3.3.1 | MIT |
+| zod | 4.6.7 | MIT |
 
 Полные LICENSE/NOTICE каждого пакета, включая вложенные уведомления playwright-core, находятся в licenses/npm/. Apache NOTICE сохранён, если присутствует в пакете.
+
+MCP SDK: сохранены полные LICENSE/NOTICE пакетов @modelcontextprotocol/server и core. Их уведомления описывают переход лицензирования и сохранение условий исходных вкладов; значение Apache-2.0 из package.json не заменяет этот полный текст. Это рабочее дополнение после опубликованной alpha.3; прежний установщик не перепаковывался.
 
 ## Шейдеры
 

@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node launch.mjs",
+    "mcp": "node mcp/server.mjs",
     "test:browser": "node tests/browser-smoke.mjs",
     "setup": "node tools/setup.mjs",
     "check": "node launch.mjs --check"
