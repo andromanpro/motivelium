@@ -1,0 +1,90 @@
+[
+  {
+    "name": "flubber",
+    "version": "0.4.2",
+    "license": "MIT",
+    "notices": [
+      {
+        "path": "www\\licenses\\flubber\\flubber-LICENSE.txt",
+        "sha256": "3eb888ef31044c40757fe52030e381d2b7ec6ef5e90379920ea18b98ac32d187"
+      }
+    ]
+  },
+  {
+    "name": "topojson-client",
+    "version": "3.1.0",
+    "license": "ISC",
+    "notices": [
+      {
+        "path": "www\\licenses\\flubber\\topojson-client-LICENSE.txt",
+        "sha256": "4c4d15b635e04e691825a76db7d33f7f2033b55669a7430011694f31e6c65999"
+      }
+    ]
+  },
+  {
+    "name": "commander",
+    "version": "2.20.3",
+    "license": "MIT",
+    "notices": [
+      {
+        "path": "www\\licenses\\flubber\\commander-LICENSE.txt",
+        "sha256": "04512a63dce4d2d506ad612dc0bd7681ccf6e3655f7b6eaef7dfac8323d1ec0b"
+      }
+    ]
+  },
+  {
+    "name": "svgpath",
+    "version": "2.6.0",
+    "license": "MIT",
+    "notices": [
+      {
+        "path": "www\\licenses\\flubber\\svgpath-LICENSE.txt",
+        "sha256": "6caa5f5c4e6957535e77e3eb2a4cc8cdf9242040976faaf01dcc8c3934e2ca4f"
+      }
+    ]
+  },
+  {
+    "name": "svg-path-properties",
+    "version": "0.2.2",
+    "license": "ISC",
+    "notices": [
+      {
+        "path": "www\\licenses\\flubber\\svg-path-properties-LICENSE.txt",
+        "sha256": "041fb47cbe378cf29d86ce3c28d42107d12f25de6045aecafb964cba7372d0fe"
+      }
+    ]
+  },
+  {
+    "name": "earcut",
+    "version": "2.2.4",
+    "license": "ISC",
+    "notices": [
+      {
+        "path": "www\\licenses\\flubber\\earcut-LICENSE.txt",
+        "sha256": "cd661c432ea8243974e6fde6fc433ebee3e96525ca8b66321b9d9971674ede60"
+      }
+    ]
+  },
+  {
+    "name": "d3-polygon",
+    "version": "1.0.6",
+    "license": "BSD-3-Clause",
+    "notices": [
+      {
+        "path": "www\\licenses\\flubber\\d3-polygon-LICENSE.txt",
+        "sha256": "e1211892da0b0e0585b7aebe8f98c1274fba15bafe47fa1f4ee8a7a502c06304"
+      }
+    ]
+  },
+  {
+    "name": "d3-array",
+    "version": "1.2.4",
+    "license": "BSD-3-Clause",
+    "notices": [
+      {
+        "path": "www\\licenses\\flubber\\d3-array-LICENSE.txt",
+        "sha256": "e1211892da0b0e0585b7aebe8f98c1274fba15bafe47fa1f4ee8a7a502c06304"
+      }
+    ]
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "commit": "edc7c9e67c639d230715049ee31f9a96a6babbbe",
+  "url": "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/edc7c9e67c639d230715049ee31f9a96a6babbbe/Models/ToyCar/glTF-Binary/ToyCar.glb",
+  "bytes": 5422412,
+  "sha256": "01a60862de55cd4b9f3acfab0b0def86451800f9c42467fcd61052c16cb9838c",
+  "license": "CC0-1.0",
+  "authors": [
+    "Guido Odendahl",
+    "Eric Chadwick"
+  ]
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "name": "gl-transitions/gl-transitions",
+    "count": 125,
+    "nativeCount": 121,
+    "description": "121 программ работают в студии. Остальные требуют адаптации.",
+    "url": "https://github.com/gl-transitions/gl-transitions",
+    "commit": "b70a7d7e264aa330f0880f9d37c24628eb132030"
+  },
+  {
+    "name": "pbakaus/radiant",
+    "count": 88,
+    "nativeCount": 40,
+    "description": "40 программ работают в студии. Остальные требуют адаптации.",
+    "url": "https://github.com/pbakaus/radiant",
+    "commit": "59e9f48c0ad9a3db2fbeb8898b4390d5a1eabb40"
+  },
+  {
+    "name": "Vidvox/ISF-Files",
+    "count": 327,
+    "nativeCount": 191,
+    "description": "191 программ работают в студии. Остальные требуют адаптации.",
+    "url": "https://github.com/Vidvox/ISF-Files",
+    "commit": "395072d48b3ce7351ccb20a5fda54470591324df"
+  },
+  {
+    "name": "lostjared/shaders",
+    "count": 5300,
+    "nativeCount": 0,
+    "description": "Desktop GLSL / compute; нужны портирование и проверка. Число включает варианты.",
+    "url": "https://github.com/lostjared/shaders",
+    "commit": "89d9eb879ce80c3330a6e4a6288b3ca0c2f4f389"
+  }
+]

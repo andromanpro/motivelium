@@ -1,0 +1,1185 @@
+{
+  "schema": 1,
+  "updated": "2026-10-20",
+  "scope": "Каталог проектов, источников и идей. Наличие карточки не означает установку или одобрение лицензии. Превью отмечены отдельно.",
+  "projects": [
+    {
+      "id": "remotion-dev/remotion",
+      "name": "Remotion",
+      "category": "Редактор",
+      "idea": "Кадровая временная шкала, живой Player и единый проект для предпросмотра и экспорта.",
+      "url": "https://github.com/remotion-dev/remotion",
+      "evidence": "Поставки\\2026-10-12_разбор_видеостека\\manifest.json",
+      "checked": "2026-10-12",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "motion-canvas/motion-canvas",
+      "name": "Motion Canvas",
+      "category": "Редактор",
+      "idea": "Пошаговое объяснение: направлять взгляд камерой и превращениями схем.",
+      "url": "https://github.com/motion-canvas/motion-canvas",
+      "evidence": "Поставки\\2026-10-12_разбор_видеостека\\manifest.json",
+      "checked": "2026-10-12",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "3b1b/manim",
+      "name": "ManimGL",
+      "category": "Диаграммы",
+      "idea": "Превращение объектов с сохранением смысла, а не замена слайда.",
+      "url": "https://github.com/3b1b/manim",
+      "evidence": "Поставки\\2026-10-12_разбор_видеостека\\manifest.json",
+      "checked": "2026-10-12",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "ManimCommunity/manim",
+      "name": "Manim Community",
+      "category": "Диаграммы",
+      "idea": "Рисовать графики и формулы последовательно, связывая объяснение с геометрией.",
+      "url": "https://github.com/ManimCommunity/manim",
+      "evidence": "Поставки\\2026-10-12_разбор_видеостека\\manifest.json",
+      "checked": "2026-10-12",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "av/remotion-bits",
+      "name": "Remotion Bits",
+      "category": "Компоненты",
+      "idea": "Микроприёмы для цифр, подписей и акцентов.",
+      "url": "https://github.com/av/remotion-bits",
+      "evidence": "Поставки\\2026-10-12_разбор_видеостека\\manifest.json",
+      "checked": "2026-10-12",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "Remocn/remocn",
+      "name": "Remocn",
+      "category": "Компоненты",
+      "idea": "Готовые композиционные блоки и варианты появления элементов.",
+      "url": "https://github.com/Remocn/remocn",
+      "evidence": "Поставки\\2026-10-12_разбор_видеостека\\manifest.json",
+      "checked": "2026-10-12",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "Vincentwei1021/video-shotcraft",
+      "name": "Video Shotcraft",
+      "category": "Редактор",
+      "idea": "Разобраны Card Flock Tumble, PageCam и структура фильма; готовые планы со сменным содержимым.",
+      "url": "https://github.com/Vincentwei1021/video-shotcraft",
+      "evidence": "Поставки/2026-10-16_ролики-и-публичная-альфа/Источники.json",
+      "checked": "2026-10-16",
+      "status": "Исследование; не интегрирован. Объём разбора — в поставке.",
+      "research": {
+        "commit": "310330cadcf41f5d2b15ee1c908d629e26d0a324",
+        "stars": 12155,
+        "license": "Apache-2.0",
+        "report": "Поставки/2026-10-16_ролики-и-публичная-альфа/Разбор-роликов.md"
+      }
+    },
+    {
+      "id": "calesthio/OpenMontage",
+      "name": "OpenMontage",
+      "category": "Редактор",
+      "idea": "Связать материал, временную шкалу и агентские операции; AGPL учитывать отдельно.",
+      "url": "https://github.com/calesthio/OpenMontage",
+      "evidence": "Поставки\\2026-10-12_разбор_видеостека\\manifest.json",
+      "checked": "2026-10-12",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "Vincentwei1021/anything2explainer",
+      "name": "Anything2Explainer",
+      "category": "Объяснение",
+      "idea": "Сначала план объяснения и картинки, затем движение. Условия PolyForm NC.",
+      "url": "https://github.com/Vincentwei1021/anything2explainer",
+      "evidence": "Поставки\\2026-10-12_разбор_видеостека\\manifest.json",
+      "checked": "2026-10-12",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "Vincentwei1021/video-talkcraft",
+      "name": "Video Talkcraft",
+      "category": "Объяснение",
+      "idea": "Синхронизация текста с происходящим; условия PolyForm NC.",
+      "url": "https://github.com/Vincentwei1021/video-talkcraft",
+      "evidence": "Поставки\\2026-10-12_разбор_видеостека\\manifest.json",
+      "checked": "2026-10-12",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "iart-ai/motion-skills",
+      "name": "Motion Skills",
+      "category": "Рецепты",
+      "idea": "Описывать хореографию и композиционные правила как повторяемые рецепты.",
+      "url": "https://github.com/iart-ai/motion-skills",
+      "evidence": "Поставки\\2026-10-12_разбор_видеостека\\manifest.json",
+      "checked": "2026-10-12",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "Boriwatopal/agent-skill-remotion-motion-graphics",
+      "name": "Motion Graphics Skill",
+      "category": "Рецепты",
+      "idea": "Согласовать ритм, масштаб и время появления объектов до рендера.",
+      "url": "https://github.com/Boriwatopal/agent-skill-remotion-motion-graphics",
+      "evidence": "Поставки\\2026-10-12_разбор_видеостека\\manifest.json",
+      "checked": "2026-10-12",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "IskakovDamir/apple-motion",
+      "name": "Apple Motion",
+      "category": "Рецепты",
+      "idea": "Чистая иерархия, аккуратная инерция и свет; не копировать весь стиль.",
+      "url": "https://github.com/IskakovDamir/apple-motion",
+      "evidence": "Поставки\\2026-10-12_разбор_видеостека\\manifest.json",
+      "checked": "2026-10-12",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "alyssaxuu/motionity",
+      "name": "Motionity",
+      "category": "Редактор",
+      "idea": "Связь свойств слоя с ключевыми кадрами и видимой временной шкалой.",
+      "url": "https://github.com/alyssaxuu/motionity",
+      "evidence": "Поставки\\2026-10-12_разбор_видеостека\\manifest.json",
+      "checked": "2026-10-12",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "HBAI-Ltd/Toonflow-app",
+      "name": "Toonflow",
+      "category": "Производство",
+      "idea": "Раскадровка и согласование кадров до дорогого этапа производства.",
+      "url": "https://github.com/HBAI-Ltd/Toonflow-app",
+      "evidence": "Поставки\\2026-10-12_разбор_видеостека\\manifest.json",
+      "checked": "2026-10-12",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "rezoo/movis",
+      "name": "Movis",
+      "category": "Монтаж",
+      "idea": "Программная сборка слоёв и эффектов как данных.",
+      "url": "https://github.com/rezoo/movis",
+      "evidence": "Поставки\\2026-10-12_разбор_видеостека\\manifest.json",
+      "checked": "2026-10-12",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "Blaizzy/mlx-audio",
+      "name": "MLX Audio",
+      "category": "Голос",
+      "idea": "Раздельная обработка и проверка голоса; не готовый Windows-стек.",
+      "url": "https://github.com/Blaizzy/mlx-audio",
+      "evidence": "Поставки\\2026-10-13_инструменты_из_телеграм\\manifest.json",
+      "checked": "2026-10-13",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "Bodila51/opus-sound-layer",
+      "name": "Opus Sound Layer",
+      "category": "Звук",
+      "idea": "Короткие звуковые акценты в cue-sheet. Это библиотека CC0 и сведение, не музыкальная модель.",
+      "url": "https://github.com/Bodila51/opus-sound-layer",
+      "evidence": "Поставки\\2026-10-13_инструменты_из_телеграм\\manifest.json",
+      "checked": "2026-10-13",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "FFmpeg/FFmpeg",
+      "name": "FFmpeg",
+      "category": "Монтаж",
+      "idea": "Звуковые огибающие, переходы и проверка финального файла.",
+      "url": "https://github.com/FFmpeg/FFmpeg",
+      "evidence": "Поставки\\2026-10-13_инструменты_из_телеграм\\manifest.json",
+      "checked": "2026-10-13",
+      "status": "Использован в предыдущем экспорте Make it ZBS; не запускается галереей"
+    },
+    {
+      "id": "WyattBlue/auto-editor",
+      "name": "auto-editor",
+      "category": "Монтаж",
+      "idea": "Убирать пустое время, показывать на шкале, какие интервалы исчезнут.",
+      "url": "https://github.com/WyattBlue/auto-editor",
+      "evidence": "Поставки\\2026-10-13_инструменты_из_телеграм\\manifest.json",
+      "checked": "2026-10-13",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "academa-labs/manimgx",
+      "name": "ManimGX",
+      "category": "Диаграммы",
+      "idea": "Плавная геометрия, графики и морфинг; браузерный вариант требует WebGPU.",
+      "url": "https://github.com/academa-labs/manimgx",
+      "evidence": "Поставки\\2026-10-13_инструменты_из_телеграм\\manifest.json",
+      "checked": "2026-10-13",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "bradautomates/claude-video",
+      "name": "Claude Video",
+      "category": "Проверка",
+      "idea": "Контактный лист и проверка смысловых ошибок; редкие кадры не выявляют всё мелькание.",
+      "url": "https://github.com/bradautomates/claude-video",
+      "evidence": "Поставки\\2026-10-13_инструменты_из_телеграм\\manifest.json",
+      "checked": "2026-10-13",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "getopenscreen/openscreen",
+      "name": "OpenScreen",
+      "category": "Скринкасты",
+      "idea": "Камера следует за действием, сглаженный курсор и понятный щелчок.",
+      "url": "https://github.com/getopenscreen/openscreen",
+      "evidence": "Поставки\\2026-10-13_инструменты_из_телеграм\\manifest.json",
+      "checked": "2026-10-13",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "greensock/GSAP",
+      "name": "GSAP",
+      "category": "Хореография",
+      "idea": "Общая временная шкала сложных движений. Standard License требует проверки для визуального конструктора.",
+      "url": "https://github.com/greensock/GSAP",
+      "evidence": "Поставки\\2026-10-13_инструменты_из_телеграм\\manifest.json",
+      "checked": "2026-10-13",
+      "status": "Документация изучена; интеграция отдельно",
+      "license_note": "GSAP Standard License: условия визуального конструктора проверить до интеграции."
+    },
+    {
+      "id": "heygen-com/hyperframes",
+      "name": "HyperFrames",
+      "category": "Редактор",
+      "idea": "HTML-сцена с выбором слоя, инспектором, Studio и отправкой контекста агенту.",
+      "url": "https://github.com/heygen-com/hyperframes",
+      "evidence": "Поставки\\2026-10-13_инструменты_из_телеграм\\manifest.json",
+      "checked": "2026-10-13",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "librosa/librosa",
+      "name": "librosa",
+      "category": "Звук",
+      "idea": "Сетка долей помогает монтажу; пики не заменяют музыкальную фразировку.",
+      "url": "https://github.com/librosa/librosa",
+      "evidence": "Поставки\\2026-10-13_инструменты_из_телеграм\\manifest.json",
+      "checked": "2026-10-13",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "ml-explore/mlx-examples",
+      "name": "MLX Whisper",
+      "category": "Субтитры",
+      "idea": "Подсветка произносимого слова по сохранённым таймкодам; локальная платформа требует проверки.",
+      "url": "https://github.com/ml-explore/mlx-examples",
+      "evidence": "Поставки\\2026-10-13_инструменты_из_телеграм\\manifest.json",
+      "checked": "2026-10-13",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "mrdoob/three.js",
+      "name": "Three.js",
+      "category": "3D",
+      "idea": "Настоящая перспектива, свет, геометрия, глубина и выбор деталей лучом.",
+      "url": "https://github.com/mrdoob/three.js",
+      "evidence": "Поставки\\2026-10-13_инструменты_из_телеграм\\manifest.json",
+      "checked": "2026-10-13",
+      "status": "Прямое использование в существующих сценах. Новая разборная ИИкона пока не создана."
+    },
+    {
+      "id": "puppeteer/puppeteer",
+      "name": "Puppeteer",
+      "category": "Проверка",
+      "idea": "Идея повторяемого захвата кадра. В этом проекте внешний/headless браузер запрещён.",
+      "url": "https://github.com/puppeteer/puppeteer",
+      "evidence": "Поставки\\2026-10-13_инструменты_из_телеграм\\manifest.json",
+      "checked": "2026-10-13",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "pyannote/pyannote-audio",
+      "name": "pyannote.audio",
+      "category": "Голос",
+      "idea": "Видимые дорожки спикеров и контроль, кто говорит.",
+      "url": "https://github.com/pyannote/pyannote-audio",
+      "evidence": "Поставки\\2026-10-13_инструменты_из_телеграм\\manifest.json",
+      "checked": "2026-10-13",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "senstella/parakeet-mlx",
+      "name": "Parakeet MLX",
+      "category": "Субтитры",
+      "idea": "Быстрый черновик таймкодов на подходящей платформе, затем ручная сверка.",
+      "url": "https://github.com/senstella/parakeet-mlx",
+      "evidence": "Поставки\\2026-10-13_инструменты_из_телеграм\\manifest.json",
+      "checked": "2026-10-13",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "wheresryan22/anatomy",
+      "name": "Anatomy",
+      "category": "Устройство",
+      "idea": "Изометрическое устройство: разнести составные части и показать назначение каждой.",
+      "url": "https://github.com/wheresryan22/anatomy",
+      "evidence": "Поставки\\2026-10-13_инструменты_из_телеграм\\manifest.json",
+      "checked": "2026-10-13",
+      "status": "14.10: собственная визуальная проба по мотивам подхода; код/skill Anatomy не подключён",
+      "local_example": "lab/iikona-anatomy/"
+    },
+    {
+      "id": "yt-dlp/yt-dlp",
+      "name": "yt-dlp",
+      "category": "Материалы",
+      "idea": "Собирать доступные разрешённые фрагменты вместе с исходными таймкодами.",
+      "url": "https://github.com/yt-dlp/yt-dlp",
+      "evidence": "Поставки\\2026-10-13_инструменты_из_телеграм\\manifest.json",
+      "checked": "2026-10-13",
+      "status": "Документация изучена; интеграция отдельно"
+    },
+    {
+      "id": "juliangarnier/anime",
+      "name": "Anime.js",
+      "category": "Хореография",
+      "idea": "Задержки букв, SVG-пути и согласованное движение нескольких объектов.",
+      "url": "https://github.com/juliangarnier/anime",
+      "checked": "2026-10-13",
+      "status": "Документация проверена; runtime отдельно, новых превью пока нет",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/juliangarnier/anime/HEAD/README.md",
+          "path": "research\\js-effects-2026-10-13\\juliangarnier__anime__README.md",
+          "sha256": "254b88321537a666b4d37aeb77dba01f630b0da0dc642fb3fec9bbb7bf9ab7fa",
+          "bytes": 5337
+        },
+        {
+          "url": "https://raw.githubusercontent.com/juliangarnier/anime/HEAD/LICENSE.md",
+          "path": "research\\js-effects-2026-10-13\\juliangarnier__anime__LICENSE.md",
+          "sha256": "3f3e835a9952cfc2a6ca836fb95b3257c981f24fa3ef51249055acb09931897b",
+          "bytes": 1075
+        }
+      ]
+    },
+    {
+      "id": "motiondivision/motion",
+      "name": "Motion",
+      "category": "Хореография",
+      "idea": "Пружины, плавное изменение компоновки и появление элементов.",
+      "url": "https://github.com/motiondivision/motion",
+      "checked": "2026-10-13",
+      "status": "Документация проверена; runtime отдельно, новых превью пока нет",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/motiondivision/motion/HEAD/README.md",
+          "path": "research\\js-effects-2026-10-13\\motiondivision__motion__README.md",
+          "sha256": "08915bb5254a4bc1fd47e8d7ea8fff0dcb470461f6fd6b59fb6d2f0bef0400df",
+          "bytes": 7475
+        },
+        {
+          "url": "https://raw.githubusercontent.com/motiondivision/motion/HEAD/LICENSE.md",
+          "path": "research\\js-effects-2026-10-13\\motiondivision__motion__LICENSE.md",
+          "sha256": "1bf0dc3f7727723e5a032ed12164a47cf92c05204cb1a3485f123c24e2833ed1",
+          "bytes": 1100
+        }
+      ]
+    },
+    {
+      "id": "pixijs/filters",
+      "name": "PixiJS Filters",
+      "category": "Шейдеры",
+      "idea": "Свечение, ASCII, CRT, пикселизация: отдельные акценты и фактура.",
+      "url": "https://github.com/pixijs/filters",
+      "checked": "2026-10-13",
+      "status": "Документация проверена; runtime отдельно, новых превью пока нет",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/pixijs/filters/HEAD/README.md",
+          "path": "research\\js-effects-2026-10-13\\pixijs__filters__README.md",
+          "sha256": "93404d8d33ab7849121be9e84003490491c77829c0811ead4bcf303881961ef9",
+          "bytes": 16832
+        },
+        {
+          "url": "https://raw.githubusercontent.com/pixijs/filters/HEAD/LICENSE",
+          "path": "research\\js-effects-2026-10-13\\pixijs__filters__LICENSE",
+          "sha256": "d554721b2cd409d9bc075d743bb34f960e05ba55de1818a62fa60caf21ca6188",
+          "bytes": 1092
+        }
+      ]
+    },
+    {
+      "id": "gl-transitions/gl-transitions",
+      "name": "GL Transitions",
+      "category": "Переходы",
+      "idea": "GLSL-переходы между изображениями; примерять к конкретной сцене.",
+      "url": "https://github.com/gl-transitions/gl-transitions",
+      "checked": "2026-10-13",
+      "status": "Документация проверена; runtime отдельно, новых превью пока нет",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/gl-transitions/gl-transitions/HEAD/README.md",
+          "path": "research\\js-effects-2026-10-13\\gl-transitions__gl-transitions__README.md",
+          "sha256": "6e513041358e400c6f89b58d01d2d21a9e72b8080ad6578eaf5b77b9910fe341",
+          "bytes": 6855
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gl-transitions/gl-transitions/HEAD/LICENSE",
+          "path": "research\\js-effects-2026-10-13\\gl-transitions__gl-transitions__LICENSE",
+          "sha256": "0db684e0150546743ae96d8ecf083be716786d834af7dbf8170ee8b6c247978d",
+          "bytes": 1297
+        }
+      ]
+    },
+    {
+      "id": "tsparticles/tsparticles",
+      "name": "tsParticles",
+      "category": "Частицы",
+      "idea": "Конфетти, искры и потоки частиц с управляемой плотностью.",
+      "url": "https://github.com/tsparticles/tsparticles",
+      "checked": "2026-10-13",
+      "status": "Документация проверена; runtime отдельно, новых превью пока нет",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/tsparticles/tsparticles/HEAD/README.md",
+          "path": "research\\js-effects-2026-10-13\\tsparticles__tsparticles__README.md",
+          "sha256": "fe394ce84286915128e79fe2ad2bcba2aaea3ed16abd30271be69ec0fde8da4e",
+          "bytes": 52565
+        },
+        {
+          "url": "https://raw.githubusercontent.com/tsparticles/tsparticles/HEAD/LICENSE",
+          "path": "research\\js-effects-2026-10-13\\tsparticles__tsparticles__LICENSE",
+          "sha256": "c5c18dbc27f490f2ef90e0b574b8c40f534e495d2cb8a6f1c4bb1183a9c381a4",
+          "bytes": 1069
+        }
+      ]
+    },
+    {
+      "id": "DavidHDev/react-bits",
+      "name": "React Bits",
+      "category": "Компоненты",
+      "idea": "Живые заголовки, фоны и реакция интерфейса; выбирать отдельные приёмы.",
+      "url": "https://github.com/DavidHDev/react-bits",
+      "checked": "2026-10-13",
+      "status": "Документация проверена; runtime отдельно, новых превью пока нет",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/DavidHDev/react-bits/HEAD/README.md",
+          "path": "research\\js-effects-2026-10-13\\DavidHDev__react-bits__README.md",
+          "sha256": "d1bb05ffc79f9e5474e68cb6668055535d5ec1eaf840e5f03e3c0d91bee825d3",
+          "bytes": 8062
+        },
+        {
+          "url": "https://raw.githubusercontent.com/DavidHDev/react-bits/HEAD/LICENSE.md",
+          "path": "research\\js-effects-2026-10-13\\DavidHDev__react-bits__LICENSE.md",
+          "sha256": "f4c33af6739191537738662d223b68d77bc226f4b57ea883e16481d8cc5c73c9",
+          "bytes": 1303
+        }
+      ],
+      "license_note": "MIT + Commons Clause; это не обычная MIT. Перепродажа/распространение самих компонентов ограничены."
+    },
+    {
+      "id": "mojs/mojs",
+      "name": "mo.js",
+      "category": "Хореография",
+      "idea": "Короткие геометрические всплески, круги и следы нажатия.",
+      "url": "https://github.com/mojs/mojs",
+      "checked": "2026-10-13",
+      "status": "Документация проверена; runtime отдельно, новых превью пока нет",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/mojs/mojs/HEAD/README.md",
+          "path": "research\\js-effects-2026-10-13\\mojs__mojs__README.md",
+          "sha256": "2c91be1237955dd72e11478f14635207ba9618dc97e73b42cdb2a77dd17e4d92",
+          "bytes": 5931
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mojs/mojs/HEAD/LICENSE.md",
+          "path": "research\\js-effects-2026-10-13\\mojs__mojs__LICENSE.md",
+          "sha256": "a6f47a5b900a568269cd8fcee343662c810e4da05e4e7003102ce20215b5ebe4",
+          "bytes": 1103
+        }
+      ]
+    },
+    {
+      "id": "liabru/matter-js",
+      "name": "Matter.js",
+      "category": "Физика",
+      "idea": "Столкновения, стопки и падение объектов. Для seek нужен фиксированный расчёт.",
+      "url": "https://github.com/liabru/matter-js",
+      "checked": "2026-10-13",
+      "status": "Документация проверена; runtime отдельно, новых превью пока нет",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/liabru/matter-js/HEAD/README.md",
+          "path": "research\\js-effects-2026-10-13\\liabru__matter-js__README.md",
+          "sha256": "bc3c3a4e0de72d0400c22bc4175a382446c928d9e725495e6508556363a2ba19",
+          "bytes": 9056
+        },
+        {
+          "url": "https://raw.githubusercontent.com/liabru/matter-js/HEAD/LICENSE",
+          "path": "research\\js-effects-2026-10-13\\liabru__matter-js__LICENSE",
+          "sha256": "ed182087be5b26734aa6d4789743de3a97417950e8c1e3ff2e3d19c6462720d3",
+          "bytes": 1092
+        }
+      ]
+    },
+    {
+      "id": "pmndrs/postprocessing",
+      "name": "Postprocessing",
+      "category": "Шейдеры",
+      "idea": "Постобработка Three.js: свет и глубина вместо плоского изображения.",
+      "url": "https://github.com/pmndrs/postprocessing",
+      "checked": "2026-10-13",
+      "status": "Документация проверена; runtime отдельно, новых превью пока нет",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/pmndrs/postprocessing/HEAD/README.md",
+          "path": "research\\js-effects-2026-10-13\\pmndrs__postprocessing__README.md",
+          "sha256": "60c29babcde00d7cd6052f2e4d7cfbb276ece8f761358928bc04420b9b4fee21",
+          "bytes": 7526
+        },
+        {
+          "url": "https://raw.githubusercontent.com/pmndrs/postprocessing/HEAD/LICENSE.md",
+          "path": "research\\js-effects-2026-10-13\\pmndrs__postprocessing__LICENSE.md",
+          "sha256": "b7650918449bd5fb011ce30ce0e5bcda27aa9639db1fb3aef8c67c32945237f2",
+          "bytes": 858
+        }
+      ]
+    },
+    {
+      "id": "oframe/ogl",
+      "name": "OGL",
+      "category": "Шейдеры",
+      "idea": "Компактная основа собственных WebGL-эффектов и деформации плоскостей.",
+      "url": "https://github.com/oframe/ogl",
+      "checked": "2026-10-13",
+      "status": "Документация проверена; runtime отдельно, новых превью пока нет",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/oframe/ogl/HEAD/README.md",
+          "path": "research\\js-effects-2026-10-13\\oframe__ogl__README.md",
+          "sha256": "431694c5ceee21023d54c8d11663e028d2f845f00fa49e59cce25f43944c7479",
+          "bytes": 8335
+        }
+      ]
+    },
+    {
+      "id": "martinlaxenaire/curtainsjs",
+      "name": "Curtains.js",
+      "category": "Шейдеры",
+      "idea": "Превратить DOM-изображение в текстурированную плоскость и изогнуть её.",
+      "url": "https://github.com/martinlaxenaire/curtainsjs",
+      "checked": "2026-10-13",
+      "status": "Документация проверена; runtime отдельно, новых превью пока нет",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/martinlaxenaire/curtainsjs/HEAD/README.md",
+          "path": "research\\js-effects-2026-10-13\\martinlaxenaire__curtainsjs__README.md",
+          "sha256": "7c467378f55ae40ba9074bbfba2d17c7789073672ec74261843949056ea19dbf",
+          "bytes": 8414
+        }
+      ]
+    },
+    {
+      "id": "airbnb/lottie-web",
+      "name": "Lottie Web",
+      "category": "Компоненты",
+      "idea": "Повторно используемые векторные микросцены; проверять поддержку функций AE.",
+      "url": "https://github.com/airbnb/lottie-web",
+      "checked": "2026-10-13",
+      "status": "Документация проверена; runtime отдельно, новых превью пока нет",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/airbnb/lottie-web/HEAD/README.md",
+          "path": "research\\js-effects-2026-10-13\\airbnb__lottie-web__README.md",
+          "sha256": "c65c2b4ebb100e75b9145d1822019cc5d1d9679a2646b84db266a8719d7696f9",
+          "bytes": 16651
+        },
+        {
+          "url": "https://raw.githubusercontent.com/airbnb/lottie-web/HEAD/LICENSE.md",
+          "path": "research\\js-effects-2026-10-13\\airbnb__lottie-web__LICENSE.md",
+          "sha256": "9d8d4d8b4bb99572ee8b51025a30b8493d949798cac465c6c15b1b29420bcb06",
+          "bytes": 1075
+        }
+      ]
+    },
+    {
+      "id": "shshaw/Splitting",
+      "name": "Splitting",
+      "category": "Типографика",
+      "idea": "Разделить текст на слова и буквы для осмысленной хореографии.",
+      "url": "https://github.com/shshaw/Splitting",
+      "checked": "2026-10-13",
+      "status": "Документация проверена; runtime отдельно, новых превью пока нет",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/shshaw/Splitting/HEAD/README.md",
+          "path": "research\\js-effects-2026-10-13\\shshaw__Splitting__README.md",
+          "sha256": "8d0da2dab2c992856c54156151d8b3d1924798d9fd4594dadfdae36dc4957969",
+          "bytes": 1618
+        },
+        {
+          "url": "https://raw.githubusercontent.com/shshaw/Splitting/HEAD/LICENSE.md",
+          "path": "research\\js-effects-2026-10-13\\shshaw__Splitting__LICENSE.md",
+          "sha256": "0f6835e5c375d903edd1b85a34f68528683538f97493fc3fe3f7516569bf2a90",
+          "bytes": 1069
+        }
+      ]
+    },
+    {
+      "id": "svgdotjs/svg.js",
+      "name": "SVG.js",
+      "category": "Вектор",
+      "idea": "Управляемые SVG-формы, маски, обводки и диаграммы.",
+      "url": "https://github.com/svgdotjs/svg.js",
+      "checked": "2026-10-13",
+      "status": "Документация проверена; runtime отдельно, новых превью пока нет",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/svgdotjs/svg.js/HEAD/README.md",
+          "path": "research\\js-effects-2026-10-13\\svgdotjs__svg.js__README.md",
+          "sha256": "8f3103cff1f96f7414ce19f9f621ae304e4ab29834d6b101848a94f92835f5fe",
+          "bytes": 1740
+        }
+      ]
+    },
+    {
+      "id": "pmndrs/react-spring",
+      "name": "React Spring",
+      "category": "Физика",
+      "idea": "Пружинное движение без резких остановок; seek требует адаптера.",
+      "url": "https://github.com/pmndrs/react-spring",
+      "checked": "2026-10-13",
+      "status": "Документация проверена; runtime отдельно, новых превью пока нет",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/pmndrs/react-spring/HEAD/README.md",
+          "path": "research\\js-effects-2026-10-13\\pmndrs__react-spring__README.md",
+          "sha256": "b8a799ec56cc42197b4c556b633298b66922122a6e11042b2e03291ccd5b3e68",
+          "bytes": 3461
+        },
+        {
+          "url": "https://raw.githubusercontent.com/pmndrs/react-spring/HEAD/LICENSE",
+          "path": "research\\js-effects-2026-10-13\\pmndrs__react-spring__LICENSE",
+          "sha256": "51863a051d919d260e725327cb58df68d04289919d90fa64283beb9c646a2b02",
+          "bytes": 1110
+        }
+      ]
+    },
+    {
+      "id": "dimforge/rapier",
+      "name": "Rapier",
+      "category": "Физика",
+      "idea": "2D/3D-физика; JavaScript bindings теперь находятся в typescript этого репозитория.",
+      "url": "https://github.com/dimforge/rapier",
+      "checked": "2026-10-13",
+      "status": "Документация проверена; runtime отдельно, новых превью пока нет",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/dimforge/rapier/HEAD/README.md",
+          "path": "research\\js-effects-2026-10-13\\dimforge__rapier__README.md",
+          "sha256": "12bf0a2d20fdf7c43a0f999d9f6aaa569f616c1bcba624fd289cd29792291e81",
+          "bytes": 6545
+        },
+        {
+          "url": "https://raw.githubusercontent.com/dimforge/rapier/HEAD/LICENSE",
+          "path": "research\\js-effects-2026-10-13\\dimforge__rapier__LICENSE",
+          "sha256": "ceacfa4d7fa67df64ab09a56fe248c50a3bfc9bc00374d69bd74ad763b14b89c",
+          "bytes": 11347
+        }
+      ]
+    },
+    {
+      "id": "processing/p5.js",
+      "name": "p5.js",
+      "category": "Генеративная графика",
+      "idea": "Поля, частицы и типографика кодом; привязать расчёт к времени сцены.",
+      "url": "https://github.com/processing/p5.js",
+      "checked": "2026-10-13",
+      "status": "Документация проверена; runtime отдельно, новых превью пока нет",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/processing/p5.js/HEAD/README.md",
+          "path": "research\\js-effects-2026-10-13\\processing__p5.js__README.md",
+          "sha256": "460758c363412e49b7393b5823e3305a3d62dcf78f0a212bfc8c6e6c4276dd14",
+          "bytes": 10191
+        }
+      ]
+    },
+    {
+      "id": "protectwise/troika",
+      "name": "Troika",
+      "category": "Типографика",
+      "idea": "Качественный масштабируемый текст в 3D.",
+      "url": "https://github.com/protectwise/troika",
+      "checked": "2026-10-13",
+      "status": "Документация проверена; runtime отдельно, новых превью пока нет",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/protectwise/troika/HEAD/README.md",
+          "path": "research\\js-effects-2026-10-13\\protectwise__troika__README.md",
+          "sha256": "54d57fb83be3d10150bb0f5147a151728f9d6af58add8a756e1199d882a6c24d",
+          "bytes": 1834
+        },
+        {
+          "url": "https://raw.githubusercontent.com/protectwise/troika/HEAD/LICENSE",
+          "path": "research\\js-effects-2026-10-13\\protectwise__troika__LICENSE",
+          "sha256": "c514829145810d3bf5730a78b5054250bd1b711b2823f2fc58c2ba89930bce5c",
+          "bytes": 1102
+        }
+      ]
+    },
+    {
+      "id": "theatre-js/theatre",
+      "name": "Theatre.js",
+      "category": "Редактор",
+      "idea": "Кривые и пространственная хореография. Core Apache-2.0, Studio AGPL-3.0.",
+      "url": "https://github.com/theatre-js/theatre",
+      "checked": "2026-10-13",
+      "status": "Документация проверена; runtime отдельно, новых превью пока нет",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/theatre-js/theatre/HEAD/README.md",
+          "path": "research\\js-effects-2026-10-13\\theatre-js__theatre__README.md",
+          "sha256": "a5b6be8fec45220609f12ca629884dbb6567bd545cd4ad849d90ad49fdc564f2",
+          "bytes": 5032
+        },
+        {
+          "url": "https://raw.githubusercontent.com/theatre-js/theatre/HEAD/LICENSE",
+          "path": "research\\js-effects-2026-10-13\\theatre-js__theatre__LICENSE",
+          "sha256": "32a36fa187169c24228aaf6889371e7ffb4273d327ef37e340994e7ca157879b",
+          "bytes": 45927
+        }
+      ],
+      "license_note": "Core Apache-2.0; Studio AGPL-3.0. Проверять используемый пакет."
+    },
+    {
+      "id": "veltman/flubber",
+      "name": "Flubber",
+      "category": "Вектор",
+      "idea": "Морфинг замкнутых контуров; произвольные открытые линии требуют другой реализации.",
+      "url": "https://github.com/veltman/flubber",
+      "checked": "2026-10-16",
+      "status": "Подключено в студию: превращения одиночных замкнутых контуров, живые превью, примерка и Undo",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/veltman/flubber/HEAD/README.md",
+          "path": "research\\js-effects-2026-10-13\\veltman__flubber__README.md",
+          "sha256": "f5760801d1a4468d49fb1329f32278d089565167ca8ed6e0fa50cb9472f9924a",
+          "bytes": 11900
+        },
+        {
+          "url": "https://raw.githubusercontent.com/veltman/flubber/HEAD/LICENSE",
+          "path": "research\\js-effects-2026-10-13\\veltman__flubber__LICENSE",
+          "sha256": "3eb888ef31044c40757fe52030e381d2b7ec6ef5e90379920ea18b98ac32d187",
+          "bytes": 1069
+        }
+      ],
+      "runtime": {
+        "version": "0.4.2",
+        "integration": "studio/effects/contours.ts",
+        "effects": [
+          "contour-morph",
+          "contour-window"
+        ],
+        "notice": "www/licenses/flubber/manifest.json",
+        "limitations": "Один замкнутый контур; SVG без отверстий, несколько фигур и открытые линии не поддержаны."
+      }
+    },
+    {
+      "id": "edoardolunardi/infinite-canvas",
+      "name": "Infinite Canvas · Codrops, 2026",
+      "category": "Референсы",
+      "idea": "Глубина и масштаб: камера проходит между слоями, деталь остаётся частью общего пространства. В пробе применён принцип пространственного холста; код проекта не скопирован.",
+      "url": "https://github.com/edoardolunardi/infinite-canvas",
+      "demo": "https://tympanus.net/Tutorials/InfiniteCanvas/",
+      "checked": "2026-10-11",
+      "status": "Article, README and license read; live page opened and screenshot inspected.",
+      "license_note": "MIT"
+    },
+    {
+      "id": "Costumary/gsap-choreography",
+      "name": "Хореография интерфейса · Costumary",
+      "category": "Референсы",
+      "idea": "Действие кнопки, курсор, реакция интерфейса и камера подчиняются общей временной шкале. В пробе использован GSAP timeline; чужой skill не установлен и не выполнялся.",
+      "url": "https://github.com/Costumary/gsap-choreography",
+      "demo": "https://www.reddit.com/r/webdev/comments/1tpc5ib/part_2_replacing_34mb_video_with_40kb_of_scripted/",
+      "checked": "2026-10-11",
+      "status": "Author forum post and README inspected, including license statement.",
+      "license_note": "MIT per README"
+    },
+    {
+      "id": "akella/UnrollingImages",
+      "name": "Unrolling Images · Yuriy Artyukh",
+      "category": "Референсы",
+      "idea": "Бумага действительно изгибается в глубине. В пробе собственная деформация сетки листа; исходный shader не скопирован.",
+      "url": "https://github.com/akella/UnrollingImages",
+      "demo": "https://tympanus.net/Development/UnrollingImages/",
+      "checked": "2026-10-11",
+      "status": "README and license terms read; live demo opened. Motion not fully evaluated.",
+      "license_note": "Codrops resource terms in README: integration allowed; as-is redistribution/resale restricted"
+    },
+    {
+      "id": "codrops/OnScrollPathAnimations",
+      "name": "On-Scroll Path Animations · Codrops",
+      "category": "Референсы",
+      "idea": "Линия меняет геометрию и перекрывает пространство при переходе. Кандидат для перехода к структуре и графикам во второй части.",
+      "url": "https://github.com/codrops/OnScrollPathAnimations",
+      "demo": "https://tympanus.net/Tutorials/OnScrollPathAnimations/",
+      "checked": "2026-10-11",
+      "status": "README, license and demo URL checked; not yet integrated.",
+      "license_note": "MIT"
+    },
+    {
+      "id": "codrops/3DCarousel",
+      "name": "3D Carousel · Codrops",
+      "category": "Референсы",
+      "idea": "Превращение плоской карточки в объёмную раскладку. Возможный приём раскрытия модулей; переносить чужую галерею целиком не нужно.",
+      "url": "https://github.com/codrops/3DCarousel",
+      "demo": "https://tympanus.net/Development/3DCarousel/",
+      "checked": "2026-10-11",
+      "status": "README/license checked, live page opened; not integrated.",
+      "license_note": "MIT"
+    },
+    {
+      "id": "codrops/KineticTypePageTransition",
+      "name": "GLM: Kinetic Typography · Codrops",
+      "category": "Референсы",
+      "idea": "Буквы переходят с заднего плана на передний и открывают следующий уровень. Возможный переход к статистике; пока не встроен.",
+      "url": "https://github.com/codrops/KineticTypePageTransition",
+      "demo": "https://tympanus.net/Development/KineticTypePageTransition/",
+      "checked": "2026-10-11",
+      "status": "GLM reference; Codex checked repository, MIT statement and actual demo URL.",
+      "license_note": "MIT"
+    },
+    {
+      "id": "codrops/LayersAnimation",
+      "name": "GLM: Layers Animation · Codrops",
+      "category": "Референсы",
+      "idea": "Быстрые перекрытия слоями через clip-path. Возможный акцент между фрагментами; пока не встроен.",
+      "url": "https://github.com/codrops/LayersAnimation",
+      "demo": "https://tympanus.net/Development/LayersAnimation/",
+      "checked": "2026-10-11",
+      "status": "GLM reference; Codex checked repository, MIT statement and actual demo URL.",
+      "license_note": "MIT"
+    },
+    {
+      "id": "subprotocol/verlet-js",
+      "name": "GLM: Verlet.js · живая нить",
+      "category": "Референсы",
+      "idea": "Инерция нити, покачивание и натяжение. Для перемотки нужен воспроизводимый расчёт; движок в пробу не подключён.",
+      "url": "https://github.com/subprotocol/verlet-js",
+      "demo": "https://github.com/subprotocol/verlet-js#examples",
+      "checked": "2026-10-11",
+      "status": "Repository README checked; original GLM physics code is preserved, not used as live simulation.",
+      "license_note": "MIT per README"
+    },
+    {
+      "id": "pbakaus/radiant",
+      "name": "pbakaus/radiant",
+      "category": "Шейдеры",
+      "idea": "40 программ работают в студии. Остальные требуют адаптации.",
+      "url": "https://github.com/pbakaus/radiant",
+      "checked": "2026-10-15",
+      "status": "Источник проверен; nativeCount — реально адаптированные программы",
+      "nativeCount": 40,
+      "sourceFiles": 88,
+      "evidence": "research/effect-packs-2026-10-15/inventory.json"
+    },
+    {
+      "id": "Vidvox/ISF-Files",
+      "name": "Vidvox/ISF-Files",
+      "category": "Шейдеры",
+      "idea": "191 программ работают в студии. Остальные требуют адаптации.",
+      "url": "https://github.com/Vidvox/ISF-Files",
+      "checked": "2026-10-15",
+      "status": "Источник проверен; nativeCount — реально адаптированные программы",
+      "nativeCount": 191,
+      "sourceFiles": 327,
+      "evidence": "research/effect-packs-2026-10-15/inventory.json"
+    },
+    {
+      "id": "lostjared/shaders",
+      "name": "lostjared/shaders",
+      "category": "Шейдеры",
+      "idea": "Desktop GLSL / compute; нужны портирование и проверка. Число включает варианты.",
+      "url": "https://github.com/lostjared/shaders",
+      "checked": "2026-10-15",
+      "status": "Источник проверен; nativeCount — реально адаптированные программы",
+      "nativeCount": 0,
+      "sourceFiles": 5300,
+      "evidence": "research/effect-packs-2026-10-15/inventory.json"
+    },
+    {
+      "id": "whaleyxbt/claude-motion",
+      "name": "Claude Motion",
+      "category": "Примеры",
+      "url": "https://github.com/whaleyxbt/claude-motion",
+      "idea": "Двигатель в разрезе, предрассчитанный рой, общий тайминг звука и движения.",
+      "checked": "2026-10-16",
+      "evidence": "Поставки/2026-10-16_ролики-и-публичная-альфа/Источники.json",
+      "status": "Исследование; не интегрирован. Объём разбора — в поставке.",
+      "research": {
+        "commit": "e627941543d9988b155dc610bb9cc0115a5e365e",
+        "stars": 440,
+        "license": "MIT",
+        "report": "Поставки/2026-10-16_ролики-и-публичная-альфа/Разбор-роликов.md"
+      }
+    },
+    {
+      "id": "naveen-annam/creativly.ai-magnific-video-remotion",
+      "name": "Magnific — программная реконструкция",
+      "category": "Примеры",
+      "url": "https://github.com/naveen-annam/creativly.ai-magnific-video-remotion",
+      "idea": "Карточки в кольцо, интерфейсный значок в контур/окно; не официальный исходник бренда.",
+      "checked": "2026-10-16",
+      "evidence": "Поставки/2026-10-16_ролики-и-публичная-альфа/Источники.json",
+      "status": "Исследование; не интегрирован. Объём разбора — в поставке.",
+      "research": {
+        "commit": "f0ce11dddacf14a306c0c1f122dd06509e1873f8",
+        "stars": 7,
+        "license": "MIT",
+        "report": "Поставки/2026-10-16_ролики-и-публичная-альфа/Разбор-роликов.md"
+      }
+    },
+    {
+      "id": "naveen-annam/creativly.ai-higgsfield-video-remotion",
+      "name": "Higgsfield — программная реконструкция",
+      "category": "Примеры",
+      "url": "https://github.com/naveen-annam/creativly.ai-higgsfield-video-remotion",
+      "idea": "Кандидат: проверены README/дерево; исходники сцен ещё не разобраны.",
+      "checked": "2026-10-16",
+      "evidence": "Поставки/2026-10-16_ролики-и-публичная-альфа/Источники.json",
+      "status": "Исследование; не интегрирован. Объём разбора — в поставке.",
+      "research": {
+        "commit": "409a4893c5b597ae456eb54f31994e5e9fe32d98",
+        "stars": 10,
+        "license": "MIT",
+        "report": "Поставки/2026-10-16_ролики-и-публичная-альфа/Разбор-роликов.md"
+      }
+    },
+    {
+      "id": "JohnHeibel/PDoomVideo",
+      "name": "PDoomVideo",
+      "category": "Примеры",
+      "url": "https://github.com/JohnHeibel/PDoomVideo",
+      "idea": "Переход действием, рисованные главы, рост масштаба; лицензия исходного репозитория не указана.",
+      "checked": "2026-10-16",
+      "evidence": "Поставки/2026-10-16_ролики-и-публичная-альфа/Источники.json",
+      "status": "Исследование; не интегрирован. Объём разбора — в поставке.",
+      "research": {
+        "commit": "fa546a38092e75f2b079e6a86d6abc54dd525d17",
+        "stars": 2144,
+        "license": null,
+        "report": "Поставки/2026-10-16_ролики-и-публичная-альфа/Разбор-роликов.md"
+      }
+    },
+    {
+      "id": "arimanyus/hophopnopenope",
+      "name": "CodeRabbit, Pause",
+      "category": "Примеры",
+      "url": "https://github.com/arimanyus/hophopnopenope",
+      "idea": "Печатная фактура, комикс, разная частота поз/камеры; лицензия не указана.",
+      "checked": "2026-10-16",
+      "evidence": "Поставки/2026-10-16_ролики-и-публичная-альфа/Источники.json",
+      "status": "Исследование; не интегрирован. Объём разбора — в поставке.",
+      "research": {
+        "commit": "b3d0dc2923f15eaa4b2fe044865cbbf9e4eac547",
+        "stars": 18,
+        "license": null,
+        "report": "Поставки/2026-10-16_ролики-и-публичная-альфа/Разбор-роликов.md"
+      }
+    },
+    {
+      "id": "yihui-dev/awesome-opus5-5-videos",
+      "name": "Awesome Opus 5.5 Videos",
+      "category": "Примеры",
+      "url": "https://github.com/yihui-dev/awesome-opus5-5-videos",
+      "idea": "Очередь референсов: 703 промпта/418 remakes по README; не каталог исходников оригиналов.",
+      "checked": "2026-10-16",
+      "evidence": "Поставки/2026-10-16_ролики-и-публичная-альфа/Источники.json",
+      "status": "Исследование; не интегрирован. Объём разбора — в поставке.",
+      "research": {
+        "commit": "92aee2f586ac0715cb3cbcb6384834f98a33383d",
+        "stars": 5407,
+        "license": "MIT",
+        "report": "Поставки/2026-10-16_ролики-и-публичная-альфа/Разбор-роликов.md"
+      }
+    },
+    {
+      "id": "JohnHeibel/ClaudeAnimationBase",
+      "name": "Claude Animation Base",
+      "category": "Примеры",
+      "url": "https://github.com/JohnHeibel/ClaudeAnimationBase",
+      "idea": "MIT-основа для рисованной фактуры и персонажей, отдельная от нелицензированного оригинала.",
+      "checked": "2026-10-16",
+      "evidence": "Поставки/2026-10-16_ролики-и-публичная-альфа/Источники.json",
+      "status": "Исследование; не интегрирован. Объём разбора — в поставке.",
+      "research": {
+        "commit": "0ac8bf2b31942376cb6b8c4074715595d512acd2",
+        "stars": 1196,
+        "license": "MIT",
+        "report": "Поставки/2026-10-16_ролики-и-публичная-альфа/Разбор-роликов.md"
+      }
+    },
+    {
+      "id": "lemomo-ai/lemo-opuscar",
+      "name": "Lemo-Opuscar",
+      "category": "Примеры",
+      "url": "https://github.com/lemomo-ai/lemo-opuscar",
+      "idea": "Разбор открытой CAD-клавиатуры, данные как предмет; 51 стиль, не все проверены.",
+      "checked": "2026-10-16",
+      "evidence": "Поставки/2026-10-16_ролики-и-публичная-альфа/Источники.json",
+      "status": "Исследование; не интегрирован. Объём разбора — в поставке.",
+      "research": {
+        "commit": "d33bdea74eeecde3922b0fbad227f0d3dc7afe75",
+        "stars": 2590,
+        "license": "MIT",
+        "report": "Поставки/2026-10-16_ролики-и-публичная-альфа/Разбор-роликов.md"
+      }
+    },
+    {
+      "id": "mexicat/pdoom-video",
+      "name": "P(doom) — mexicat",
+      "category": "Примеры",
+      "url": "https://github.com/mexicat/pdoom-video",
+      "idea": "Музыкальная временная шкала, световая обработка, временное размытие на экспорте.",
+      "checked": "2026-10-16",
+      "evidence": "Поставки/2026-10-16_ролики-и-публичная-альфа/Источники.json",
+      "status": "Исследование; не интегрирован. Объём разбора — в поставке.",
+      "research": {
+        "commit": "fa164b74fd0b26a99375715b619c55b4a0fb3d05",
+        "stars": 2814,
+        "license": "MIT",
+        "report": "Поставки/2026-10-16_ролики-и-публичная-альфа/Разбор-роликов.md"
+      }
+    },
+    {
+      "id": "KhronosGroup/glTF-Sample-Assets",
+      "name": "Khronos glTF Sample Assets",
+      "url": "https://github.com/KhronosGroup/glTF-Sample-Assets",
+      "category": "Модели",
+      "idea": "Проверенные примеры glTF/GLB с материалами и отдельными условиями каждого ресурса. ToyCar CC0 подключён как необязательный пример импорта.",
+      "checked": "2026-10-20",
+      "evidence": "Поставки/2026-10-20_три-модели_движение/Источники-и-подготовка.json",
+      "status": "CarConcept интегрирован в реальный редактируемый проект: подготовленный Torched Graphite,102узла,213347треугольников,12используемых изображений с исходными байтами. Разборка/сборка,макро диска,ключи камеры,Undo/Redo проверены. Исходник и лицензии сохранены отдельно;двигатель условный. Художественное ревью ожидается. ToyCar остаётся прежним примером.",
+      "research": {
+        "repo": "KhronosGroup/glTF-Sample-Assets",
+        "commit": "edc7c9e67c639d230715049ee31f9a96a6babbbe",
+        "path": "Models/CarConcept/glTF-Binary/CarConcept.glb",
+        "gitBlob": "c0f38c989a78cc4ba63253b5338705e0afb0142f",
+        "bytes": 11778688,
+        "sha256": "c272098089d78c5cd9fd9f24ff50ee8acf8d932c55f2d55fc10adb6c8998966b"
+      },
+      "integratedDemo": {
+        "projectId": "project-faa1bad290-a55de2e6b9",
+        "viewer": "http://127.0.0.1:8676/demos/device-trio-20261020/",
+        "studio": "http://127.0.0.1:8676/studio/?project=project-faa1bad290-a55de2e6b9&frame=20",
+        "derivatives": [
+          {
+            "model": "car",
+            "sourceBytes": 11778688,
+            "sourceSHA256": "c272098089d78c5cd9fd9f24ff50ee8acf8d932c55f2d55fc10adb6c8998966b",
+            "preparedBytes": 11482184,
+            "preparedSHA256": "b34933a866bf8bda93d0f3740f0fa64d87e977dde1446a83c760b5dbc9f07709",
+            "sourceTriangles": 213347,
+            "preparedTriangles": 213347,
+            "textureImagesPreservedByteForByte": 12,
+            "sourceImageCount": 14,
+            "nodes": 102,
+            "preparedSkins": 0,
+            "preparedAnimations": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "tiansongyu/open-console-cad",
+      "name": "Open Console CAD",
+      "category": "3D-модели",
+      "idea": "Раздельные аппаратные узлы с реальной мелкой геометрией: общие планы, съём крышки, макро охлаждения/платы/тачпада и возврат к сборке. Учебная реконструкция, не инженерная документация.",
+      "url": "https://github.com/tiansongyu/open-console-cad",
+      "evidence": "Поставки/2026-10-19_разборное-устройство_замысел/Источники.json",
+      "checked": "2026-10-19",
+      "status": "Маршрут принят пользователем19.10.2026;модель отклонена по реалистичности. Прежние7кадров сохранены,идёт выбор нового исходника.",
+      "research": {
+        "commit": "78130a55f8b71bc6e475ff03c32af863cbe7460e",
+        "license": "MIT + third-party notices",
+        "model": "Steam Deck LCD",
+        "modelBytes": 15677636,
+        "modelSHA256": "0aed1d14c44f3437fec2669f5ea87124e827a8d21f1f3a8188d544855bc43dec",
+        "modelNodes": 498,
+        "modelTriangles": 516150,
+        "preview": "/storyboards/device-art-20261019/"
+      }
+    },
+    {
+      "id": "nasa/NASA-3D-Resources",
+      "name": "NASA 3D Resources",
+      "url": "https://github.com/nasa/NASA-3D-Resources",
+      "category": "Модели",
+      "idea": "Модели сложных приборов и механики для осмысленных пролётов,разборки узлов и смены масштаба. Perseverance и Ingenuity проверены реальными рендерами.",
+      "checked": "2026-10-20",
+      "evidence": "Поставки/2026-10-20_три-модели_движение/Источники-и-подготовка.json",
+      "status": "Perseverance и Ingenuity подготовлены и импортированы в реальный проект:70/12узлов,199521/9124треугольника,22/8исходных изображений. Draco распакован,две skins марсохода запечены в рабочей позе8с. Разборка/сборка,камера,общий финал и отмена проверены. Оригиналы неизменны. Художественное ревью ожидается.",
+      "research": {
+        "commit": "11ebb4ee043715aefbba6aeec8a61746fad67fa7",
+        "usage": "NASA media guidelines,отдельные условия символики"
+      },
+      "integratedDemo": {
+        "projectId": "project-faa1bad290-a55de2e6b9",
+        "viewer": "http://127.0.0.1:8676/demos/device-trio-20261020/",
+        "studio": "http://127.0.0.1:8676/studio/?project=project-faa1bad290-a55de2e6b9&frame=20",
+        "derivatives": [
+          {
+            "model": "rover",
+            "sourceBytes": 4987176,
+            "sourceSHA256": "10db7c03a5e63a5a3b3e7baa6243aa4918ba045fa8ff0a731d0217491adc727f",
+            "preparedBytes": 6820836,
+            "preparedSHA256": "0ed81ba8db7e77590019bbfe5f8da3ada490e541c067403424e5555a5325c427",
+            "sourceTriangles": 199521,
+            "preparedTriangles": 199521,
+            "textureImagesPreservedByteForByte": 22,
+            "sourceImageCount": 44,
+            "nodes": 70,
+            "preparedSkins": 0,
+            "preparedAnimations": 0
+          },
+          {
+            "model": "ingenuity",
+            "sourceBytes": 2019408,
+            "sourceSHA256": "9e5a5398ab335eae7d46335085301ce46fb7de052300b645debe8bac6d39f2b5",
+            "preparedBytes": 620552,
+            "preparedSHA256": "6854c12a8f831ad6070ae9310dd99a2c0094d3b1171f3ccfdbda46d8bf8f78cb",
+            "sourceTriangles": 9124,
+            "preparedTriangles": 9124,
+            "textureImagesPreservedByteForByte": 8,
+            "sourceImageCount": 16,
+            "nodes": 12,
+            "preparedSkins": 0,
+            "preparedAnimations": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "polyhaven/assets",
+      "name": "Poly Haven — модели и студийный свет",
+      "url": "https://polyhaven.com/",
+      "category": "Модели",
+      "idea": "PBR-модели с текстурами и HDRI для предметных кадров. Camera01 проверена как ориентир фактур,StudioSmall03 используется в сравнении.",
+      "checked": "2026-10-19",
+      "evidence": "Поставки/2026-10-19_реалистичные-модели_сравнение/Источники.json",
+      "status": "CC0. Camera01 не имеет раздельных внутренних узлов;не выбрана для разборки. HDRI используется в отдельной постановке.",
+      "research": {
+        "model": "Camera_01",
+        "author": "Rajil Jose Macatangay",
+        "hdri": "studio_small_03",
+        "license": "CC0"
+      }
+    }
+  ]
+}

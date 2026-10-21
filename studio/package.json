@@ -1,0 +1,35 @@
+{
+  "name": "motivelium-studio",
+  "version": "0.1.0-alpha.3",
+  "private": true,
+  "type": "module",
+  "description": "Motivelium studio UI and domain: Project v2, frame evaluation, editor. Built to ../www/studio/.",
+  "scripts": {
+    "build": "node build.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test tests/*.test.ts"
+  },
+  "engines": {
+    "node": ">=24.12.0 <25"
+  },
+  "dependencies": {
+    "flubber": "0.4.2",
+    "playwright-core": "1.62.1",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "three": "0.180.0",
+    "yauzl": "3.4.0",
+    "yazl": "3.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "24.10.1",
+    "@types/react": "19.2.5",
+    "@types/react-dom": "19.2.3",
+    "@types/three": "0.180.0",
+    "@types/yauzl": "3.4.0",
+    "@types/yazl": "3.3.1",
+    "esbuild": "0.28.1",
+    "typescript": "5.9.3"
+  },
+  "license": "MIT"
+}

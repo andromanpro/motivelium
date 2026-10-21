@@ -1,0 +1,7 @@
+import data from './ready.json' with {type:'json'};
+export type ShaderInput={name:string;type:string;default:number|boolean|number[];min?:number|number[];max?:number|number[];values?:number[];labels?:string[]};
+export type ShaderDefinition={id:string;name:string;kind:'generator'|'filter'|'transition';family:string;license:string;sourceUrl:string;source:string;format:'raw'|'isf'|'gl-transition';inputs:ShaderInput[];description?:string;categories?:string[]};
+export const SHADERS=data as unknown as ShaderDefinition[];
+export const SHADER_MAP:ReadonlyMap<string,ShaderDefinition>=new Map(SHADERS.map(s=>[s.id,s]));
+export type ShaderParams=Record<string,number|boolean|string>;
+export function shaderParamErrors(shader:ShaderDefinition,params:unknown):string[]{if(!params||typeof params!=='object'||Array.isArray(params))return['Параметры шейдера должны быть объектом.'];const errors:string[]=[];for(const[key,value]of Object.entries(params)){const input=shader.inputs.find(i=>i.name===key);if(!input||input.type==='sampler2D'){errors.push('Неизвестный параметр: '+key);continue;}if(input.type==='bool'){if(typeof value!=='boolean')errors.push(key+': boolean');}else if(input.type.startsWith('vec')){if(typeof value!=='string'||!/^#(?:[0-9a-f]{6}|[0-9a-f]{8})$/i.test(value))errors.push(key+': цвет #RRGGBB');}else if(typeof value!=='number'||!Number.isFinite(value)||(typeof input.min==='number'&&value<input.min)||(typeof input.max==='number'&&value>input.max)||(input.type==='int'&&!Number.isInteger(value)))errors.push(key+': неверное число');}return errors;}

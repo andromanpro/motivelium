@@ -1,0 +1,5 @@
+Motivelium 0.1.0-alpha.3
+Own code: MIT, see LICENSE.
+Full current third-party inventory: THIRD_PARTY.md and licenses/manifest.json.
+All full license texts and preserved original shader notices: licenses/.
+Legacy www/vendor (not in installer): GSAP 3.14.2, GSAP Standard License; Three.js 0.186.1, MIT.

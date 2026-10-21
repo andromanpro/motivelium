@@ -1,0 +1,17 @@
+{
+  "bpm": 150,
+  "beats": 80,
+  "seconds": 32.0,
+  "sampleRate": 48000,
+  "peak": 0.9,
+  "rmsDbFS": -15.93776382600267,
+  "seed": 20261015,
+  "samplesUsed": false,
+  "accentsFrames": [
+    0,
+    192,
+    384,
+    576,
+    816
+  ]
+}

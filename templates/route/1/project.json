@@ -1,0 +1,1370 @@
+{
+  "schemaVersion": 2,
+  "id": "template-route-v1",
+  "revision": 1,
+  "title": "Маршрут — новый проект",
+  "size": {
+    "width": 1280,
+    "height": 720
+  },
+  "fps": {
+    "num": 30,
+    "den": 1
+  },
+  "durationFrames": 540,
+  "seed": 20261020,
+  "assets": [
+    {
+      "id": "template-image",
+      "path": "assets/coastal-road.png",
+      "mime": "image/png",
+      "bytes": 3436853,
+      "sha256": "1d415eb1bea459d7114aefff306d632b58730608aea31794fa46d77d979dad11",
+      "width": 1672,
+      "height": 941,
+      "origin": "generated",
+      "title": "Побережье · иллюстрация"
+    },
+    {
+      "id": "template-score",
+      "path": "assets/route.mp3",
+      "mime": "audio/mpeg",
+      "bytes": 433196,
+      "sha256": "f1f0851a3d635bbff7f2ef831b39e9b3735274297ac7af455ea32b48a105aefa",
+      "durationSeconds": 18,
+      "origin": "generated",
+      "title": "Маршрут · оригинальная тема · 80 BPM"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "cover-background",
+      "name": "background",
+      "sequenceId": "cover",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 1480,
+        "height": 920
+      },
+      "transform": {
+        "x": -100,
+        "y": -100,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "rect",
+      "fill": "#eee4d1"
+    },
+    {
+      "id": "cover-coast",
+      "name": "Изображение · coast",
+      "sequenceId": "cover",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 680,
+        "height": 720
+      },
+      "transform": {
+        "x": 600,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "image",
+      "assetId": "template-image",
+      "fit": "cover",
+      "metadata": {
+        "slot": "hero",
+        "slotLabel": "Основное изображение",
+        "templateName": "Маршрут",
+        "templateId": "route",
+        "templateVersion": 1
+      }
+    },
+    {
+      "id": "cover-eyebrow",
+      "name": "FIELD NOTES / 01",
+      "sequenceId": "cover",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 500,
+        "height": 25.5
+      },
+      "transform": {
+        "x": 63,
+        "y": 62,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "text",
+      "text": "FIELD NOTES / 01",
+      "fontFamily": "Segoe UI",
+      "fontSize": 17,
+      "color": "#7e5c40",
+      "align": "left",
+      "lineHeight": 1.02,
+      "metadata": {
+        "slotLabel": "FIELD NOTES / 01",
+        "slotMax": 100,
+        "slotFontSize": 17,
+        "templateName": "Маршрут",
+        "templateId": "route",
+        "templateVersion": 1
+      }
+    },
+    {
+      "id": "cover-rule",
+      "name": "rule",
+      "sequenceId": "cover",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 465,
+        "height": 2
+      },
+      "transform": {
+        "x": 63,
+        "y": 115,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "rect",
+      "fill": "#b2a088"
+    },
+    {
+      "id": "cover-headline",
+      "name": "Название истории",
+      "sequenceId": "cover",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 550,
+        "height": 255
+      },
+      "transform": {
+        "x": 58,
+        "y": 214,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "text",
+      "text": "БЛИЖЕ\nК МОРЮ.",
+      "fontFamily": "Arial Black",
+      "fontSize": 99,
+      "color": "#263c36",
+      "align": "left",
+      "lineHeight": 1.02,
+      "metadata": {
+        "slot": "headline",
+        "slotLabel": "Название истории",
+        "slotMax": 28,
+        "slotFontSize": 99,
+        "templateName": "Маршрут",
+        "templateId": "route",
+        "templateVersion": 1
+      },
+      "transformKeys": [
+        {
+          "frame": 0,
+          "transform": {
+            "x": 58,
+            "y": 259,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 18,
+          "transform": {
+            "x": 58,
+            "y": 214,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 179,
+          "transform": {
+            "x": 58,
+            "y": 214,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "cover-intro-note",
+      "name": "Вводная строка",
+      "sequenceId": "cover",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 470,
+        "height": 95
+      },
+      "transform": {
+        "x": 64,
+        "y": 548,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "text",
+      "text": "Оставьте место для хорошей истории.",
+      "fontFamily": "Segoe UI",
+      "fontSize": 25,
+      "color": "#536354",
+      "align": "left",
+      "lineHeight": 1.02,
+      "metadata": {
+        "slot": "intro-note",
+        "slotLabel": "Вводная строка",
+        "slotMax": 90,
+        "slotFontSize": 25,
+        "templateName": "Маршрут",
+        "templateId": "route",
+        "templateVersion": 1
+      },
+      "transformKeys": [
+        {
+          "frame": 0,
+          "transform": {
+            "x": 64,
+            "y": 573,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 12,
+          "transform": {
+            "x": 64,
+            "y": 573,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 30,
+          "transform": {
+            "x": 64,
+            "y": 548,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 179,
+          "transform": {
+            "x": 64,
+            "y": 548,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "cover-folio",
+      "name": "18 SECONDS / YOUR STORY",
+      "sequenceId": "cover",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 500,
+        "height": 18
+      },
+      "transform": {
+        "x": 64,
+        "y": 660,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "text",
+      "text": "18 SECONDS / YOUR STORY",
+      "fontFamily": "Segoe UI",
+      "fontSize": 12,
+      "color": "#8c7860",
+      "align": "left",
+      "lineHeight": 1.02,
+      "metadata": {
+        "slotLabel": "18 SECONDS / YOUR STORY",
+        "slotMax": 100,
+        "slotFontSize": 12,
+        "templateName": "Маршрут",
+        "templateId": "route",
+        "templateVersion": 1
+      }
+    },
+    {
+      "id": "spread-background",
+      "name": "background",
+      "sequenceId": "spread",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 1480,
+        "height": 920
+      },
+      "transform": {
+        "x": -100,
+        "y": -100,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "rect",
+      "fill": "#eae0cc"
+    },
+    {
+      "id": "spread-spread-photo",
+      "name": "Изображение · spread-photo",
+      "sequenceId": "spread",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 700,
+        "height": 545
+      },
+      "transform": {
+        "x": 98,
+        "y": 80,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "image",
+      "assetId": "template-image",
+      "fit": "cover",
+      "metadata": {
+        "slot": "hero",
+        "slotLabel": "Основное изображение",
+        "templateName": "Маршрут",
+        "templateId": "route",
+        "templateVersion": 1
+      },
+      "transformKeys": [
+        {
+          "frame": 180,
+          "transform": {
+            "x": 25,
+            "y": 80,
+            "rotation": -3,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.2,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 208,
+          "transform": {
+            "x": 98,
+            "y": 80,
+            "rotation": -1.5,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 100,
+            "y": 80,
+            "rotation": 1,
+            "scaleX": 1.04,
+            "scaleY": 1.04,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "spread-orange-sticker",
+      "name": "orange-sticker",
+      "sequenceId": "spread",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 320,
+        "height": 100
+      },
+      "transform": {
+        "x": 860,
+        "y": 90,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "rect",
+      "fill": "#cb7149"
+    },
+    {
+      "id": "spread-sticker",
+      "name": "НЕ СПЕШИТЕ.",
+      "sequenceId": "spread",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 260,
+        "height": 37.5
+      },
+      "transform": {
+        "x": 888,
+        "y": 122,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "text",
+      "text": "НЕ СПЕШИТЕ.",
+      "fontFamily": "Segoe UI",
+      "fontSize": 25,
+      "color": "#fff1d4",
+      "align": "left",
+      "lineHeight": 1.02,
+      "metadata": {
+        "slotLabel": "НЕ СПЕШИТЕ.",
+        "slotMax": 100,
+        "slotFontSize": 25,
+        "templateName": "Маршрут",
+        "templateId": "route",
+        "templateVersion": 1
+      }
+    },
+    {
+      "id": "spread-detail-title",
+      "name": "Вторая мысль",
+      "sequenceId": "spread",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 380,
+        "height": 265
+      },
+      "transform": {
+        "x": 854,
+        "y": 260,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "text",
+      "text": "ЗДЕСЬ\nЕСТЬ\nДЕТАЛИ.",
+      "fontFamily": "Arial Black",
+      "fontSize": 68,
+      "color": "#29443b",
+      "align": "left",
+      "lineHeight": 1.02,
+      "metadata": {
+        "slot": "detail-title",
+        "slotLabel": "Вторая мысль",
+        "slotMax": 32,
+        "slotFontSize": 68,
+        "templateName": "Маршрут",
+        "templateId": "route",
+        "templateVersion": 1
+      },
+      "transformKeys": [
+        {
+          "frame": 180,
+          "transform": {
+            "x": 854,
+            "y": 295,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 194,
+          "transform": {
+            "x": 854,
+            "y": 295,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 212,
+          "transform": {
+            "x": 854,
+            "y": 260,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 854,
+            "y": 260,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "spread-detail-note",
+      "name": "Подпись к изображению",
+      "sequenceId": "spread",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 870,
+        "height": 50
+      },
+      "transform": {
+        "x": 99,
+        "y": 650,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "text",
+      "text": "У каждого поворота — свой сюжет.",
+      "fontFamily": "Segoe UI",
+      "fontSize": 24,
+      "color": "#536354",
+      "align": "left",
+      "lineHeight": 1.02,
+      "metadata": {
+        "slot": "detail-note",
+        "slotLabel": "Подпись к изображению",
+        "slotMax": 90,
+        "slotFontSize": 24,
+        "templateName": "Маршрут",
+        "templateId": "route",
+        "templateVersion": 1
+      },
+      "transformKeys": [
+        {
+          "frame": 180,
+          "transform": {
+            "x": 99,
+            "y": 668,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 188,
+          "transform": {
+            "x": 99,
+            "y": 668,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 206,
+          "transform": {
+            "x": 99,
+            "y": 650,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 99,
+            "y": 650,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "closing-background",
+      "name": "background",
+      "sequenceId": "closing",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 1480,
+        "height": 920
+      },
+      "transform": {
+        "x": -100,
+        "y": -100,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "rect",
+      "fill": "#182f2c"
+    },
+    {
+      "id": "closing-final-photo",
+      "name": "Изображение · final-photo",
+      "sequenceId": "closing",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 1280,
+        "height": 720
+      },
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "image",
+      "assetId": "template-image",
+      "fit": "cover",
+      "metadata": {
+        "slot": "hero",
+        "slotLabel": "Основное изображение",
+        "templateName": "Маршрут",
+        "templateId": "route",
+        "templateVersion": 1
+      },
+      "transformKeys": [
+        {
+          "frame": 360,
+          "transform": {
+            "x": -120,
+            "y": -50,
+            "rotation": 0,
+            "scaleX": 1.18,
+            "scaleY": 1.18,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 539,
+          "transform": {
+            "x": -12,
+            "y": -4,
+            "rotation": 0,
+            "scaleX": 1.03,
+            "scaleY": 1.03,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "closing-shade",
+      "name": "shade",
+      "sequenceId": "closing",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 1280,
+        "height": 720
+      },
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "rect",
+      "fill": "#09221f",
+      "fillOpacity": 0.42
+    },
+    {
+      "id": "closing-eyebrow",
+      "name": "TAKE THE LONG WAY",
+      "sequenceId": "closing",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 700,
+        "height": 25.5
+      },
+      "transform": {
+        "x": 66,
+        "y": 64,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "text",
+      "text": "TAKE THE LONG WAY",
+      "fontFamily": "Segoe UI",
+      "fontSize": 17,
+      "color": "#f3ddb4",
+      "align": "left",
+      "lineHeight": 1.02,
+      "metadata": {
+        "slotLabel": "TAKE THE LONG WAY",
+        "slotMax": 100,
+        "slotFontSize": 17,
+        "templateName": "Маршрут",
+        "templateId": "route",
+        "templateVersion": 1
+      }
+    },
+    {
+      "id": "closing-closing",
+      "name": "Финальная мысль",
+      "sequenceId": "closing",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 1150,
+        "height": 220
+      },
+      "transform": {
+        "x": 60,
+        "y": 285,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "text",
+      "text": "ДАЛЬШЕ —\nИНТЕРЕСНЕЕ.",
+      "fontFamily": "Arial Black",
+      "fontSize": 102,
+      "color": "#fff3db",
+      "align": "left",
+      "lineHeight": 1.02,
+      "metadata": {
+        "slot": "closing",
+        "slotLabel": "Финальная мысль",
+        "slotMax": 40,
+        "slotFontSize": 102,
+        "templateName": "Маршрут",
+        "templateId": "route",
+        "templateVersion": 1
+      },
+      "transformKeys": [
+        {
+          "frame": 360,
+          "transform": {
+            "x": 60,
+            "y": 330,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 365,
+          "transform": {
+            "x": 60,
+            "y": 330,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 383,
+          "transform": {
+            "x": 60,
+            "y": 285,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 539,
+          "transform": {
+            "x": 60,
+            "y": 285,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "closing-signature",
+      "name": "Подпись или адрес",
+      "sequenceId": "closing",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 1050,
+        "height": 65
+      },
+      "transform": {
+        "x": 68,
+        "y": 598,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "text",
+      "text": "Ваша история начинается здесь.",
+      "fontFamily": "Segoe UI",
+      "fontSize": 30,
+      "color": "#f5d29c",
+      "align": "left",
+      "lineHeight": 1.02,
+      "metadata": {
+        "slot": "signature",
+        "slotLabel": "Подпись или адрес",
+        "slotMax": 80,
+        "slotFontSize": 30,
+        "templateName": "Маршрут",
+        "templateId": "route",
+        "templateVersion": 1
+      },
+      "transformKeys": [
+        {
+          "frame": 360,
+          "transform": {
+            "x": 68,
+            "y": 623,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 380,
+          "transform": {
+            "x": 68,
+            "y": 623,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 398,
+          "transform": {
+            "x": 68,
+            "y": 598,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 539,
+          "transform": {
+            "x": 68,
+            "y": 598,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    }
+  ],
+  "effects": [],
+  "sequences": [
+    {
+      "id": "cover",
+      "name": "Обложка истории",
+      "fromFrame": 0,
+      "toFrame": 180
+    },
+    {
+      "id": "spread",
+      "name": "Разворот и детали",
+      "fromFrame": 180,
+      "toFrame": 360,
+      "transition": {
+        "shaderId": "gl-bookflip",
+        "durationFrames": 24,
+        "params": {}
+      }
+    },
+    {
+      "id": "closing",
+      "name": "Широкий финал",
+      "fromFrame": 360,
+      "toFrame": 540,
+      "transition": {
+        "shaderId": "gl-directional",
+        "durationFrames": 24,
+        "params": {}
+      }
+    }
+  ],
+  "cameraTracks": [
+    {
+      "id": "camera-cover",
+      "name": "Обложка истории · камера",
+      "scope": {
+        "sequenceId": "cover",
+        "fromFrame": 0,
+        "toFrame": 180
+      },
+      "keys": [
+        {
+          "frame": 0,
+          "cx": 640,
+          "cy": 360,
+          "zoom": 1,
+          "rotation": 0
+        },
+        {
+          "frame": 179,
+          "cx": 652,
+          "cy": 360,
+          "zoom": 1.025,
+          "rotation": 0
+        }
+      ],
+      "enabled": true
+    },
+    {
+      "id": "camera-spread",
+      "name": "Разворот и детали · камера",
+      "scope": {
+        "sequenceId": "spread",
+        "fromFrame": 180,
+        "toFrame": 360
+      },
+      "keys": [
+        {
+          "frame": 180,
+          "cx": 640,
+          "cy": 360,
+          "zoom": 1.01,
+          "rotation": 1
+        },
+        {
+          "frame": 270,
+          "cx": 650,
+          "cy": 352,
+          "zoom": 1.025,
+          "rotation": 0
+        },
+        {
+          "frame": 359,
+          "cx": 640,
+          "cy": 360,
+          "zoom": 1,
+          "rotation": -0.5
+        }
+      ],
+      "enabled": true
+    },
+    {
+      "id": "camera-closing",
+      "name": "Широкий финал · камера",
+      "scope": {
+        "sequenceId": "closing",
+        "fromFrame": 360,
+        "toFrame": 540
+      },
+      "keys": [
+        {
+          "frame": 360,
+          "cx": 640,
+          "cy": 360,
+          "zoom": 1.025,
+          "rotation": 0
+        },
+        {
+          "frame": 539,
+          "cx": 640,
+          "cy": 360,
+          "zoom": 1,
+          "rotation": 0
+        }
+      ],
+      "enabled": true
+    }
+  ],
+  "audioTracks": [
+    {
+      "id": "template-music",
+      "kind": "music",
+      "assetId": "template-score",
+      "gain": 0.8,
+      "offsetSeconds": 0,
+      "mute": false
+    }
+  ],
+  "cues": [
+    {
+      "id": "beat-0",
+      "trackId": "template-music",
+      "frame": 0,
+      "kind": "bar",
+      "label": "1"
+    },
+    {
+      "id": "beat-1",
+      "trackId": "template-music",
+      "frame": 23,
+      "kind": "beat",
+      "label": "2"
+    },
+    {
+      "id": "beat-2",
+      "trackId": "template-music",
+      "frame": 45,
+      "kind": "beat",
+      "label": "3"
+    },
+    {
+      "id": "beat-3",
+      "trackId": "template-music",
+      "frame": 68,
+      "kind": "beat",
+      "label": "4"
+    },
+    {
+      "id": "beat-4",
+      "trackId": "template-music",
+      "frame": 90,
+      "kind": "bar",
+      "label": "5"
+    },
+    {
+      "id": "beat-5",
+      "trackId": "template-music",
+      "frame": 113,
+      "kind": "beat",
+      "label": "6"
+    },
+    {
+      "id": "beat-6",
+      "trackId": "template-music",
+      "frame": 135,
+      "kind": "beat",
+      "label": "7"
+    },
+    {
+      "id": "beat-7",
+      "trackId": "template-music",
+      "frame": 158,
+      "kind": "beat",
+      "label": "8"
+    },
+    {
+      "id": "beat-8",
+      "trackId": "template-music",
+      "frame": 180,
+      "kind": "bar",
+      "label": "9"
+    },
+    {
+      "id": "beat-9",
+      "trackId": "template-music",
+      "frame": 203,
+      "kind": "beat",
+      "label": "10"
+    },
+    {
+      "id": "beat-10",
+      "trackId": "template-music",
+      "frame": 225,
+      "kind": "beat",
+      "label": "11"
+    },
+    {
+      "id": "beat-11",
+      "trackId": "template-music",
+      "frame": 248,
+      "kind": "beat",
+      "label": "12"
+    },
+    {
+      "id": "beat-12",
+      "trackId": "template-music",
+      "frame": 270,
+      "kind": "bar",
+      "label": "13"
+    },
+    {
+      "id": "beat-13",
+      "trackId": "template-music",
+      "frame": 293,
+      "kind": "beat",
+      "label": "14"
+    },
+    {
+      "id": "beat-14",
+      "trackId": "template-music",
+      "frame": 315,
+      "kind": "beat",
+      "label": "15"
+    },
+    {
+      "id": "beat-15",
+      "trackId": "template-music",
+      "frame": 338,
+      "kind": "beat",
+      "label": "16"
+    },
+    {
+      "id": "beat-16",
+      "trackId": "template-music",
+      "frame": 360,
+      "kind": "bar",
+      "label": "17"
+    },
+    {
+      "id": "beat-17",
+      "trackId": "template-music",
+      "frame": 383,
+      "kind": "beat",
+      "label": "18"
+    },
+    {
+      "id": "beat-18",
+      "trackId": "template-music",
+      "frame": 405,
+      "kind": "beat",
+      "label": "19"
+    },
+    {
+      "id": "beat-19",
+      "trackId": "template-music",
+      "frame": 428,
+      "kind": "beat",
+      "label": "20"
+    },
+    {
+      "id": "beat-20",
+      "trackId": "template-music",
+      "frame": 450,
+      "kind": "bar",
+      "label": "21"
+    },
+    {
+      "id": "beat-21",
+      "trackId": "template-music",
+      "frame": 473,
+      "kind": "beat",
+      "label": "22"
+    },
+    {
+      "id": "beat-22",
+      "trackId": "template-music",
+      "frame": 495,
+      "kind": "beat",
+      "label": "23"
+    },
+    {
+      "id": "beat-23",
+      "trackId": "template-music",
+      "frame": 518,
+      "kind": "beat",
+      "label": "24"
+    }
+  ]
+}
