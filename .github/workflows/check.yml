@@ -36,9 +36,8 @@ jobs:
         run: npm --prefix studio run typecheck
       - name: Install FFmpeg and ffprobe on Linux
         if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg
+        timeout-minutes: 5
+        run: sudo apt-get -o Acquire::Retries=1 -o Acquire::http::Timeout=20 -o Acquire::https::Timeout=20 install -y --no-install-recommends ffmpeg
       - name: Install FFmpeg and ffprobe on Windows
         if: runner.os == 'Windows'
         run: choco install ffmpeg --no-progress -y
