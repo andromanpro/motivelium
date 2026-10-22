@@ -1,0 +1,2 @@
+# Template manifests hash exact project/resource bytes. Never convert their line endings.
+templates/** -text
