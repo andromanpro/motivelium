@@ -1,0 +1,47 @@
+name: Source checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  studio:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 24.12.0
+          cache: npm
+          cache-dependency-path: studio/package-lock.json
+      - name: Install locked studio dependencies
+        run: npm ci --prefix studio --no-audit --no-fund
+      - name: Typecheck
+        run: npm --prefix studio run typecheck
+      - name: Unit tests
+        run: npm --prefix studio test
+      - name: Build studio
+        run: npm --prefix studio run build
+      - name: Check source installation without opening the browser
+        env:
+          MOTIVELIUM_DATA_DIR: ${{ runner.temp }}/motivelium-ci-data
+        run: node launch.mjs --check --json
+
+# No model credentials or external model calls. This does not verify the Windows
+# installer, browser interaction, GPU rendering, or the full MP4 export route.
