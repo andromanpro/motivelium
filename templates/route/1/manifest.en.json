@@ -1,0 +1,16 @@
+{
+  "id": "route-en",
+  "version": 1,
+  "name": "Route",
+  "description": "An editorial story with page turns, large photographs and calm camera moves.",
+  "category": "Story",
+  "accent": "#d67e51",
+  "durationSeconds": 18,
+  "size": {
+    "width": 1280,
+    "height": 720
+  },
+  "previewFrame": 65,
+  "projectSha256": "f889438d2e5c7eff010df335a491c88a8a7628c15662245e5a1c6e91fc2021e5",
+  "attribution": "Illustration created with imagegen for Motivelium; not a photograph. Music and graphics are original procedural work, without external samples. Text and numbers are editable placeholders."
+}

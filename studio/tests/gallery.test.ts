@@ -4,7 +4,7 @@ import {REGISTRY} from '../effects/registry.ts';import {buildEffectFixture,galle
 import {buildFixture} from '../domain/fixture.ts';import {validateProject} from '../domain/schema.ts';import {applyOperations} from '../domain/operations.ts';import {evaluateFrame} from '../render/evaluate.ts';import {createStore} from '../../server/storage.ts';
 
 test('all catalog cards have real validated fixtures and replay the same frame after jumps',()=>{
- assert.equal(CATALOG.length,34);assert.deepEqual([...CATALOG.map(c=>c.id)].sort(),[...REGISTRY.keys()].filter(id=>id!=='shader-filter').sort());assert.ok(REGISTRY.has('shader-filter'),'GPU filters have their own native shader library');
+ assert.equal(CATALOG.length,41);assert.deepEqual([...CATALOG.map(c=>c.id)].sort(),[...REGISTRY.keys()].filter(id=>id!=='shader-filter').sort());assert.ok(REGISTRY.has('shader-filter'),'GPU filters have their own native shader library');
  for(const c of CATALOG){const p=validateProject(buildEffectFixture(c.id)),before=JSON.stringify(p),frame=evaluateFrame(p,42);[0,119,95,4].forEach(f=>evaluateFrame(p,f));assert.deepEqual(evaluateFrame(p,42),frame);assert.equal(JSON.stringify(p),before);for(const item of frame.items)assert.ok(Object.values(item.screen).every(Number.isFinite))}
 });
 test('a gallery try-on affects only its target and interval without committing a revision',()=>{

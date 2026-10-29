@@ -1,23 +1,162 @@
-import{useEffect,useRef,useState}from'react';import type{Project,AssetRef,AudioTrack}from'../../domain/schema.ts';import type{Operation}from'../../domain/operations.ts';import{createLayer}from'../../domain/layers.ts';import{newId}from'../../domain/ids.ts';import{api}from'./api.ts';import{Icon}from'./Icon.tsx';
-const size=(n:number)=>n<1048576?(n/1024).toFixed(0)+' КБ':(n/1048576).toFixed(1)+' МБ';
-import{prepareMedia}from'./mediaImport.ts';
-export function ResourcePanel({project,token,frame,busy,onCommit,onSelect,onPause,onClose,onImportModel,onWorking,onDirty}:{project:Project;token:string;frame:number;busy:boolean;onCommit:(label:string,ops:Operation[],revision?:number)=>Promise<boolean>;onSelect:(id:string)=>void;onPause:()=>void;onClose:()=>void;onImportModel:()=>void;onWorking:(busy:boolean)=>void;onDirty:(dirty:boolean)=>void}){
- const ref=useRef<HTMLElement>(null),fileRef=useRef<HTMLInputElement>(null),[filter,setFilter]=useState('all'),[working,setWorking]=useState(false),[error,setError]=useState(''),[message,setMessage]=useState(''),[dirty,setDirty]=useState(false),[gain,setGain]=useState('100'),[offset,setOffset]=useState('0'),[muted,setMuted]=useState(false),[baseRevision,setBaseRevision]=useState(project.revision),[mediaReady,setMediaReady]=useState<boolean|null>(null);
- const music=project.audioTracks.find(t=>t.kind==='music'&&t.assetId),musicAsset=project.assets.find(a=>a.id===music?.assetId),stale=dirty&&baseRevision!==project.revision;
- const reset=()=>{setGain(String(Math.round((music?.gain??1)*100)));setOffset(String(music?.offsetSeconds??0));setMuted(!!music?.mute);setDirty(false);setBaseRevision(project.revision);setError('')};
- useEffect(()=>{const area=ref.current;return()=>area?.querySelectorAll('audio').forEach(a=>a.pause())},[]);
- useEffect(()=>{let alive=true;void api.workspace().then(info=>{if(alive){setMediaReady(info.media.ready);if(info.media.reason)setError(info.media.reason)}}).catch(e=>{if(alive)setError(e.message)});return()=>{alive=false}},[]);
- useEffect(()=>{if(!dirty)reset()},[project.revision,dirty]);
- useEffect(()=>{onWorking(working);return()=>onWorking(false)},[working,onWorking]);useEffect(()=>{onDirty(dirty);return()=>onDirty(false)},[dirty,onDirty]);
- const edit=()=>{if(!dirty)setBaseRevision(project.revision);setDirty(true);setError('')};
- async function act(label:string,ops:Operation[],id?:string){if(busy||working||dirty)return;setWorking(true);setError('');setMessage('');onPause();try{if(await onCommit(label,ops,project.revision)){setMessage('Изменение сохранено. Его можно отменить.');if(id)onSelect(id)}else setError('Изменение не сохранено. Проверьте сообщение студии.')}catch(e){setError((e as Error).message)}finally{setWorking(false)}}
- async function upload(file:File){if(working||busy||dirty)return;setWorking(true);setError('');setMessage('Проверка файла…');onPause();try{if(file.size>64*1024*1024)throw Error('Файл должен быть не больше 64 МиБ.');const revision=project.revision,asset=await prepareMedia(project.id,token,file,revision);if(project.assets.some(a=>a.id===asset.id)){setMessage('Этот файл уже есть в ресурсах проекта.');return}if(!await onCommit('Импорт файла: '+file.name,[{op:'addAsset',asset}],revision))throw Error('Проект изменился или файл не удалось добавить. Повторите импорт.');setMessage(asset.mime.startsWith('image/')?'Изображение добавлено. Нажмите «Добавить в сцену».':'Аудиофайл добавлен. Нажмите «Сделать музыкой».');setFilter(asset.mime.startsWith('image/')?'image':'audio');}catch(e){setMessage('');setError((e as Error).message)}finally{setWorking(false)}}
- function insertImage(asset:AssetRef){const scene=project.sequences.find(s=>frame>=s.fromFrame&&frame<s.toFrame)??project.sequences[0];if(!scene)return;const node=createLayer(project,{kind:'image',sequenceId:scene.id,parentId:null,frame,name:asset.title??'Изображение',assetId:asset.id});const scale=Math.min(project.size.width*.8/(asset.width??480),project.size.height*.8/(asset.height??320),1),width=Math.max(1,Math.round((asset.width??480)*scale)),height=Math.max(1,Math.round((asset.height??320)*scale)),cx=node.transform.x+node.geometry.width/2,cy=node.transform.y+node.geometry.height/2;node.geometry={width,height};node.transform={...node.transform,x:cx-width/2,y:cy-height/2,pivotX:width/2,pivotY:height/2};void act('Добавить изображение в сцену',[{op:'createNode',node}],node.id)}
- function useMusic(asset:AssetRef){const track:AudioTrack={id:music?.id??newId('music'),kind:'music',assetId:asset.id,gain:music?.gain??1,offsetSeconds:0,mute:false};void act('Музыка проекта',music?[{op:'updateAudioTrack',targetId:music.id,values:{assetId:asset.id,offsetSeconds:0,mute:false}}]:[{op:'addAudioTrack',track}]);}
- async function applyMusic(){if(!music||stale||working||busy)return;setError('');const volume=Number(gain),shift=Number(offset);if(!gain.trim()||!offset.trim()||!Number.isFinite(volume)||volume<0||volume>100||!Number.isFinite(shift)||Math.abs(shift)>3600){setError('Громкость — от 0 до 100%; смещение — в пределах часа.');return}setWorking(true);onPause();try{if(await onCommit('Настроить музыку',[{op:'updateAudioTrack',targetId:music.id,values:{gain:volume/100,offsetSeconds:shift,mute:muted}}],baseRevision)){setDirty(false);setMessage('Настройки музыки сохранены.')}else setError('Настройки не сохранены. Проверьте сообщение студии.')}finally{setWorking(false)}}
- const visible=project.assets.filter(a=>filter==='all'||a.mime.startsWith(filter+'/'));
- return <aside ref={ref} className="resource-panel" aria-label="Ресурсы проекта"><div className="panel-title"><span>Ресурсы</span><button className="icon-button" aria-label="Закрыть ресурсы" disabled={working} onClick={onClose}><Icon name="close" size={15}/></button></div><div className="resource-import-actions"><button className="primary" disabled={busy||working||dirty||mediaReady===false} onClick={()=>fileRef.current?.click()}><Icon name="plus" size={15}/>{working?'Обработка…':'Добавить файл'}</button><button className="text-button" disabled={busy||working||dirty} onClick={onImportModel}><Icon name="cube" size={15}/>Модель 3D</button><input ref={fileRef} className="sr-only" type="file" aria-label="Изображение или музыка" accept=".png,.jpg,.jpeg,.webp,.wav,.mp3" disabled={busy||working||dirty||mediaReady===false} onChange={e=>{const file=e.target.files?.[0];e.target.value='';if(file)void upload(file)}}/></div><p className="resource-formats">PNG, JPEG, WebP · WAV, MP3 · до 64 МиБ</p><div className="resource-filters" aria-label="Фильтр ресурсов">{[['all','Все'],['image','Картинки'],['audio','Звук'],['model','3D']].map(([id,label])=><button key={id} className={filter===id?'current':''} onClick={()=>setFilter(id!)}>{label}</button>)}</div>
- <div className="resource-scroll">{error&&<p className="field-warning" role="alert">{error}</p>}{message&&<p className="resource-message" role="status">{message}</p>}{!visible.length&&<div className="resource-empty"><Icon name="folder" size={24}/><p>Ресурсов пока нет.</p><small>Добавьте файл, затем используйте его в сцене или выберите как музыку.</small></div>}
- {visible.map(a=>{const used=project.nodes.some(n=>n.kind==='image'&&n.assetId===a.id||n.kind==='scene3d'&&n.model?.assetId===a.id)||project.audioTracks.some(t=>t.assetId===a.id);return <article className="resource-card" key={a.id} data-asset-id={a.id}>{a.mime.startsWith('image/')?<img src={api.assetUrl(project.id,a.id)} alt={a.title??'Изображение проекта'}/>:<div className="resource-symbol"><Icon name={a.mime.startsWith('audio/')?'volume':'cube'} size={25}/></div>}<strong title={a.title}>{a.title??a.id}</strong><small>{size(a.bytes)}{a.width?' · '+a.width+' × '+a.height:''}{a.durationSeconds?' · '+a.durationSeconds.toFixed(1)+' с':''}</small>{a.mime.startsWith('audio/')&&<audio controls preload="metadata" src={api.assetUrl(project.id,a.id)} aria-label={'Прослушать '+a.title} onPlay={e=>{onPause();ref.current?.querySelectorAll('audio').forEach(audio=>{if(audio!==e.currentTarget)audio.pause()})}}/>}<div className="resource-card-actions">{a.mime.startsWith('image/')&&<button className="text-button" disabled={busy||working||dirty} onClick={()=>insertImage(a)}>Добавить в сцену</button>}{a.mime.startsWith('audio/')&&<button className="text-button" disabled={busy||working||dirty||music?.assetId===a.id} onClick={()=>useMusic(a)}>{music?.assetId===a.id?'Музыка проекта':'Сделать музыкой'}</button>}<button className="icon-button" aria-label={'Убрать ресурс '+a.title} title={used?'Ресурс используется в проекте':'Убрать ресурс из проекта · можно отменить'} disabled={busy||working||dirty||used} onClick={()=>void act('Убрать ресурс',[{op:'removeAsset',targetId:a.id}])}><Icon name="trash" size={14}/></button></div></article>})}
- </div>{music&&<div className="project-music"><h3>Музыка проекта</h3><strong>{musicAsset?.title??'Аудиодорожка'}</strong><div className="field-grid"><label>Громкость, %<input type="number" aria-label="Громкость музыки" min="0" max="100" value={gain} disabled={busy||working} onChange={e=>{edit();setGain(e.target.value)}}/></label><label>Смещение, с<input type="number" aria-label="Смещение музыки" step="0.1" value={offset} disabled={busy||working} onChange={e=>{edit();setOffset(e.target.value)}}/></label></div><label className="setting-check"><input type="checkbox" aria-label="Отключить дорожку музыки" checked={muted} disabled={busy||working} onChange={e=>{edit();setMuted(e.target.checked)}}/>Не включать в ролик</label><small>Плюс — начать позже. Минус — пропустить начало файла.</small>{stale&&<p className="field-warning">Проект изменился. Сбросьте черновик музыки перед новой правкой.</p>}{dirty?<div className="music-apply"><button className="primary" disabled={busy||working||stale} onClick={()=>void applyMusic()}>Применить музыку</button><button className="text-button" disabled={working} onClick={reset}>Сбросить</button></div>:<button className="text-button" disabled={busy||working} onClick={()=>void act('Убрать музыку',[{op:'removeAudioTrack',targetId:music.id}])}>Убрать музыку из ролика</button>}</div>}</aside>;
+import { DiagnosticText } from './DiagnosticText.tsx';
+import { errorText } from './errorText.ts';
+import { ui } from './i18n.ts';
+import { useEffect, useRef, useState } from 'react';
+import type { Project, AssetRef, AudioTrack } from '../../domain/schema.ts';
+import type { Operation } from '../../domain/operations.ts';
+import { createLayer } from '../../domain/layers.ts';
+import { newId } from '../../domain/ids.ts';
+import { api } from './api.ts';
+import { Icon } from './Icon.tsx';
+const size = (n: number) => n < 1048576 ? (n / 1024).toFixed(0) + (" " + ui("КБ")) : (n / 1048576).toFixed(1) + (" " + ui("МБ"));
+import { prepareMedia } from './mediaImport.ts';
+export function ResourcePanel({ project, token, frame, busy, onCommit, onSelect, onPause, onClose, onImportModel, onWorking, onDirty }: {
+    project: Project;
+    token: string;
+    frame: number;
+    busy: boolean;
+    onCommit: (label: string, ops: Operation[], revision?: number) => Promise<boolean>;
+    onSelect: (id: string) => void;
+    onPause: () => void;
+    onClose: () => void;
+    onImportModel: () => void;
+    onWorking: (busy: boolean) => void;
+    onDirty: (dirty: boolean) => void;
+}) {
+    const ref = useRef<HTMLElement>(null), fileRef = useRef<HTMLInputElement>(null), [filter, setFilter] = useState('all'), [working, setWorking] = useState(false), [error, setError] = useState(''), [message, setMessage] = useState(''), [dirty, setDirty] = useState(false), [gain, setGain] = useState('100'), [offset, setOffset] = useState('0'), [muted, setMuted] = useState(false), [baseRevision, setBaseRevision] = useState(project.revision), [mediaReady, setMediaReady] = useState<boolean | null>(null);
+    const [selectedAudio, setSelectedAudio] = useState('');
+    const music = project.audioTracks.find(t => t.id === selectedAudio) ?? project.audioTracks.find(t => t.assetId || t.synth), musicAsset = project.assets.find(a => a.id === music?.assetId), stale = dirty && baseRevision !== project.revision;
+    const reset = () => { setGain(String(Math.round((music?.gain ?? 1) * 100))); setOffset(String(music?.offsetSeconds ?? 0)); setMuted(!!music?.mute); setDirty(false); setBaseRevision(project.revision); setError(''); };
+    useEffect(() => { const area = ref.current; return () => area?.querySelectorAll('audio').forEach(a => a.pause()); }, []);
+    useEffect(() => {
+        let alive = true;
+        void api.workspace().then(info => {
+            if (alive) {
+                setMediaReady(info.media.ready);
+                if (info.media.reason)
+                    setError(info.media.reason);
+            }
+        }).catch(e => {
+            if (alive)
+                setError(errorText(e));
+        });
+        return () => { alive = false; };
+    }, []);
+    useEffect(() => {
+        if (!dirty)
+            reset();
+    }, [project.revision, dirty, selectedAudio]);
+    useEffect(() => { onWorking(working); return () => onWorking(false); }, [working, onWorking]);
+    useEffect(() => { onDirty(dirty); return () => onDirty(false); }, [dirty, onDirty]);
+    const edit = () => {
+        if (!dirty)
+            setBaseRevision(project.revision);
+        setDirty(true);
+        setError('');
+    };
+    async function act(label: string, ops: Operation[], id?: string) {
+        if (busy || working || dirty)
+            return;
+        setWorking(true);
+        setError('');
+        setMessage('');
+        onPause();
+        try {
+            if (await onCommit(label, ops, project.revision)) {
+                setMessage(ui("Изменение сохранено. Его можно отменить."));
+                if (id)
+                    onSelect(id);
+            }
+            else
+                setError(ui("Изменение не сохранено. Проверьте сообщение студии."));
+        }
+        catch (e) {
+            setError(errorText(e));
+        }
+        finally {
+            setWorking(false);
+        }
+    }
+    async function upload(file: File) {
+        if (working || busy || dirty)
+            return;
+        setWorking(true);
+        setError('');
+        setMessage(ui("Проверка файла…"));
+        onPause();
+        try {
+            if (file.size > 64 * 1024 * 1024)
+                throw Error(ui("Файл должен быть не больше 64 МиБ."));
+            const revision = project.revision, asset = await prepareMedia(project.id, token, file, revision);
+            if (project.assets.some(a => a.id === asset.id)) {
+                setMessage(ui("Этот файл уже есть в ресурсах проекта."));
+                return;
+            }
+            if (!await onCommit(ui("Импорт файла:") + " " + file.name, [{ op: 'addAsset', asset }], revision))
+                throw Error(ui("Проект изменился или файл не удалось добавить. Повторите импорт."));
+            setMessage(asset.mime.startsWith('image/') ? ui("Изображение добавлено. Нажмите «Добавить в сцену».") : ui("Аудиофайл добавлен. Нажмите «Сделать музыкой»."));
+            setFilter(asset.mime.startsWith('image/') ? 'image' : 'audio');
+        }
+        catch (e) {
+            setMessage('');
+            setError(errorText(e));
+        }
+        finally {
+            setWorking(false);
+        }
+    }
+    function insertImage(asset: AssetRef) {
+        const scene = project.sequences.find(s => frame >= s.fromFrame && frame < s.toFrame) ?? project.sequences[0];
+        if (!scene)
+            return;
+        const node = createLayer(project, { kind: 'image', sequenceId: scene.id, parentId: null, frame, name: asset.title ?? ui("Изображение"), assetId: asset.id });
+        const scale = Math.min(project.size.width * .8 / (asset.width ?? 480), project.size.height * .8 / (asset.height ?? 320), 1), width = Math.max(1, Math.round((asset.width ?? 480) * scale)), height = Math.max(1, Math.round((asset.height ?? 320) * scale)), cx = node.transform.x + node.geometry.width / 2, cy = node.transform.y + node.geometry.height / 2;
+        node.geometry = { width, height };
+        node.transform = { ...node.transform, x: cx - width / 2, y: cy - height / 2, pivotX: width / 2, pivotY: height / 2 };
+        void act(ui("Добавить изображение в сцену"), [{ op: 'createNode', node }], node.id);
+    }
+    function addTrack(asset: AssetRef, kind: AudioTrack['kind']) { void act(ui("Добавить звуковую дорожку"), [{ op: 'addAudioTrack', track: { id: newId(kind), kind, assetId: asset.id, gain: 1, offsetSeconds: frame * project.fps.den / project.fps.num, mute: false } }]); }
+    function useMusic(asset: AssetRef) { const track: AudioTrack = { id: music?.id ?? newId('music'), kind: 'music', assetId: asset.id, gain: music?.gain ?? 1, offsetSeconds: 0, mute: false }; void act(ui("Музыка проекта"), music ? [{ op: 'updateAudioTrack', targetId: music.id, values: { assetId: asset.id, offsetSeconds: 0, mute: false } }] : [{ op: 'addAudioTrack', track }]); }
+    async function applyMusic() {
+        if (!music || stale || working || busy)
+            return;
+        setError('');
+        const volume = Number(gain), shift = Number(offset);
+        if (!gain.trim() || !offset.trim() || !Number.isFinite(volume) || volume < 0 || volume > 400 || !Number.isFinite(shift) || Math.abs(shift) > 3600) {
+            setError(ui("Громкость — от 0 до 400%; смещение — в пределах часа."));
+            return;
+        }
+        setWorking(true);
+        onPause();
+        try {
+            if (await onCommit(ui("Настроить музыку"), [{ op: 'updateAudioTrack', targetId: music.id, values: { gain: volume / 100, offsetSeconds: shift, mute: muted } }], baseRevision)) {
+                setDirty(false);
+                setMessage(ui("Настройки музыки сохранены."));
+            }
+            else
+                setError(ui("Настройки не сохранены. Проверьте сообщение студии."));
+        }
+        finally {
+            setWorking(false);
+        }
+    }
+    const visible = project.assets.filter(a => filter === 'all' || a.mime.startsWith(filter + '/'));
+    return <aside ref={ref} className="resource-panel" aria-label={ui("Ресурсы проекта")}><div className="panel-title"><span>{ui("Ресурсы")}</span><button className="icon-button" aria-label={ui("Закрыть ресурсы")} disabled={working} onClick={onClose}><Icon name="close" size={15}/></button></div><div className="resource-import-actions"><button className="primary" disabled={busy || working || dirty || mediaReady === false} onClick={() => fileRef.current?.click()}><Icon name="plus" size={15}/>{working ? ui("Обработка…") : ui("Добавить файл")}</button><button className="text-button" disabled={busy || working || dirty} onClick={onImportModel}><Icon name="cube" size={15}/>{ui("Модель 3D")}</button><input ref={fileRef} className="sr-only" type="file" aria-label={ui("Изображение или музыка")} accept=".png,.jpg,.jpeg,.webp,.wav,.mp3" disabled={busy || working || dirty || mediaReady === false} onChange={e => {
+            const file = e.target.files?.[0];
+            e.target.value = '';
+            if (file)
+                void upload(file);
+        }}/></div><p className="resource-formats">{ui("PNG, JPEG, WebP · WAV, MP3 · до 64 МиБ")}</p><div className="resource-filters" aria-label={ui("Фильтр ресурсов")}>{[['all', ui("Все")], ['image', ui("Картинки")], ['audio', ui("Звук")], ['model', '3D']].map(([id, label]) => <button key={id} className={filter === id ? 'current' : ''} onClick={() => setFilter(id!)}>{label}</button>)}</div>
+ <div className="resource-scroll">{error && <div className="field-warning" role="alert"><DiagnosticText message={error}/></div>}{message && <p className="resource-message" role="status">{message}</p>}{!visible.length && <div className="resource-empty"><Icon name="folder" size={24}/><p>{ui("Ресурсов пока нет.")}</p><small>{ui("Добавьте файл, затем используйте его в сцене или выберите как музыку.")}</small></div>}
+ {visible.map(a => {
+            const used = project.nodes.some(n => n.kind === 'image' && n.assetId === a.id || n.kind === 'scene3d' && n.model?.assetId === a.id) || project.audioTracks.some(t => t.assetId === a.id) || !!project.storyboard?.cards.some(c => c.image?.assetId === a.id);
+            return <article className="resource-card" key={a.id} data-asset-id={a.id}>{a.mime.startsWith('image/') ? <img src={api.assetUrl(project.id, a.id)} alt={a.title ?? ui("Изображение проекта")}/> : <div className="resource-symbol"><Icon name={a.mime.startsWith('audio/') ? 'volume' : 'cube'} size={25}/></div>}<strong title={a.title}>{a.title ?? a.id}</strong><small>{size(a.bytes)}{a.width ? ' · ' + a.width + ' × ' + a.height : ''}{a.durationSeconds ? ' · ' + a.durationSeconds.toFixed(1) + (" " + ui("с")) : ''}</small>{a.mime.startsWith('audio/') && <audio controls preload="metadata" src={api.assetUrl(project.id, a.id)} aria-label={ui("Прослушать") + " " + a.title} onPlay={e => {
+                        onPause();
+                        ref.current?.querySelectorAll('audio').forEach(audio => {
+                            if (audio !== e.currentTarget)
+                                audio.pause();
+                        });
+                    }}/>}<div className="resource-card-actions">{a.mime.startsWith('image/') && <button className="text-button" disabled={busy || working || dirty} onClick={() => insertImage(a)}>{ui("Добавить в сцену")}</button>}{a.mime.startsWith('audio/') && <div className="audio-add-tracks">{(['music', 'voice', 'sfx'] as const).map(kind => <button key={kind} className="text-button" disabled={busy || working || dirty} onClick={() => addTrack(a, kind)}>{kind === 'music' ? ui("Музыка") : kind === 'voice' ? ui("Голос") : ui("Эффект")} +</button>)}</div>}<button className="icon-button" aria-label={ui("Убрать ресурс") + " " + a.title} title={used ? ui("Ресурс используется в проекте") : ui("Убрать ресурс из проекта · можно отменить")} disabled={busy || working || dirty || used} onClick={() => void act(ui("Убрать ресурс"), [{ op: 'removeAsset', targetId: a.id }])}><Icon name="trash" size={14}/></button></div></article>;
+        })}
+ </div>{music && <div className="project-music"><h3>{ui("Звуковые дорожки ·") + " "}{project.audioTracks.length}</h3><label>{ui("Дорожка")}<select aria-label={ui("Звуковая дорожка")} value={music.id} disabled={busy || working || dirty} onChange={e => setSelectedAudio(e.target.value)}>{project.audioTracks.map(t => <option key={t.id} value={t.id}>{t.kind === 'music' ? ui("Музыка") : t.kind === 'voice' ? ui("Голос") : ui("Эффект")} · {project.assets.find(a => a.id === t.assetId)?.title ?? t.synth?.voice ?? t.id}</option>)}</select></label><strong>{musicAsset?.title ?? ui("Аудиодорожка")}</strong><div className="field-grid"><label>{ui("Громкость, %")}<input type="number" aria-label={ui("Громкость музыки")} min="0" max="400" value={gain} disabled={busy || working} onChange={e => { edit(); setGain(e.target.value); }}/></label><label>{ui("Смещение, с")}<input type="number" aria-label={ui("Смещение музыки")} step="0.1" value={offset} disabled={busy || working} onChange={e => { edit(); setOffset(e.target.value); }}/></label></div><label className="setting-check"><input type="checkbox" aria-label={ui("Отключить дорожку музыки")} checked={muted} disabled={busy || working} onChange={e => { edit(); setMuted(e.target.checked); }}/>{ui("Не включать в ролик")}</label><small>{ui("Плюс — начать позже. Минус — пропустить начало файла.")}</small>{stale && <p className="field-warning">{ui("Проект изменился. Сбросьте черновик музыки перед новой правкой.")}</p>}{dirty ? <div className="music-apply"><button className="primary" disabled={busy || working || stale} onClick={() => void applyMusic()}>{ui("Применить музыку")}</button><button className="text-button" disabled={working} onClick={reset}>{ui("Сбросить")}</button></div> : <button className="text-button" disabled={busy || working} onClick={() => void act(ui("Убрать музыку"), [{ op: 'removeAudioTrack', targetId: music.id }])}>{ui("Убрать музыку из ролика")}</button>}</div>}</aside>;
 }

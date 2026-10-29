@@ -15,14 +15,18 @@ export function buildEffectFixture(id:string,params:Record<string,number|boolean
  const nodes:SceneNode[]=[{...base('fixture-bg',0,0,480,300),kind:'shape',shape:'rect',fill:'#0d1421'}];
  for(let i=0;i<7;i++)nodes.push({...base('grid-'+i,i*80,0,1,300),kind:'shape',shape:'rect',fill:'#1c2739'});
  for(let i=0;i<4;i++)nodes.push({...base('grid-h-'+i,0,i*80,480,1),kind:'shape',shape:'rect',fill:'#1c2739'});
- if(['assembly-spread','3d-assembly-wave','3d-camera-orbit','3d-volume-light','3d-surface','3d-finish'].includes(id)){nodes.push({...base('subject',80,0,340,300),kind:'scene3d',adapter:'three',preset:'anatomy-device',spin:18,explode:0});}
+ if(['assembly-spread','3d-assembly-wave','3d-camera-orbit','3d-volume-light','3d-surface','3d-finish','3d-studio-stage','3d-discharge'].includes(id)){nodes.push({...base('subject',80,0,340,300),kind:'scene3d',adapter:'three',preset:'anatomy-device',spin:18,explode:0});}
  const particles=id==='radial-burst';
  const ring=id==='shock-wave'||id==='neon-aura';
- if(id==='contour-morph'){nodes.push({...base('subject',160,68,160,160),kind:'shape',shape:'ellipse',fill:color});}
+ if(id==='electric-arc'||id==='storm-lightning'){nodes.push({...base('subject',16,20,448,260),transform:{...tr(16,20,448,260),pivotX:0,pivotY:0},kind:'shape',shape:'rect',fill:'#8ce8ff'});}
+ else if(id==='glyph-motion'){nodes.push({...base('subject',25,102,430,125),kind:'text',text:'ЖИВЫЕ',fontFamily:'Unbounded',fontSize:62,color,align:'center',lineHeight:1.1});}
+ else if(id==='letter-morph'){nodes.push({...base('subject',22,92,436,140),kind:'text',text:'ПРЕСНО',fontFamily:'Arial',fontSize:86,color,align:'center',lineHeight:1.1});}
+ else if(id==='ascii-screen'){nodes.push({...base('subject',20,60,440,220),kind:'text',text:'ASCII',fontFamily:'Arial Black',fontSize:122,color,align:'center',lineHeight:1.1});}
+ else if(id==='contour-morph'){nodes.push({...base('subject',160,68,160,160),kind:'shape',shape:'ellipse',fill:color});}
  else if(['contour-window','organic-reveal','noise-dissolve'].includes(id)){nodes.push({...base('subject',40,88,400,150),kind:'text',text:id==='contour-window'?'ОКНО.':id==='organic-reveal'?'ЖИВОЕ.':'ИЗ ШУМА.',fontFamily:'Arial Black',fontSize:68,color,align:'center',lineHeight:1.04});}
  else if(id==='fluid-ink'){nodes.push({...base('subject',0,0,480,300),kind:'shape',shape:'rect',fill:'#08111e'});}else if(particles){
   for(let i=0;i<18;i++)nodes.push({...base('subject-'+i,235,145,i%3?7:17,i%3?7:3),kind:'shape',shape:i%3?'ellipse':'rect',fill:i%2?color:'#e2fffb'});
- }else if(['assembly-spread','3d-assembly-wave','3d-camera-orbit','3d-volume-light','3d-surface','3d-finish'].includes(id)){}else if(ring)nodes.push({...base('subject',185,95,110,110),kind:'shape',shape:'ellipse',fill:color,fillOpacity:0,stroke:color,strokeWidth:5});
+ }else if(['assembly-spread','3d-assembly-wave','3d-camera-orbit','3d-volume-light','3d-surface','3d-finish','3d-studio-stage','3d-discharge'].includes(id)){}else if(ring)nodes.push({...base('subject',185,95,110,110),kind:'shape',shape:'ellipse',fill:color,fillOpacity:0,stroke:color,strokeWidth:5});
  else{
   nodes.push({...base('fixture-accent',83,78,314,144),kind:'shape',shape:'rect',fill:'#1b293e'});
   nodes.push({...base('subject',100,70,280,160),kind:'text',text:id==='prism-fold'?'Я.':'MOVE',fontFamily:'Arial Black',fontSize:id==='prism-fold'?122:74,color,align:'center',lineHeight:1.05});

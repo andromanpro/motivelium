@@ -1,5 +1,10 @@
-Motivelium 0.1.0-alpha.3
+Motivelium 0.2.0-beta.1
 Own code: MIT, see LICENSE.
 Full current third-party inventory: THIRD_PARTY.md and licenses/manifest.json.
 All full license texts and preserved original shader notices: licenses/.
 Legacy www/vendor (not in installer): GSAP 3.14.2, GSAP Standard License; Three.js 0.186.1, MIT.
+
+Onest — letterAtlas: bundled derived vector glyph data, SIL Open Font License 1.1.
+Full copyright and license: studio/effects/Onest-OFL.txt.
+Glyph preparation uses Bouffont by David Aerne, MIT; runtime interpolation uses the existing Flubber dependency.
+See studio/effects/TYPOGRAPHY_SOURCES.md for pinned sources and scope.

@@ -39,7 +39,7 @@ def verify():
   assert (OUT/required).is_file() and (OUT/required).stat().st_size>0,'Missing full notice: '+required
  assert (ROOT/'LICENSE').is_file() and 'Permission is hereby granted' in (ROOT/'LICENSE').read_text(encoding='utf-8')
  print(json.dumps({'verified':True,'npm':len(actual),'shaderSources':len(report['shaders']),'ready':len(ready),'noticeSHA256Checked':verified,'modelSHA256':report['model']['sha256'],'networkRequests':False}))
-def main():
+def npm_rows():
  OUT.mkdir(exist_ok=True); rows=[]
  lock=json.loads((ROOT/'studio/package-lock.json').read_text(encoding='utf-8'))
  for name,item in lock['packages'].items():
@@ -50,6 +50,21 @@ def main():
   assert notices,(name,'Missing full license')
   repository=meta.get('repository',{});repository=repository.get('url','') if isinstance(repository,dict) else repository
   rows.append({'name':meta['name'],'version':item['version'],'license':item['license'],'source':repository,'lockIntegrity':item['integrity'],'notices':notices})
+ return rows
+
+def sync_npm():
+ """Refresh only installed npm notices; preserve already pinned shader/runtime evidence."""
+ rows=npm_rows();report=json.loads((OUT/'manifest.json').read_text(encoding='utf-8'));report['npm']=rows
+ (OUT/'manifest.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
+ target=ROOT/'THIRD_PARTY.md';text=target.read_text(encoding='utf-8');start=text.index('| Пакет |');end=text.index('\n\n',start)
+ table='| Пакет | Версия | Лицензия |\n|---|---|---|\n'+'\n'.join(f"| {r['name']} | {r['version']} | {r['license']} |" for r in rows)
+ text=text[:start]+table+text[end:]
+ note='MCP SDK: сохранены полные LICENSE/NOTICE пакетов @modelcontextprotocol/server и core. Их уведомления описывают переход лицензирования и сохранение условий исходных вкладов; значение Apache-2.0 из package.json не заменяет этот полный текст. Это рабочее дополнение после опубликованной alpha.3; прежний установщик не перепаковывался.'
+ if note not in text:text=text.replace('## Шейдеры',note+'\n\n## Шейдеры',1)
+ target.write_text(text,encoding='utf-8');verify()
+
+def main():
+ rows=npm_rows()
  shaders=json.loads((WORK/'upstream-shaders.json').read_text(encoding='utf-8'));ready={s['id'] for s in json.loads((ROOT/'studio/effects/shaders/ready.json').read_text(encoding='utf-8'))}
  assert len(shaders)==424
  for s in shaders:
@@ -73,5 +88,6 @@ def main():
  print(json.dumps({'npm':len(rows),'shaderSources':len(shaders),'ready':len(ready),'modelSHA256':model['sha256'],'manifest':str(OUT/'manifest.json')}))
 if __name__=='__main__':
  if sys.argv[1:]==['--verify']:verify()
+ elif sys.argv[1:]==['--npm-only']:sync_npm()
  elif not sys.argv[1:]:main()
- else:raise SystemExit('Usage: license-report.py [--verify]')
+ else:raise SystemExit('Usage: license-report.py [--verify|--npm-only]')

@@ -33,6 +33,7 @@ async function call(baseUrl: string, method: string, route: string, body?: unkno
   const headers: Record<string, string> = {};
   if (body !== undefined) headers['Content-Type'] = 'application/json';
   if (token) headers['x-motivelium-token'] = token;
+  if(!token&&method==='POST'&&route==='/api/v1/projects')headers['x-motivelium-token']=(await(await fetch(baseUrl+'/api/v1/project-packages')).json()).mutationToken;
   const res = await fetch(baseUrl + route, { method, headers, body: body === undefined ? undefined : JSON.stringify(body) });
   const json = (await res.json()) as Json;
   return { status: res.status, json };

@@ -1,0 +1,270 @@
+{
+  "version": 1,
+  "license": "CC0-1.0",
+  "sounds": [
+    {
+      "id": "click-001",
+      "title": "Короткий щелчок",
+      "category": "clicks",
+      "tags": [
+        "Щелчки",
+        "interface-sounds",
+        "click_001"
+      ],
+      "file": "click_001.wav",
+      "sha256": "e524133b44be40decdbe4eb70541d3defcdbc9c582c179af884ea0a7e93e3d03",
+      "bytes": 9402,
+      "durationSeconds": 0.097125,
+      "peakSeconds": 0.005895833333333334,
+      "suggestedGain": 0.5,
+      "credit": {
+        "author": "Kenney",
+        "source": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0"
+      },
+      "categoryLabel": "Щелчки"
+    },
+    {
+      "id": "click-003",
+      "title": "Точный щелчок",
+      "category": "clicks",
+      "tags": [
+        "Щелчки",
+        "interface-sounds",
+        "click_003"
+      ],
+      "file": "click_003.wav",
+      "sha256": "407cd71f8ade8fce0cb9a5e811c63b0c005e17f58dd53fefd7d613461435d4a4",
+      "bytes": 762,
+      "durationSeconds": 0.007125,
+      "peakSeconds": 0.0050625,
+      "suggestedGain": 0.5,
+      "credit": {
+        "author": "Kenney",
+        "source": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0"
+      },
+      "categoryLabel": "Щелчки"
+    },
+    {
+      "id": "switch-001",
+      "title": "Переключатель",
+      "category": "clicks",
+      "tags": [
+        "Щелчки",
+        "interface-sounds",
+        "switch_001"
+      ],
+      "file": "switch_001.wav",
+      "sha256": "224af8db56659685b45bbdfd599382b4e72b7a1fa53f88e03248ed81531a8d70",
+      "bytes": 59096,
+      "durationSeconds": 0.6147708333333334,
+      "peakSeconds": 0.005375,
+      "suggestedGain": 0.4,
+      "credit": {
+        "author": "Kenney",
+        "source": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0"
+      },
+      "categoryLabel": "Щелчки"
+    },
+    {
+      "id": "confirmation-001",
+      "title": "Подтверждение",
+      "category": "interface",
+      "tags": [
+        "Интерфейс",
+        "interface-sounds",
+        "confirmation_001"
+      ],
+      "file": "confirmation_001.wav",
+      "sha256": "27c0f10809954910776ca98b0e388eda8612483bc2e49fe8a7acf781e0efaee0",
+      "bytes": 27904,
+      "durationSeconds": 0.2898541666666667,
+      "peakSeconds": 0.008020833333333333,
+      "suggestedGain": 0.3,
+      "credit": {
+        "author": "Kenney",
+        "source": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0"
+      },
+      "categoryLabel": "Интерфейс"
+    },
+    {
+      "id": "confirmation-002",
+      "title": "Готово",
+      "category": "interface",
+      "tags": [
+        "Интерфейс",
+        "interface-sounds",
+        "confirmation_002"
+      ],
+      "file": "confirmation_002.wav",
+      "sha256": "5cd7fdd104f4327d076f60e28287f1251d53ff5e65d73586406fad21ad176416",
+      "bytes": 51824,
+      "durationSeconds": 0.5390208333333333,
+      "peakSeconds": 0.008166666666666666,
+      "suggestedGain": 0.3,
+      "credit": {
+        "author": "Kenney",
+        "source": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0"
+      },
+      "categoryLabel": "Интерфейс"
+    },
+    {
+      "id": "open-001",
+      "title": "Открытие",
+      "category": "motion",
+      "tags": [
+        "Движение",
+        "interface-sounds",
+        "open_001"
+      ],
+      "file": "open_001.wav",
+      "sha256": "de222a4528ab3d730026348fa504429758cfaa78f8fc62d87057a39a005b94db",
+      "bytes": 14266,
+      "durationSeconds": 0.14779166666666665,
+      "peakSeconds": 0.14766666666666667,
+      "suggestedGain": 0.35,
+      "credit": {
+        "author": "Kenney",
+        "source": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0"
+      },
+      "categoryLabel": "Движение"
+    },
+    {
+      "id": "close-001",
+      "title": "Закрытие",
+      "category": "motion",
+      "tags": [
+        "Движение",
+        "interface-sounds",
+        "close_001"
+      ],
+      "file": "close_001.wav",
+      "sha256": "65ff5dd1a4c9a58877a3cc46b6918c9cdb7ac9730f6aefd70ff22bdea3dca0f7",
+      "bytes": 14266,
+      "durationSeconds": 0.14779166666666665,
+      "peakSeconds": 0.008479166666666666,
+      "suggestedGain": 0.35,
+      "credit": {
+        "author": "Kenney",
+        "source": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0"
+      },
+      "categoryLabel": "Движение"
+    },
+    {
+      "id": "drop-001",
+      "title": "Появление",
+      "category": "interface",
+      "tags": [
+        "Интерфейс",
+        "interface-sounds",
+        "drop_001"
+      ],
+      "file": "drop_001.wav",
+      "sha256": "26756537325339f03d6714ff809acc2c6a43be32925350703902b6022478b668",
+      "bytes": 12758,
+      "durationSeconds": 0.13208333333333333,
+      "peakSeconds": 0.005208333333333333,
+      "suggestedGain": 0.4,
+      "credit": {
+        "author": "Kenney",
+        "source": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0"
+      },
+      "categoryLabel": "Интерфейс"
+    },
+    {
+      "id": "back-001",
+      "title": "Возврат",
+      "category": "interface",
+      "tags": [
+        "Интерфейс",
+        "interface-sounds",
+        "back_001"
+      ],
+      "file": "back_001.wav",
+      "sha256": "d9cf161cfac9b61bb0368cbdbda2a815cdf565f2a9fe729c254317e39d06e115",
+      "bytes": 5932,
+      "durationSeconds": 0.06097916666666667,
+      "peakSeconds": 0.005125,
+      "suggestedGain": 0.35,
+      "credit": {
+        "author": "Kenney",
+        "source": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0"
+      },
+      "categoryLabel": "Интерфейс"
+    },
+    {
+      "id": "impactmetal-light-000",
+      "title": "Лёгкий металл",
+      "category": "impacts",
+      "tags": [
+        "Удары",
+        "impact-sounds",
+        "impactMetal_light_000"
+      ],
+      "file": "impactmetal_light_000.wav",
+      "sha256": "28656e3fcc272a3066c694604663dfebaa38c34bf912926be6d7319ef0f4f792",
+      "bytes": 35884,
+      "durationSeconds": 0.37297916666666664,
+      "peakSeconds": 0.005083333333333333,
+      "suggestedGain": 0.3,
+      "credit": {
+        "author": "Kenney",
+        "source": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0"
+      },
+      "categoryLabel": "Удары"
+    },
+    {
+      "id": "impactglass-light-000",
+      "title": "Стекло",
+      "category": "impacts",
+      "tags": [
+        "Удары",
+        "impact-sounds",
+        "impactGlass_light_000"
+      ],
+      "file": "impactglass_light_000.wav",
+      "sha256": "5c9fb9d151218e7c0bf9ba768600300b112b1d7554dcca45d20a39ea49356c1e",
+      "bytes": 22230,
+      "durationSeconds": 0.23075,
+      "peakSeconds": 0.005229166666666667,
+      "suggestedGain": 0.3,
+      "credit": {
+        "author": "Kenney",
+        "source": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0"
+      },
+      "categoryLabel": "Удары"
+    },
+    {
+      "id": "impactwood-light-000",
+      "title": "Дерево",
+      "category": "impacts",
+      "tags": [
+        "Удары",
+        "impact-sounds",
+        "impactWood_light_000"
+      ],
+      "file": "impactwood_light_000.wav",
+      "sha256": "8c8576a287c22471ed33cbc96eaed1f5c9fa31500576780d93877ac85815ddc8",
+      "bytes": 25298,
+      "durationSeconds": 0.2627083333333333,
+      "peakSeconds": 0.009166666666666667,
+      "suggestedGain": 0.4,
+      "credit": {
+        "author": "Kenney",
+        "source": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0"
+      },
+      "categoryLabel": "Удары"
+    }
+  ]
+}

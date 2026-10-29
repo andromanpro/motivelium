@@ -5,7 +5,13 @@
 import {SHADERS,SHADER_MAP,shaderParamErrors,type ShaderParams} from './shaders/library.ts';
 import {CONTOUR_CHOICES,contourParamErrors,type ContourMorph,type LayerMask} from './contours.ts';
 import type {Volume3d,Surface3d,Grade3d} from './lighting3d.ts';
+import {typographyErrors,type LetterMorph,type AsciiStyle} from './typography.ts';
+import type {GlyphMotion} from './glyphMotion.ts';
 export type EffectDeltas = {
+  discharge3d?:import('./discharge3d.ts').Discharge3d;
+  electricArc?:import('./electricArc.ts').ArcSpec;
+  stormLightning?:import('./electricArc.ts').ArcSpec;
+  stage3d?:{floor:string;strength:number;isolate:boolean;lighting?:string;groundPart?:string};
   x: number;        // смещение px
   y: number;
   rotate: number;   // градусы, добавка
@@ -32,6 +38,9 @@ export type EffectDeltas = {
   grade3d?:Grade3d;
   feedback?:{pipelineId:string;fromFrame:number;mix:number;params:Record<string,number>};
   morph?:ContourMorph;
+  letterMorph?:LetterMorph;
+  glyphMotion?:GlyphMotion;
+  ascii?:AsciiStyle;
   masks?:LayerMask[];
   shaderFilters?:Array<{id:string;params:ShaderParams;mix:number;speed:number}>;
 };
@@ -251,6 +260,11 @@ export const GEOMETRY_EFFECTS=[
  motion('noise-dissolve','Шумовое растворение','Слой проявляется через поле мелких островков; чистые начало и конец',[...shapeTiming,{name:'detail',type:'number',min:8,max:120,default:42},{name:'softness',type:'number',min:.005,max:.25,default:.07},{name:'seed',type:'number',min:0,max:99999,default:415},{name:'inverse',type:'boolean',default:false}],(p,f,v,c)=>delta({masks:[layerMask('dissolve',geometryProgress(p,f,v,c),v)]}),maskTargets),
 ];
 
+export const TYPOGRAPHY_EFFECTS:EffectDefinition[]=[
+ motion('letter-morph','Морфинг леттеринга','Пластичные контуры букв Onest: русский и латиница, отверстия и раздельные части',[...shapeTiming,{name:'style',type:'string',default:'onest',choices:[{value:'onest',label:'Onest · чистый контур'},{value:'puffy',label:'Bouffont · пухлый'}]},{name:'fromText',type:'string',default:'',multiline:true,hint:'Пусто — исходный текст объекта. Для цепочки можно указать предыдущий результат.'},{name:'toText',type:'string',default:'ВКУСНО',multiline:true,hint:'До 120 знаков, 3 строки. Встроенный Onest; обычный шрифт объекта здесь не используется.'},{name:'bend',type:'number',min:0,max:1,default:.35},{name:'stagger',type:'number',min:0,max:.8,default:.2},{name:'colorize',type:'boolean',default:false},{name:'hue',type:'number',min:0,max:360,default:160}],(p,f,v,c)=>delta({letterMorph:{style:String(v.style??'onest'),fromText:String(v.fromText??''),toText:String(v.toText??'ВКУСНО'),progress:geometryProgress(p,f,v,c),bend:num(v,'bend',.35),stagger:num(v,'stagger',.2),colorize:v.colorize===true,hue:num(v,'hue',160)}}),['text']),
+ motion('ascii-screen','ASCII · изображение и поля','Пиксели слоя становятся символами; живые волны, вихрь и дождь вычисляются по времени',[{name:'mode',type:'string',default:'layer',choices:[{value:'layer',label:'Изображение слоя'},{value:'waves',label:'Символьные волны'},{value:'vortex',label:'Вихрь'},{value:'rain',label:'Дождь'},{value:'fish',label:'Рыбка'}]},{name:'cell',type:'number',min:4,max:40,default:12},{name:'ramp',type:'string',default:' .,:;irsXA253hMHGS#9B&@',hint:'От 2 до 64 ASCII-символов: от пустого к плотному.'},{name:'color',type:'boolean',default:true},{name:'ink',type:'string',default:'#9de5c9'},{name:'mix',type:'number',min:0,max:1,default:1},{name:'speed',type:'number',min:0,max:4,default:1},{name:'seed',type:'number',min:0,max:99999,default:415},{name:'hue',type:'number',min:0,max:360,default:160}],(_p,f,v,c)=>delta({ascii:{mode:String(v.mode??'layer'),cell:num(v,'cell',12),ramp:String(v.ramp??' .,:;irsXA253hMHGS#9B&@'),color:v.color!==false,ink:String(v.ink??'#9de5c9'),mix:num(v,'mix',1),seconds:f/(c?.fps??30)*num(v,'speed',1),seed:num(v,'seed',415),hue:num(v,'hue',160)}}),['text','image','shape','scene3d']),
+];
+
 export const MODEL3D_EFFECTS:EffectDefinition[]=[
  {id:'3d-volume-light',version:1,name:'Свет в объёме',description:'Рассеяние в 3D-конусе: глубина кадра и отдельная карта перекрытий от источника света. Однократное рассеяние, без накопления кадров.',category:'object',targets:['scene3d'],previewFixture:'assembly',params:[{name:'density',type:'number',min:0,max:.25,default:.065},{name:'strength',type:'number',min:0,max:4,default:1.4},{name:'angle',type:'number',min:10,max:65,default:32},{name:'lightX',type:'number',min:-8,max:8,default:-3},{name:'lightY',type:'number',min:-2,max:10,default:5},{name:'lightZ',type:'number',min:-8,max:8,default:3},{name:'palette',type:'string',default:'cool',choices:[{value:'warm',label:'Тёплый янтарь'},{value:'cool',label:'Холодный свет'},{value:'violet',label:'Сиреневый'}]},{name:'quality',type:'string',default:'balanced',choices:[{value:'draft',label:'Черновое · 16 шагов'},{value:'balanced',label:'Среднее · 32 шага'},{value:'high',label:'Высокое · 56 шагов'}]},{name:'occlusion',type:'boolean',default:true}],evaluate:(_p,_f,v)=>delta({volume3d:{density:num(v,'density',.065),strength:num(v,'strength',1.4),angle:num(v,'angle',32),lightX:num(v,'lightX',-3),lightY:num(v,'lightY',5),lightZ:num(v,'lightZ',3),palette:String(v.palette??'cool'),quality:String(v.quality??'balanced'),occlusion:v.occlusion!==false}})},
  {id:'3d-surface',version:1,name:'Материал предмета',description:'Металл, керамика или перламутр на настоящих материалах модели. Карты цвета, нормалей и исходный ресурс сохраняются.',category:'object',targets:['scene3d'],previewFixture:'assembly',params:[{name:'finish',type:'string',default:'titanium',choices:[{value:'titanium',label:'Титан'},{value:'ceramic',label:'Керамика'},{value:'pearl',label:'Перламутр'}]},{name:'roughness',type:'number',min:.04,max:1,default:.26},{name:'metalness',type:'number',min:0,max:1,default:.75},{name:'tint',type:'number',min:0,max:1,default:.4}],evaluate:(_p,_f,v)=>delta({surface3d:{finish:String(v.finish??'titanium'),roughness:num(v,'roughness',.26),metalness:num(v,'metalness',.75),tint:num(v,'tint',.4)}})},
@@ -258,7 +272,26 @@ export const MODEL3D_EFFECTS:EffectDefinition[]=[
  {id:'3d-assembly-wave',version:1,name:'Разборка волной',description:'Отдельные детали расходятся последовательно и возвращаются. Порядок, направление и задержка управляемы.',category:'object',targets:['scene3d'],previewFixture:'assembly',params:[{name:'amount',type:'number',min:0,max:4,default:1.6},{name:'stagger',type:'number',min:0,max:.6,default:.3},{name:'mode',type:'string',default:'cycle',choices:[{value:'cycle',label:'Разобрать и собрать'},{value:'explode',label:'Разобрать'},{value:'assemble',label:'Собрать'}]},{name:'axis',type:'string',default:'vertical',choices:[{value:'vertical',label:'По вертикали'},{value:'radial',label:'От центра'}]}],evaluate:(_,frame,p,c)=>({...NEUTRAL_DELTAS,assembly3d:{progress:c?clamp01((frame-c.fromFrame)/Math.max(1,c.toFrame-c.fromFrame-1)):_,amount:Number(p.amount??1.6),stagger:Number(p.stagger??.3),mode:String(p.mode??'cycle'),axis:String(p.axis??'vertical')}})},
  {id:'3d-camera-orbit',version:1,name:'Камера вокруг устройства',description:'Настоящая 3D-камера обходит модель. Детали и свет остаются в одном пространстве.',category:'object',targets:['scene3d'],previewFixture:'assembly',params:[{name:'angle',type:'number',min:-360,max:360,default:150},{name:'distance',type:'number',min:2,max:14,default:6.5},{name:'elevation',type:'number',min:-4,max:8,default:2.6}],evaluate:(_,frame,p,c)=>({...NEUTRAL_DELTAS,orbit3d:{angle:35+Number(p.angle??150)*smoothstep(c?clamp01((frame-c.fromFrame)/Math.max(1,c.toFrame-c.fromFrame-1)):_),distance:Number(p.distance??6.5),elevation:Number(p.elevation??2.6)}})},
 ];
+export const glyphMotion=motion('glyph-motion','Хореография букв','Волна, хоровод или сборка отдельных знаков. Сохраняет выбранный шрифт, кириллицу и переносы.',[
+ {name:'mode',type:'string',default:'wave',choices:[{value:'wave',label:'Волна'},{value:'orbit',label:'Хоровод'},{value:'assemble',label:'Собрать слово'}]},
+ {name:'amplitude',type:'number',min:0,max:240,default:38},
+ {name:'cycles',type:'number',min:.1,max:12,default:2},
+ {name:'stagger',type:'number',min:0,max:.8,default:.4},
+ {name:'rotation',type:'number',min:0,max:60,default:12},
+ {name:'colorize',type:'boolean',default:false},{name:'hue',type:'number',min:0,max:360,default:160},
+],(p,_f,v)=>delta({glyphMotion:{mode:String(v.mode??'wave'),progress:p,amplitude:num(v,'amplitude',38),cycles:num(v,'cycles',2),stagger:num(v,'stagger',.4),rotation:num(v,'rotation',12),colorize:v.colorize===true,hue:num(v,'hue',160)}}),['text']);
+export const electricArc:EffectDefinition={id:'electric-arc',version:1,name:'Электрический разряд',description:'Живой ветвящийся канал между двумя точками: пробой, белое ядро, цветная корона и затухание. Геометрия воспроизводится по времени и seed.',category:'object',targets:['shape'],previewFixture:'electric',params:[
+ {name:'startX',type:'number',min:.04,max:.96,default:.12},{name:'startY',type:'number',min:.04,max:.96,default:.5},{name:'endX',type:'number',min:.04,max:.96,default:.88},{name:'endY',type:'number',min:.04,max:.96,default:.5},
+ {name:'branches',type:'number',min:0,max:10,default:6},{name:'roughness',type:'number',min:0,max:1,default:.8},{name:'width',type:'number',min:.5,max:8,default:2.2},{name:'power',type:'number',min:0,max:1,default:1},{name:'speed',type:'number',min:0,max:4,default:1},{name:'seed',type:'number',min:0,max:9999,default:73},
+ {name:'palette',type:'string',default:'ion',choices:[{value:'ion',label:'Ионный голубой'},{value:'violet',label:'Фиолетовый'},{value:'amber',label:'Янтарный'}]},
+ ],evaluate:(p,f,v,c)=>delta({electricArc:{startX:num(v,'startX',.12),startY:num(v,'startY',.5),endX:num(v,'endX',.88),endY:num(v,'endY',.5),branches:Math.round(num(v,'branches',6)),roughness:num(v,'roughness',.8),width:num(v,'width',2.2),power:num(v,'power',1),speed:num(v,'speed',1),seed:num(v,'seed',73),palette:String(v.palette??'ion'),progress:p,seconds:(f-(c?.fromFrame??0))/(c?.fps??30)}})};
+export const stormLightning:EffectDefinition={...electricArc,id:'storm-lightning',name:'Молния · Storm Lance',description:'Шейдерные электрические каналы с острыми изломами, повторными ударами и отдельными ядром/ореолом. Адаптация MIT LinearAbiltyCastingThreeJS.',evaluate:(p,f,v,c)=>delta({stormLightning:electricArc.evaluate(p,f,v,c).electricArc!})};
 export const REGISTRY: ReadonlyMap<string, EffectDefinition> = new Map([
+ ['3d-discharge',{id:'3d-discharge',version:1,name:'Один удар · 3D',description:'Разряд в пространстве предмета: предвестники, удар, повтор, след и настоящий свет на модели/полу. Время задано относительно интервала.',category:'object',targets:['scene3d'],previewFixture:'assembly',params:[{name:'impact',type:'number',min:.1,max:10,default:1.2},{name:'strength',type:'number',min:.1,max:2,default:1},{name:'reach',type:'number',min:.5,max:4,default:2.3},{name:'seed',type:'number',min:0,max:9999,default:2910},{name:'sourcePart',type:'string',default:'',hint:'ID детали-источника; пустое значение — верх модели'},{name:'lightScene',type:'boolean',default:true}],evaluate:(_p,f,v,c)=>delta({discharge3d:{seconds:(f-(c?.fromFrame??0))/(c?.fps??30),impact:num(v,'impact',1.2),strength:num(v,'strength',1),reach:num(v,'reach',2.3),seed:Math.round(num(v,'seed',2910)),sourcePart:String(v.sourcePart??''),lightScene:v.lightScene!==false}})}],
+  [stormLightning.id,stormLightning],
+  ['3d-studio-stage',{id:'3d-studio-stage',version:1,name:'Предметная площадка',description:'Плоскость, контактная тень и предметный свет: мягкая студия или направленный свет с полосой отражения.',category:'object',targets:['scene3d'],previewFixture:'assembly',params:[{name:'floor',type:'string',default:'graphite',choices:[{value:'graphite',label:'Графит'},{value:'paper',label:'Светлая студия'}]},{name:'lighting',type:'string',default:'neutral',choices:[{value:'neutral',label:'Мягкая студия'},{value:'dramatic',label:'Направленный свет'}]},{name:'groundPart',type:'string',default:'',hint:'ID детали, нижняя граница которой задаёт высоту пола. Пусто — вся модель. Берётся исходная поза, чтобы пол не двигался вместе с анимацией.'},{name:'strength',type:'number',min:.2,max:2,default:1},{name:'isolate',type:'boolean',default:false}],evaluate:(_p,_f,v)=>delta({stage3d:{floor:String(v.floor??'graphite'),strength:num(v,'strength',1),isolate:v.isolate===true,lighting:String(v.lighting??'neutral'),groundPart:String(v.groundPart??'')}})}],
+  [electricArc.id,electricArc],
+  [glyphMotion.id,glyphMotion],
   [revealDeal.id, revealDeal],
   [softLift.id, softLift],
   ...SHOWCASE_EFFECTS.map(def => [def.id,def] as [string,EffectDefinition]),
@@ -267,6 +300,7 @@ export const REGISTRY: ReadonlyMap<string, EffectDefinition> = new Map([
   ...ATMOSPHERE_EFFECTS.map(def=>[def.id,def] as [string,EffectDefinition]),
   ...FEEDBACK_EFFECTS.map(def=>[def.id,def] as [string,EffectDefinition]),
   ...GEOMETRY_EFFECTS.map(def=>[def.id,def] as [string,EffectDefinition]),
+  ...TYPOGRAPHY_EFFECTS.map(def=>[def.id,def] as [string,EffectDefinition]),
   ...MODEL3D_EFFECTS.map(def=>[def.id,def] as [string,EffectDefinition]),
 ]);
 
@@ -281,6 +315,7 @@ export function defaultParams(def: EffectDefinition): Record<string, number | bo
 export function validateEffectParams(def: EffectDefinition, params: Record<string, number | boolean | string>): string[] {
   const errors: string[] = [];
   errors.push(...contourParamErrors(def.id,{...defaultParams(def),...params}));
+  errors.push(...typographyErrors(def.id,{...defaultParams(def),...params}));
   if(def.id==='shader-filter'){const shader=SHADER_MAP.get(String(params.shaderId??defaultParams(def).shaderId));if(shader?.kind!=='filter')errors.push('Неизвестный шейдерный фильтр.');else try{const text=String(params.settings??'{}');if(text.length>8192)errors.push('Слишком много параметров фильтра.');else errors.push(...shaderParamErrors(shader,JSON.parse(text)));}catch{errors.push('Параметры фильтра: нужен JSON-объект.');}}
   if(def.id==='3d-volume-light'){const p={...defaultParams(def),...params};if(Math.hypot(Number(p.lightX),Number(p.lightY)-.3,Number(p.lightZ))<.1)errors.push('Источник света совпал с целью: измени положение.');}
   const names = new Set(def.params.map(p => p.name));
@@ -288,7 +323,7 @@ export function validateEffectParams(def: EffectDefinition, params: Record<strin
   for (const p of def.params) {
     const v = params[p.name];
     if (v === undefined) continue;
-    if (p.type === 'number' && typeof v !== 'number') errors.push(`параметр "${p.name}": ожидается число`);
+    if (p.type === 'number' && (typeof v !== 'number'||!Number.isFinite(v))) errors.push(`параметр "${p.name}": ожидается конечное число`);
     if (p.type === 'number' && typeof v === 'number' && p.min !== undefined && p.max !== undefined && (v < p.min || v > p.max))
       errors.push(`параметр "${p.name}": вне [${String(p.min)}, ${String(p.max)}]`);
     if (p.type === 'boolean' && typeof v !== 'boolean') errors.push(`параметр "${p.name}": ожидается boolean`);
@@ -309,6 +344,10 @@ export function combineDeltas(list: EffectDeltas[]): EffectDeltas {
     blur: a.blur + b.blur,
     reveal: Math.min(a.reveal, b.reveal),
     glow: Math.max(a.glow, b.glow),
+    ...(a.discharge3d||b.discharge3d?{discharge3d:b.discharge3d??a.discharge3d}:{}),
+    ...(a.stormLightning||b.stormLightning?{stormLightning:b.stormLightning??a.stormLightning}:{}),
+    ...(a.electricArc||b.electricArc?{electricArc:b.electricArc??a.electricArc}:{}),
+    ...(a.stage3d||b.stage3d?{stage3d:b.stage3d??a.stage3d}:{}),
     ...(a.stretchX!==undefined||b.stretchX!==undefined?{stretchX:(a.stretchX??1)*(b.stretchX??1)}:{}),
     ...(a.stretchY!==undefined||b.stretchY!==undefined?{stretchY:(a.stretchY??1)*(b.stretchY??1)}:{}),
     ...(a.chromatic!==undefined||b.chromatic!==undefined?{chromatic:Math.max(a.chromatic??0,b.chromatic??0)}:{}),
@@ -325,6 +364,9 @@ export function combineDeltas(list: EffectDeltas[]): EffectDeltas {
     ...(a.grade3d||b.grade3d?{grade3d:b.grade3d??a.grade3d}:{}),
     ...(a.feedback||b.feedback?{feedback:b.feedback??a.feedback}:{}),
     ...(a.morph||b.morph?{morph:b.morph??a.morph}:{}),
+    ...(a.letterMorph||b.letterMorph?{letterMorph:b.letterMorph??a.letterMorph}:{}),
+    ...(a.glyphMotion||b.glyphMotion?{glyphMotion:b.glyphMotion??a.glyphMotion}:{}),
+    ...(a.ascii||b.ascii?{ascii:b.ascii??a.ascii}:{}),
     ...(a.masks||b.masks?{masks:[...(a.masks??[]),...(b.masks??[])]}:{}),
     ...(a.shaderFilters||b.shaderFilters?{shaderFilters:[...(a.shaderFilters??[]),...(b.shaderFilters??[])]}:{}),
   }), { ...NEUTRAL_DELTAS });

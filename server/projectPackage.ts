@@ -1,3 +1,4 @@
+import {APP_VERSION} from '../studio/domain/version.ts';
 import {localDataDir} from './dataPaths.ts';
 import fs from 'node:fs/promises';
 import {createReadStream,createWriteStream} from 'node:fs';
@@ -11,7 +12,7 @@ import type {Readable} from 'node:stream';
 import type {Entry,ZipFile} from 'yauzl';
 import {createStore,StoreError,type Store} from './storage.ts';
 import {inspectGltf} from '../studio/domain/gltf.ts';
-import {PACKAGE_MAX_BYTES,PACKAGE_FILE_MAX,packageProject,packageManifest,packageSummary,type PackageManifest,type PackagePreview,type PackageExport} from '../studio/domain/projectPackage.ts';
+import {PACKAGE_MAX_BYTES,PACKAGE_FILE_MAX,packageFeatures,packageProject,packageManifest,packageSummary,type PackageManifest,type PackagePreview,type PackageExport} from '../studio/domain/projectPackage.ts';
 import type {Project} from '../studio/domain/schema.ts';
 
 const require=createRequire(fileURLToPath(new URL('../studio/package.json',import.meta.url)));
@@ -71,7 +72,7 @@ export function createProjectPackageService(store:Store,root:string,onImported?:
    try{packageProject(p)}catch(e){throw new StoreError(400,(e as Error).message)}
    const id='pack-'+crypto.randomUUID(),dir=path.join(exports,id);await fs.mkdir(dir,{recursive:true});
    try{
-    const projectBytes=Buffer.from(JSON.stringify(p,null,2)),manifest:PackageManifest={format:'motivelium-project',version:1,createdAt:new Date().toISOString(),project:{entry:'project.json',bytes:projectBytes.length,sha256:digest(projectBytes),id:p.id,revision:p.revision},assets:[]},buffers=new Map<string,Buffer>();
+    const projectBytes=Buffer.from(JSON.stringify(p,null,2)),manifest:PackageManifest={format:'motivelium-project',version:packageFeatures(p).length?2:1,...(packageFeatures(p).length?{compatibility:{minVersion:APP_VERSION,features:packageFeatures(p)}}:{}),createdAt:new Date().toISOString(),project:{entry:'project.json',bytes:projectBytes.length,sha256:digest(projectBytes),id:p.id,revision:p.revision},assets:[]},buffers=new Map<string,Buffer>();
     for(const a of p.assets){const source=await store.assetFile(pid,a.id);const real=await fs.realpath(source.file);inside(await fs.realpath(path.join(store.root,pid)),real);const bytes=await fs.readFile(real);if(bytes.length!==a.bytes||digest(bytes)!==a.sha256)throw Error('Ресурс отсутствует или повреждён: '+(a.title??a.id));const entry='assets/'+a.sha256;buffers.set(entry,bytes);manifest.assets.push({id:a.id,entry,bytes:a.bytes,sha256:a.sha256});}
     packageManifest(manifest);
     const zip=new yazl.ZipFile(),tmp=path.join(dir,'project.tmp.zip'),done=pipeline(zip.outputStream,createWriteStream(tmp));zip.on('error',err=>(zip.outputStream as Readable).destroy(err));

@@ -1,0 +1,16 @@
+{
+  "id": "signal-en",
+  "version": 1,
+  "name": "Signal",
+  "description": "Numbers, rising bars, trails of light and accents to a breakbeat rhythm.",
+  "category": "Results",
+  "accent": "#a4f4eb",
+  "durationSeconds": 12,
+  "size": {
+    "width": 1280,
+    "height": 720
+  },
+  "previewFrame": 60,
+  "projectSha256": "5edf0563265b34e2f2f6f91b654539bd94c3dff2c536a498e4fa54c33e70dd99",
+  "attribution": "Illustration created with imagegen for Motivelium; not a photograph. Music and graphics are original procedural work, without external samples. Text and numbers are editable placeholders."
+}

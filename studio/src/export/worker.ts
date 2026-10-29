@@ -2,13 +2,15 @@ import type {Project} from '../../domain/schema.ts';
 import {evaluateFrame} from '../../render/evaluate.ts';
 import {renderFrame,type AssetBitmaps} from '../../render/renderFrame.ts';
 import {createThreeAdapter,type ThreeAdapter} from '../../render/threeAdapter.ts';
+import {prepareFonts} from '../../render/fonts.ts';
 
 let project:Project,adapter:ThreeAdapter|undefined;
 const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d')!,bitmaps:AssetBitmaps=new Map();
 document.body.append(canvas);
 async function prepare(snapshot:Project){
+ dispose();
  project=snapshot;canvas.width=project.size.width;canvas.height=project.size.height;
- await document.fonts.ready;
+ await prepareFonts(project.nodes.flatMap(n=>n.kind==='text'?[n.fontFamily]:[]));
  for(const asset of project.assets.filter(a=>a.mime.startsWith('image/'))){
   const res=await fetch(`/api/v1/projects/${project.id}/assets/${asset.id}`);
   if(!res.ok)throw Error('Изображение не загружено: '+asset.id);

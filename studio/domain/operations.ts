@@ -7,11 +7,20 @@ import type { EffectDefinition } from '../effects/registry.ts';
 import { REGISTRY } from '../effects/registry.ts';
 import {keyEditReason,offsetTransformKeys,transformAtFrame,upsertTransformKey} from './animation.ts';
 import {partEdit,poseAt,type PartEdit,type PartKey,type CameraKey3d} from './model3d.ts';
+import {emptyStoryboard,type StoryCard,type StoryComment} from './storyboard.ts';
 
 type NodeSpecificValues<T> = T extends SceneNode ? Partial<Omit<T, 'id' | 'kind' | 'parentId' | 'sequenceId' | 'name' | 'transform' | 'geometry' | 'visible' | 'locked' | 'metadata'>> : never;
 export type UpdateNodeValues = Partial<Pick<import('./schema.ts').Scene3dNode,'model'|'parts3d'|'camera3d'|'camera3dKeys'|'cameraTargetPart'>> & Partial<Pick<SceneNode, 'name' | 'transform' | 'geometry' | 'visible' | 'locked' | 'metadata'>> & NodeSpecificValues<SceneNode>;
 
 export type Operation =
+  | {op:'setStorySynopsis';text:string}
+  | {op:'upsertStoryCard';card:StoryCard}
+  | {op:'updateStoryCard';targetId:string;values:Partial<Omit<StoryCard,'id'|'comments'>>}
+  | {op:'removeStoryCard';targetId:string}
+  | {op:'reorderStoryCard';targetId:string;index:number}
+  | {op:'addStoryComment';targetId:string;comment:StoryComment}
+  | {op:'updateStoryComment';targetId:string;commentId:string;values:Partial<Pick<StoryComment,'text'|'resolved'>>}
+  | {op:'removeStoryComment';targetId:string;commentId:string}
   | { op: 'createNode'; node: SceneNode }
   | { op: 'updateNode'; targetId: string; values: UpdateNodeValues }
   | {op:'updatePart3d';targetId:string;partId:string;values:Partial<Omit<PartEdit,'id'|'keys'>>}
@@ -58,7 +67,7 @@ export class OpError extends Error {
   }
 }
 
-const UPDATE_NODE_ALLOWED = new Set(['name','transform','geometry','visible','locked','metadata','text','fontFamily','fontSize','color','align','lineHeight','assetId','fit','shape','fill','fillOpacity','stroke','strokeWidth','generator','adapter','preset','spin','explode','model','parts3d','camera3d','camera3dKeys','cameraTargetPart']);
+const UPDATE_NODE_ALLOWED = new Set(['name','transform','geometry','visible','locked','metadata','text','fontFamily','fontSize','fontWeight','color','align','lineHeight','assetId','fit','shape','fill','fillOpacity','stroke','strokeWidth','generator','adapter','preset','spin','explode','model','parts3d','camera3d','camera3dKeys','cameraTargetPart']);
 
 /** Применить пакет операций к копии проекта. Бросает OpError/ValidationError. */
 export function applyOperations(project: Project, operations: unknown, registry: ReadonlyMap<string, EffectDefinition> = REGISTRY): Project {
@@ -78,6 +87,22 @@ export function applyOperations(project: Project, operations: unknown, registry:
     };
 
     switch (op) {
+      case 'setStorySynopsis': {p.storyboard??=emptyStoryboard();p.storyboard.synopsis=o.text as string;break;}
+      case 'upsertStoryCard': {const card=o.card as StoryCard;if(!card||typeof card!=='object')throw new OpError(i,'Нужна карточка');p.storyboard??=emptyStoryboard();const at=p.storyboard.cards.findIndex(c=>c.id===card.id);if(at<0)p.storyboard.cards.push(structuredClone(card));else p.storyboard.cards[at]=structuredClone(card);break;}
+      case 'removeStoryCard':
+      case 'updateStoryCard':
+      case 'reorderStoryCard':
+      case 'addStoryComment':
+      case 'updateStoryComment':
+      case 'removeStoryComment': {
+        const cards=p.storyboard?.cards,at=cards?.findIndex(c=>c.id===o.targetId)??-1;if(!cards||at<0)throw new OpError(i,'Карточка раскадровки не найдена');const card=cards[at]!;
+        if(op==='updateStoryCard'){const v=o.values;if(!v||typeof v!=='object'||Array.isArray(v)||Object.keys(v).some(k=>!['title','description','durationFrames','camera','transition','sound','sources','status','sequenceId','nodeIds','image'].includes(k)))throw new OpError(i,'Недопустимые свойства карточки');Object.assign(card,structuredClone(v));}
+        else if(op==='removeStoryCard')cards.splice(at,1);
+        else if(op==='reorderStoryCard'){if(!Number.isInteger(o.index)||Number(o.index)<0||Number(o.index)>=cards.length)throw new OpError(i,'Позиция карточки вне списка');cards.splice(at,1);cards.splice(Number(o.index),0,card);}
+        else if(op==='addStoryComment'){if(!o.comment||typeof o.comment!=='object')throw new OpError(i,'Нужно замечание');card.comments.push(structuredClone(o.comment)as StoryComment);}
+        else{const ci=card.comments.findIndex(c=>c.id===o.commentId);if(ci<0)throw new OpError(i,'Замечание не найдено');if(op==='removeStoryComment')card.comments.splice(ci,1);else{const v=o.values;if(!v||typeof v!=='object'||Array.isArray(v)||Object.keys(v).some(k=>!['text','resolved'].includes(k)))throw new OpError(i,'Недопустимая правка замечания');Object.assign(card.comments[ci]!,structuredClone(v));}}
+        break;
+      }
       case 'updatePart3d':
       case 'setPart3dKey':
       case 'removePart3dKey': {
@@ -273,6 +298,7 @@ export function applyOperations(project: Project, operations: unknown, registry:
         if (!p.assets.some(x => x.id === id)) throw new OpError(i, `removeAsset: ассет ${id} не найден`);
         if (p.nodes.some(n => n.kind === 'image' && n.assetId === id)) throw new OpError(i, `removeAsset: ассет ${id} используется узлом image`);
         if (p.audioTracks.some(t => t.assetId === id)) throw new OpError(i, `removeAsset: ассет ${id} используется звуковой дорожкой`);
+        if(p.storyboard?.cards.some(c=>c.image?.assetId===id))throw new OpError(i,'Изображение используется в раскадровке');
         p.assets = p.assets.filter(x => x.id !== id);
         break;
       }
@@ -295,7 +321,7 @@ export function applyOperations(project: Project, operations: unknown, registry:
         const values = o.values as Record<string, unknown> | undefined;
         if (!values) throw new OpError(i, 'updateAudioTrack: нет values');
         for (const k of Object.keys(values)) {
-          if (!['kind','assetId','gain','offsetSeconds','mute','synth'].includes(k)) throw new OpError(i, `updateAudioTrack: свойство "${k}" не разрешено`);
+          if (!['kind','assetId','gain','offsetSeconds','mute','synth','name','clip','credit'].includes(k)) throw new OpError(i, `updateAudioTrack: свойство "${k}" не разрешено`);
           (t as unknown as Record<string, unknown>)[k] = structuredClone(values[k]);
         }
         break;

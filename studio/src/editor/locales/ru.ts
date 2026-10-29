@@ -1,0 +1,15 @@
+export const ru = {
+  'appearance.title': 'Оформление',
+  'appearance.group': 'Тема интерфейса',
+  'appearance.system': 'Системная',
+  'appearance.light': 'Светлая',
+  'appearance.dark': 'Тёмная',
+  'appearance.systemHint': 'Как в Windows или браузере',
+  'appearance.lightHint': 'Светлая бумага и зелёные акценты',
+  'appearance.darkHint': 'Графитовые панели и мягкий свет',
+  'appearance.description': 'Применяется сразу и сохраняется для этого браузера. Цвета ролика и экспорт не меняются.',
+  'appearance.saved': 'Тема сохранена.',
+  'appearance.notSaved': 'Тема применена. Браузер запретил сохранение — после перезапуска выбор может сброситься.',
+  'appearance.currentDark': 'Сейчас используется тёмная тема.',
+  'appearance.currentLight': 'Сейчас используется светлая тема.',
+} as const;

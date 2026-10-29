@@ -1,8 +1,17 @@
+import {exampleLanguage} from '../studio/domain/exampleLanguage.ts';
+import {localDataDir} from './dataPaths.ts';
+import {createLibraryImportService} from './libraryImport.ts';
+import {createExamples} from './examples.ts';
+import {FILM_PRESETS} from './exampleContent.ts';
+import {diagnose,readRuntimeConfig,saveToolSettings,runtimeTools} from './runtime.ts';
+import {createArtifactMaintenance} from './artifacts.ts';
 // API студии Motivelium: пространство /api/v1/. Подключается корневым server.mjs.
 // Host только localhost; мутации требуют заголовок x-motivelium-token из GET проекта.
 // SSE /api/v1/events сообщает смену ревизии для живого редактора (M2).
 
 import crypto from 'node:crypto';
+import {APP_VERSION,BUILD_ID,READER_FEATURES} from '../studio/domain/version.ts';
+import {MUTATION_TOKEN,requestGuard} from './requestGuard.ts';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -16,9 +25,10 @@ import {createProjectPackageService} from './projectPackage.ts';
 import {createProjectActions} from './projectActions.ts';
 import {createMediaService} from './mediaAssets.ts';
 import {createTemplateCatalog}from'./templates.ts';
+import {createSoundService}from'./soundLibrary.ts';
 
 const KADRIL_ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
-const TOKEN = crypto.randomBytes(24).toString('hex');
+const TOKEN = MUTATION_TOKEN;
 const sseClients = new Set<ServerResponse>();
 
 function send(res: ServerResponse, status: number, value: unknown): void {
@@ -55,15 +65,22 @@ export function studioAPIFactory(store: Store, options:{aiRoot?:string;aiProvide
   const packages=createProjectPackageService(store,options.videoRoot??options.aiRoot??KADRIL_ROOT,p=>broadcastRevision(p.id,p.revision));
   const workspaceRoot=options.videoRoot??options.aiRoot??KADRIL_ROOT;
   const templateCatalog=createTemplateCatalog(workspaceRoot);
+  const artifacts=createArtifactMaintenance(workspaceRoot);
   const projects=createProjectActions(store,workspaceRoot,p=>broadcastRevision(p.id,p.revision),templateCatalog);
   const media=createMediaService(store,workspaceRoot);
+  const sounds=createSoundService(store,workspaceRoot);
+  const library=createLibraryImportService(store,workspaceRoot,packages),examples=createExamples(workspaceRoot);
   // F3: ровно одно revision-событие на фактическое изменение подтверждённой ревизии —
   // коммит, undo/redo или завершение recovery; дубликат подтверждённого и 409 молчат.
   if (impl.setOnConfirmedChange) impl.setOnConfirmedChange(broadcastRevision);
 
   async function handle(req: IncomingMessage, res: ServerResponse, u: URL): Promise<void> {
     const route = u.pathname;
+    if(route==='/api/v1/sounds'&&req.method==='GET'){send(res,200,{sounds:await sounds.catalog()});return;}
+    const audioRoute=/^\/api\/v1\/projects\/([a-z0-9-]+)\/(sound-assets|audio-analysis)$/.exec(route);
+    if(audioRoute&&req.method==='POST'){if(req.headers['x-motivelium-token']!==TOKEN){send(res,403,{error:'Недопустимый токен изменения'});return;}const body=await jsonBody(req);send(res,200,audioRoute[2]==='sound-assets'?await sounds.stage(audioRoute[1]!,body):await sounds.analyze(audioRoute[1]!,body));return;}
     const method = req.method ?? 'GET';
+    const denied=requestGuard(req,{binary:route==='/api/v1/project-packages/imports'});if(denied){send(res,denied.status,{error:denied.error});return;}
 
     // Host-проверка по образцу лаборатории: только локальные имена.
     const port = u.port || String(req.socket.localPort);
@@ -73,11 +90,21 @@ export function studioAPIFactory(store: Store, options:{aiRoot?:string;aiProvide
     }
 
     if (route === '/api/v1/health') {
-      send(res, 200, { application: 'motivelium-studio', api: 'v1', tokenRequired: true });
+      send(res, 200, { application: 'motivelium-studio', api: 'v1', tokenRequired: true,version:APP_VERSION,buildId:BUILD_ID,readerFeatures:READER_FEATURES });
       return;
     }
 
-    if(route==='/api/v1/templates'&&method==='GET'){send(res,200,{templates:await templateCatalog.list()});return;}
+    if(route==='/api/v1/workspace/diagnostics'&&method==='GET'){send(res,200,{...await diagnose(workspaceRoot),configured:readRuntimeConfig(workspaceRoot).tools??{},resolved:runtimeTools(workspaceRoot)});return;}
+    if(route==='/api/v1/workspace/tools'&&method==='POST'){send(res,200,await saveToolSettings(workspaceRoot,(await jsonBody(req)).tools));return;}
+    if(route==='/api/v1/workspace/library/preview'&&method==='POST'){send(res,200,await library.preview((await jsonBody(req)).folder));return;}
+    if(route==='/api/v1/workspace/library/import'&&method==='POST'){const b=await jsonBody(req);send(res,201,await library.import(b.previewId,b.projectId));return;}
+    if(route==='/api/v1/examples'&&method==='GET'){const language=exampleLanguage(u.searchParams.get('language'));if(!language)throw new StoreError(400,'Unsupported example language. Use ru or en.');send(res,200,{examples:await examples.list(language)});return;}
+    const exampleRoute=/^\/api\/v1\/examples\/([a-z0-9-]+)(?:\/assets\/([a-z0-9-]+))?$/.exec(route);
+    if(exampleRoute&&method==='GET'){if(!exampleRoute[2]){const language=exampleLanguage(u.searchParams.get('language'));if(!language)throw new StoreError(400,'Unsupported example language. Use ru or en.');send(res,200,{project:(await examples.load(exampleRoute[1]!,language)).project});return;}const a=await examples.asset(exampleRoute[1]!,exampleRoute[2]);res.writeHead(200,{'Content-Type':a.mime,'Content-Length':fs.statSync(a.file).size,'Cache-Control':'no-cache'});fs.createReadStream(a.file).pipe(res);return;}
+    if(route==='/api/v1/workspace/artifacts'&&method==='GET'){send(res,200,await artifacts.info());return;}
+    if(route==='/api/v1/workspace/artifacts/clean'&&method==='POST'){send(res,200,await artifacts.clean());return;}
+    if(route==='/api/v1/mcp/config'&&method==='GET'){send(res,200,{ready:fs.existsSync(path.join(workspaceRoot,'mcp/server.mjs'))&&fs.existsSync(path.join(workspaceRoot,'studio/node_modules/@modelcontextprotocol/server/package.json')),version:APP_VERSION,buildId:BUILD_ID,config:{mcpServers:{motivelium:{command:process.execPath,args:[path.join(workspaceRoot,'mcp/server.mjs'),'--url','http://'+req.headers.host,'--state-dir',path.join(localDataDir(workspaceRoot),'mcp'),'--run-key','assignment-'+crypto.randomUUID().slice(0,8)]}}}});return;}
+    if(route==='/api/v1/templates'&&method==='GET'){const language=exampleLanguage(u.searchParams.get('language'));if(!language)throw new StoreError(400,'Unsupported template language. Use ru or en.');send(res,200,{templates:await templateCatalog.list(language)});return;}
     const templateRoute=/^\/api\/v1\/templates\/([a-z0-9-]+)\/(\d+)(?:\/(projects|assets)(?:\/([a-z0-9-]+))?)?$/.exec(route);
     if(templateRoute){const [,id,rawVersion,action,assetId]=templateRoute,version=Number(rawVersion);
       if(method==='GET'&&!action){send(res,200,await templateCatalog.load(id!,version));return;}
@@ -85,11 +112,11 @@ export function studioAPIFactory(store: Store, options:{aiRoot?:string;aiProvide
       if(method==='POST'&&action==='projects'&&!assetId){if(req.headers['x-motivelium-token']!==TOKEN){send(res,403,{error:'Недопустимый токен изменения'});return;}send(res,201,{project:await projects.fromTemplate(id!,version,await jsonBody(req))});return;}
       send(res,404,{error:'Нет такого действия шаблона'});return;
     }
-    if(route==='/api/v1/project-packages'&&method==='GET'){send(res,200,{format:'motivelium-project',version:1,maxBytes:256*1024*1024,mutationToken:TOKEN});return;}
+    if(route==='/api/v1/project-packages'&&method==='GET'){send(res,200,{format:'motivelium-project',version:2,supportedVersions:[1,2],readerVersion:APP_VERSION,readerFeatures:READER_FEATURES,maxBytes:256*1024*1024,mutationToken:TOKEN});return;}
     if(route==='/api/v1/workspace'&&method==='GET'){
       const list=await store.list();let assets=0,assetBytes=0;const counted=new Set<string>();
       for(const item of list){const p=(await store.get(item.id)).project;for(const a of p.assets){const key=p.id+'/'+a.path;if(!counted.has(key)){counted.add(key);assets++;assetBytes+=a.bytes;}}}
-      send(res,200,{mutationToken:TOKEN,projects:list.length,assets,assetBytes,media:await media.info()});return;
+      send(res,200,{mutationToken:TOKEN,projects:list.length,assets,assetBytes,dataRoot:path.dirname(store.root),programRoot:workspaceRoot,media:await media.info()});return;
     }
     const copyRoute=/^\/api\/v1\/projects\/([a-z0-9-]+)\/copies$/.exec(route);
     if(copyRoute&&method==='POST'){if(req.headers['x-motivelium-token']!==TOKEN){send(res,403,{error:'Недопустимый токен изменения'});return;}send(res,201,{project:await projects.copy(copyRoute[1]!,await jsonBody(req))});return;}
@@ -168,7 +195,7 @@ export function studioAPIFactory(store: Store, options:{aiRoot?:string;aiProvide
       if(body.requestId!==undefined){if(req.headers['x-motivelium-token']!==TOKEN){send(res,403,{error:'Недопустимый токен изменения'});return;}send(res,201,{project:await projects.create(body)});return;}
       const options: { fixture?: boolean; preset?: string; title?: string; durationFrames?: number } = {};
       if (body.fixture === true) options.fixture = true;
-      if (body.preset === 'm2-demo' || body.preset === 'showcase-v1' || body.preset === 'energy-v1' || body.preset==='matter-v1') options.preset = body.preset;
+      if (['m2-demo','showcase-v1','energy-v1','matter-v1','showcase-v2','energy-v2','matter-v2','letters-v1','letters-en-v1',...FILM_PRESETS].includes(String(body.preset))) options.preset = String(body.preset);
       if (typeof body.title === 'string') options.title = body.title;
       if (typeof body.durationFrames === 'number' && Number.isInteger(body.durationFrames)) options.durationFrames = body.durationFrames;
       const created = await impl.create(options);

@@ -1,0 +1,56 @@
+[
+  {
+    "file": "LinearAbiltyCastingThreeJS\\LICENSE",
+    "source": "https://raw.githubusercontent.com/achrefelouafi/LinearAbiltyCastingThreeJS/97f1de19617e9a2e3af3c8021c8c21c8f58b40f3/LICENSE",
+    "sha256": "fa655f413edefb7d5416d743714e4cdd7899134b2fb4003732b2ef9eecac4fd4",
+    "bytes": 1077
+  },
+  {
+    "file": "LinearAbiltyCastingThreeJS\\README.md",
+    "source": "https://raw.githubusercontent.com/achrefelouafi/LinearAbiltyCastingThreeJS/97f1de19617e9a2e3af3c8021c8c21c8f58b40f3/README.md",
+    "sha256": "51921627bc2b9bc9b1eab503649ddb0ddf5d8c7b12baa6986e48796a6111a1c0",
+    "bytes": 37847
+  },
+  {
+    "file": "LinearAbiltyCastingThreeJS\\src\\materials\\LightningMaterial.js",
+    "source": "https://raw.githubusercontent.com/achrefelouafi/LinearAbiltyCastingThreeJS/97f1de19617e9a2e3af3c8021c8c21c8f58b40f3/src/materials/LightningMaterial.js",
+    "sha256": "a7377ed59448dd459784560349d6213f8f27081dd3ee17ec4ad9b620118fc872",
+    "bytes": 14656
+  },
+  {
+    "file": "LinearAbiltyCastingThreeJS\\src\\shaders\\lib\\common.glsl.js",
+    "source": "https://raw.githubusercontent.com/achrefelouafi/LinearAbiltyCastingThreeJS/97f1de19617e9a2e3af3c8021c8c21c8f58b40f3/src/shaders/lib/common.glsl.js",
+    "sha256": "21dfd8ba599787bebedd856bc9dff368c493e71a7ad3b1ec23ad258d432c418b",
+    "bytes": 2226
+  },
+  {
+    "file": "LinearAbiltyCastingThreeJS\\src\\shaders\\lib\\noise.glsl.js",
+    "source": "https://raw.githubusercontent.com/achrefelouafi/LinearAbiltyCastingThreeJS/97f1de19617e9a2e3af3c8021c8c21c8f58b40f3/src/shaders/lib/noise.glsl.js",
+    "sha256": "5c2c7c2f25f05b9a3d877efd12a39e7ab8a0f59dab54e22f09323a811989f3c2",
+    "bytes": 5040
+  },
+  {
+    "file": "SpektrLightning\\Assets\\Spektr\\Lightning\\LightningMesh.cs",
+    "source": "https://raw.githubusercontent.com/keijiro/SpektrLightning/779d7a27395a66b79a5f9044a2bae0d55cf11359/Assets/Spektr/Lightning/LightningMesh.cs",
+    "sha256": "845f6ba5ac2287362ec8e103daca2b2e6ea70cbcddbf171f4a0ddca238a35d43",
+    "bytes": 3330
+  },
+  {
+    "file": "SpektrLightning\\Assets\\Spektr\\Lightning\\LightningRenderer.cs",
+    "source": "https://raw.githubusercontent.com/keijiro/SpektrLightning/779d7a27395a66b79a5f9044a2bae0d55cf11359/Assets/Spektr/Lightning/LightningRenderer.cs",
+    "sha256": "6ab87844f992ca168279fd86951a17aa6a5c0371deccd6b58bbc83bebb7d763b",
+    "bytes": 6567
+  },
+  {
+    "file": "SpektrLightning\\Assets\\Spektr\\Lightning\\Shader\\Lightning.shader",
+    "source": "https://raw.githubusercontent.com/keijiro/SpektrLightning/779d7a27395a66b79a5f9044a2bae0d55cf11359/Assets/Spektr/Lightning/Shader/Lightning.shader",
+    "sha256": "a288e6793bbee77c634a8916251ba2d444d83fcdca974f6c9a022037b24bb0f9",
+    "bytes": 4428
+  },
+  {
+    "file": "SpektrLightning\\README.md",
+    "source": "https://raw.githubusercontent.com/keijiro/SpektrLightning/779d7a27395a66b79a5f9044a2bae0d55cf11359/README.md",
+    "sha256": "3426c8a4e58976f5e63fe07b441aef02751296d37b1446aaea1862517e965ce0",
+    "bytes": 2187
+  }
+]

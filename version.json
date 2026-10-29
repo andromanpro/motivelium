@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0-beta.1",
+  "buildId": "20261030-beta1",
+  "readerFeatures": [
+    "storyboard-v1",
+    "shared-audio-v1",
+    "story-montage-v1",
+    "audio-clips-v1",
+    "kinetic-type-v1",
+    "electric-arc-v1",
+    "studio-stage-v1",
+    "storm-lightning-v1",
+    "discharge3d-v1"
+  ]
+}

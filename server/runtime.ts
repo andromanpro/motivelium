@@ -1,7 +1,18 @@
 import {localDataDir} from './dataPaths.ts';
+import crypto from 'node:crypto';
+import {StoreError} from './storage.ts';
 /** Installation settings belong to this copy, never to an author's external profile. */
 import fs from 'node:fs';import path from 'node:path';import {createRequire} from 'node:module';import {spawnSync,spawn} from 'node:child_process';
 export type RuntimeConfig={tools?:{ffmpeg?:string;ffprobe?:string;chrome?:string;python?:string};glm?:{keyFile?:string;model?:string;visionModel?:string;effort?:string;proxy?:string}};
+export type RuntimeDiagnostics=Awaited<ReturnType<typeof diagnose>>&{configured:NonNullable<RuntimeConfig['tools']>;resolved:ReturnType<typeof runtimeTools>};
+export async function saveToolSettings(root:string,input:unknown){
+ if(!input||typeof input!=='object'||Array.isArray(input))throw new StoreError(400,'Ожидаются пути компонентов.');
+ const config=readRuntimeConfig(root),tools={...config.tools};
+ if(Object.keys(input).some(k=>!['ffmpeg','ffprobe','chrome'].includes(k)))throw new StoreError(400,'Неизвестная настройка компонента.');
+ for(const id of ['ffmpeg','ffprobe','chrome'] as const){const value=(input as Record<string,unknown>)[id];if(value===undefined)continue;if(typeof value!=='string'||value.length>1000||/[\x00-\x1f]/.test(value)||value.trim()&&!path.isAbsolute(value.trim()))throw new StoreError(400,'Нужен абсолютный путь к '+id+' или пустое поле для автоматического поиска.');if(value.trim())tools[id]=value.trim();else delete tools[id];}
+ const dir=localDataDir(root),file=path.join(dir,'runtime.json'),temp=file+'.'+crypto.randomUUID()+'.tmp';await fs.promises.mkdir(dir,{recursive:true});try{await fs.promises.writeFile(temp,JSON.stringify({...config,tools},null,2),{flag:'wx'});await fs.promises.rename(temp,file)}finally{await fs.promises.rm(temp,{force:true})}
+ return{restartRequired:true};
+}
 export function nodeSupported(version=process.versions.node){const [major,minor]=version.split('.').map(Number);return major===24&&minor!>=12;}
 export function readRuntimeConfig(root:string):RuntimeConfig{
  const file=path.join(localDataDir(root),'runtime.json');if(!fs.existsSync(file))return{};

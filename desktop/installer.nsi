@@ -18,35 +18,82 @@ ${UnStrStr}
  ; Copy the real compiler-generated PE for offline manifest verification.
  !uninstfinalize '"${BUILD_PYTHON}" "${CAPTURE_SCRIPT}" "%1" "${UNINSTALLER_OUTPUT}"' = 0
 !endif
-Name "Motivelium 0.1 alpha"
+!ifndef MV_VERSION
+ !error "MV_VERSION and MV_FILE_VERSION must be defined by build-installer.py"
+!endif
+!ifndef MV_FILE_VERSION
+ !error "MV_FILE_VERSION must be defined by build-installer.py"
+!endif
+Name "Motivelium ${MV_VERSION}"
 OutFile "${OUTPUT}"
 InstallDir "$LOCALAPPDATA\Programs\Motivelium"
-BrandingText "Motivelium · 0.1.0-alpha.3"
-VIProductVersion "0.1.0.3"
+BrandingText "Motivelium · ${MV_VERSION}"
+VIProductVersion "${MV_FILE_VERSION}"
 VIAddVersionKey /LANG=1049 "ProductName" "Motivelium"
-VIAddVersionKey /LANG=1049 "FileDescription" "Установка Motivelium 0.1 alpha"
-VIAddVersionKey /LANG=1049 "FileVersion" "0.1.0-alpha.3"
+VIAddVersionKey /LANG=1049 "FileDescription" "Установка Motivelium ${MV_VERSION}"
+VIAddVersionKey /LANG=1033 "FileDescription" "Motivelium ${MV_VERSION} Setup"
+VIAddVersionKey /LANG=1033 "ProductName" "Motivelium"
+VIAddVersionKey /LANG=1033 "FileVersion" "${MV_VERSION}"
+VIAddVersionKey /LANG=1033 "LegalCopyright" "2026 Motivelium contributors · MIT"
+VIAddVersionKey /LANG=1049 "FileVersion" "${MV_VERSION}"
 VIAddVersionKey /LANG=1049 "LegalCopyright" "2026 Motivelium contributors · MIT"
 !define MUI_ICON "${ART}\Motivelium.ico"
 !define MUI_UNICON "${ART}\Motivelium.ico"
 !define MUI_WELCOMEFINISHPAGE_BITMAP "${GENERATED}\welcome.bmp"
 !define MUI_ABORTWARNING
 !define MUI_WELCOMEPAGE_TITLE "Motivelium"
-!define MUI_WELCOMEPAGE_TEXT "Студия программного видео.$\r$\n$\r$\nУстановка для текущей учётной записи с подтверждением UAC. Node.js и библиотеки уже включены.$\r$\n$\r$\nПроекты хранятся отдельно от программы. Обновление и удаление приложения сохраняют ваши данные.$\r$\n$\r$\nВерсия 0.1.0-alpha.3 — предварительная."
+!define MUI_WELCOMEPAGE_TEXT "$(MVText1)"
 !insertmacro MUI_PAGE_WELCOME
-!define MUI_LICENSEPAGE_TEXT_TOP "Собственный код Motivelium — MIT. Условия сторонних компонентов находятся в THIRD_PARTY.md и папке licenses."
+!define MUI_LICENSEPAGE_TEXT_TOP "$(MVText2)"
 !insertmacro MUI_PAGE_LICENSE "${PAYLOAD}\LICENSE"
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
-!define MUI_FINISHPAGE_TITLE "Motivelium установлен"
-!define MUI_FINISHPAGE_TEXT "После завершения откройте Motivelium из меню «Пуск». Редактор запускается с обычными правами.$\r$\n$\r$\nДля работы нужен Microsoft WebView2 Runtime. Для импорта медиа требуется FFprobe; для MP4 — FFmpeg, FFprobe и Chrome. Эти инструменты устанавливаются отдельно.$\r$\n$\r$\nБыстрый старт и диагностика — в папке программы."
+!define MUI_FINISHPAGE_TITLE "$(MVText3)"
+!define MUI_FINISHPAGE_TEXT "$(MVText4)"
 !insertmacro MUI_PAGE_FINISH
-!define MUI_UNCONFIRMPAGE_TEXT_TOP "Будут удалены файлы программы и ярлыки. Проекты, настройки, импортированные материалы и журналы в папке данных сохранятся."
+!define MUI_UNCONFIRMPAGE_TEXT_TOP "$(MVText5)"
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
 !insertmacro MUI_UNPAGE_FINISH
+!insertmacro MUI_LANGUAGE "English"
 !insertmacro MUI_LANGUAGE "Russian"
+LangString MVText1 1049 "ИИ собирает видео, человек шлифует результат.$\r$\n$\r$\nУстановка для текущей учётной записи с подтверждением UAC. Node.js и библиотеки уже включены.$\r$\n$\r$\nПроекты хранятся отдельно от программы. Обновление и удаление приложения сохраняют ваши данные.$\r$\n$\r$\nВерсия ${MV_VERSION}."
+LangString MVText1 1033 "AI video creation with manual refinement.$\r$\n$\r$\nInstalls for the current account with UAC confirmation. Node.js and libraries are included.$\r$\n$\r$\nProjects are stored separately. Upgrades and uninstalling preserve your data.$\r$\n$\r$\nVersion ${MV_VERSION}."
+LangString MVText2 1049 "Собственный код Motivelium — MIT. Условия сторонних компонентов находятся в THIRD_PARTY.md и папке licenses."
+LangString MVText2 1033 "Motivelium code is MIT licensed. Third-party terms are in THIRD_PARTY.md and the licenses folder."
+LangString MVText3 1049 "Motivelium установлен"
+LangString MVText3 1033 "Motivelium is installed"
+LangString MVText4 1049 "После завершения откройте Motivelium из меню «Пуск». Редактор запускается с обычными правами.$\r$\n$\r$\nДля работы нужен Microsoft WebView2 Runtime. Для импорта медиа требуется FFprobe; для MP4 — FFmpeg, FFprobe и Chrome. Эти инструменты устанавливаются отдельно.$\r$\n$\r$\nБыстрый старт и диагностика — в папке программы."
+LangString MVText4 1033 "Open Motivelium from the Windows Start menu. The editor runs with ordinary user rights.$\r$\n$\r$\nMicrosoft WebView2 Runtime is required. Media import needs FFprobe; MP4 export needs FFmpeg, FFprobe and Chrome. Install these tools separately.$\r$\n$\r$\nQuick start and diagnostics are included."
+LangString MVText5 1049 "Будут удалены файлы программы и ярлыки. Проекты, настройки, импортированные материалы и журналы в папке данных сохранятся."
+LangString MVText5 1033 "Program files and shortcuts will be removed. Projects, settings, imported assets and logs in the data folder will be preserved."
+LangString MVText6 1049 "Не удалось записать файл: $FailedFile. Установка не завершена. Данные проектов не изменены."
+LangString MVText6 1033 "Could not write: $FailedFile. Installation did not finish. Project data is unchanged."
+LangString MVText7 1049 "Сначала закройте установленный Motivelium, затем повторите операцию. Проекты не изменены."
+LangString MVText7 1033 "Close the installed Motivelium and try again. Projects are unchanged."
+LangString MVText8 1049 "Нужна 64-разрядная Windows 10 или 11."
+LangString MVText8 1033 "64-bit Windows 10 or 11 is required."
+LangString MVText9 1049 "Нужна Windows 10 или 11."
+LangString MVText9 1033 "Windows 10 or 11 is required."
+LangString MVText10 1049 "Установите Microsoft .NET Framework 4.8: https://dotnet.microsoft.com/download/dotnet-framework/net48 . Затем повторите установку Motivelium."
+LangString MVText10 1033 "Install Microsoft .NET Framework 4.8 from https://dotnet.microsoft.com/download/dotnet-framework/net48 and run this setup again."
+LangString MVText11 1049 "Windows не разрешает запись в меню «Пуск» этой учётной записи даже после подтверждения прав. Установка остановлена; файлы программы ещё не изменены."
+LangString MVText11 1033 "Windows denied access to this account Start menu after elevation. Setup stopped before changing program files."
+LangString MVText12 1049 "Windows не разрешает регистрацию программы для этой учётной записи даже после подтверждения прав. Установка остановлена; файлы программы ещё не изменены."
+LangString MVText12 1033 "Windows denied registration for this account after elevation. Setup stopped before changing program files."
+LangString MVText13 1049 "Программа и ярлык в меню «Пуск»"
+LangString MVText13 1033 "Program and Start menu shortcut"
+LangString MVText14 1049 "Выберите пустую папку или папку установленного Motivelium. Содержимое выбранной папки не изменено."
+LangString MVText14 1033 "Choose an empty folder or an existing Motivelium installation. The selected folder has not been changed."
+LangString MVText16 1049 "Не удалось создать ярлыки в меню «Пуск». Проверьте права на папку. Данные проектов не изменены."
+LangString MVText16 1033 "Could not create Start menu shortcuts. Check folder access. Project data is unchanged."
+LangString MVText17 1049 "Не удалось зарегистрировать программу в Windows. Данные проектов не изменены."
+LangString MVText17 1033 "Could not register the application in Windows. Project data is unchanged."
+LangString MVText18 1049 "Ярлык на рабочем столе"
+LangString MVText18 1033 "Desktop shortcut"
+LangString MVText19 1049 "Папка не совпадает с зарегистрированной установкой Motivelium. Файлы не удалены."
+LangString MVText19 1033 "This folder does not match the registered Motivelium installation. No files were removed."
 Var RegistryKey
 Var MenuGroup
 Var QA
@@ -57,7 +104,7 @@ Function FailFile
  FileOpen $R8 "$INSTDIR\installation-error.txt" w
  FileWrite $R8 "Cannot extract: $FailedFile"
  FileClose $R8
- MessageBox MB_OK|MB_ICONSTOP "Не удалось записать файл: $FailedFile. Установка не завершена. Данные проектов не изменены." /SD IDOK
+ MessageBox MB_OK|MB_ICONSTOP "$(MVText6)" /SD IDOK
  SetErrorLevel 17
  Abort
 FunctionEnd
@@ -66,19 +113,26 @@ FunctionEnd
  System::Call 'kernel32::OpenMutexW(i 0x100000, i 0, w "Local\Motivelium.Installed.Alpha") p .r0'
  ${If} $0 != 0
   System::Call 'kernel32::CloseHandle(p r0)'
-  MessageBox MB_OK|MB_ICONEXCLAMATION "Сначала закройте установленный Motivelium, затем повторите операцию. Проекты не изменены." /SD IDOK
+  MessageBox MB_OK|MB_ICONEXCLAMATION "$(MVText7)" /SD IDOK
   SetErrorLevel 10
   Quit
  ${EndIf}
 !macroend
 
 Function .onInit
+ !insertmacro MUI_LANGDLL_DISPLAY
  SetShellVarContext current
  SetRegView 64
  StrCpy $RegistryKey "Software\Microsoft\Windows\CurrentVersion\Uninstall\Motivelium"
  StrCpy $MenuGroup "Motivelium"
  StrCpy $QA "false"
  ${GetParameters} $R0
+ ${GetOptions} $R0 "/LANG=" $R2
+ ${If} $R2 == "en"
+  StrCpy $LANGUAGE 1033
+ ${ElseIf} $R2 == "ru"
+  StrCpy $LANGUAGE 1049
+ ${EndIf}
  ClearErrors
  ${GetOptions} $R0 "/QA" $R1
  ${IfNot} ${Errors}
@@ -87,18 +141,18 @@ Function .onInit
   StrCpy $QA "true"
  ${EndIf}
  ${IfNot} ${RunningX64}
-  MessageBox MB_OK|MB_ICONSTOP "Нужна 64-разрядная Windows 10 или 11." /SD IDOK
+  MessageBox MB_OK|MB_ICONSTOP "$(MVText8)" /SD IDOK
   SetErrorLevel 11
   Quit
  ${EndIf}
  ${IfNot} ${AtLeastWin10}
-  MessageBox MB_OK|MB_ICONSTOP "Нужна Windows 10 или 11." /SD IDOK
+  MessageBox MB_OK|MB_ICONSTOP "$(MVText9)" /SD IDOK
   SetErrorLevel 11
   Quit
  ${EndIf}
  ReadRegDWORD $R0 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full" "Release"
  ${If} $R0 < 528040
-  MessageBox MB_OK|MB_ICONSTOP "Установите Microsoft .NET Framework 4.8: https://dotnet.microsoft.com/download/dotnet-framework/net48 . Затем повторите установку Motivelium." /SD IDOK
+  MessageBox MB_OK|MB_ICONSTOP "$(MVText10)" /SD IDOK
   SetErrorLevel 12
   Quit
  ${EndIf}
@@ -111,7 +165,7 @@ Function .onInit
   ClearErrors
   FileOpen $R4 $R3 w
   ${If} ${Errors}
-   MessageBox MB_OK|MB_ICONSTOP "Windows не разрешает запись в меню «Пуск» этой учётной записи даже после подтверждения прав. Установка остановлена; файлы программы ещё не изменены." /SD IDOK
+   MessageBox MB_OK|MB_ICONSTOP "$(MVText11)" /SD IDOK
    SetErrorLevel 16
    Quit
   ${EndIf}
@@ -124,7 +178,7 @@ Function .onInit
   ReadRegStr $R4 HKCU $R3 "Check"
   DeleteRegKey HKCU $R3
   ${If} $R4 != $R2
-   MessageBox MB_OK|MB_ICONSTOP "Windows не разрешает регистрацию программы для этой учётной записи даже после подтверждения прав. Установка остановлена; файлы программы ещё не изменены." /SD IDOK
+   MessageBox MB_OK|MB_ICONSTOP "$(MVText12)" /SD IDOK
    SetErrorLevel 15
    Quit
   ${EndIf}
@@ -138,14 +192,14 @@ Function .onInit
  ${EndIf}
 FunctionEnd
 
-Section "Программа и ярлык в меню «Пуск»" Core
+Section "$(MVText13)" Core
  SectionIn RO
  !insertmacro CheckRunning install
  ; Never merge the application into an unrelated nonempty directory.
  IfFileExists "$INSTDIR\installed.json" recognized
  IfFileExists "$INSTDIR\.motivelium-folder" recognized
  IfFileExists "$INSTDIR\*.*" 0 recognized
- MessageBox MB_OK|MB_ICONSTOP "Выберите пустую папку или папку установленного Motivelium. Содержимое выбранной папки не изменено." /SD IDOK
+ MessageBox MB_OK|MB_ICONSTOP "$(MVText14)" /SD IDOK
  SetErrorLevel 13
  Abort
  recognized:
@@ -153,8 +207,9 @@ Section "Программа и ярлык в меню «Пуск»" Core
  SetOverwrite try
  !include "${GENERATED}\files.nsh"
  FileOpen $R0 "$INSTDIR\installed.json" w
- FileWrite $R0 '{$\"format$\":$\"motivelium-installed$\",$\"version$\":$\"0.1.0-alpha.3$\",$\"qa$\":$QA}'
+ FileWrite $R0 '{$\"format$\":$\"motivelium-installed$\",$\"version$\":$\"${MV_VERSION}$\",$\"qa$\":$QA}'
  FileClose $R0
+ WriteINIStr "$INSTDIR\language.ini" "Motivelium" "Language" "$LANGUAGE"
  WriteUninstaller "$INSTDIR\Uninstall.exe"
  StrCpy $MenuRoot "$SMPROGRAMS\$MenuGroup"
  ${If} $QA == "true"
@@ -166,20 +221,21 @@ Section "Программа и ярлык в меню «Пуск»" Core
  CreateDirectory "$MenuRoot"
  SetOutPath "$INSTDIR"
  CreateShortcut "$MenuRoot\Motivelium.lnk" "$INSTDIR\Motivelium.exe" "" "$INSTDIR\Motivelium.exe" 0
- CreateShortcut "$MenuRoot\Удалить Motivelium.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\Uninstall.exe" 0
+ Delete "$MenuRoot\Удалить Motivelium.lnk"
+ CreateShortcut "$MenuRoot\Uninstall Motivelium.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\Uninstall.exe" 0
  ${If} ${Errors}
-  MessageBox MB_OK|MB_ICONSTOP "Не удалось создать ярлыки в меню «Пуск». Проверьте права на папку. Данные проектов не изменены." /SD IDOK
+  MessageBox MB_OK|MB_ICONSTOP "$(MVText16)" /SD IDOK
   SetErrorLevel 16
   Abort
  ${EndIf}
  ${If} $QA == "true"
   WriteINIStr "$INSTDIR\qa-installation.ini" "Motivelium" "InstallLocation" "$INSTDIR"
-  WriteINIStr "$INSTDIR\qa-installation.ini" "Motivelium" "DisplayVersion" "0.1.0-alpha.3"
+  WriteINIStr "$INSTDIR\qa-installation.ini" "Motivelium" "DisplayVersion" "${MV_VERSION}"
   Goto integration_done
  ${EndIf}
  ClearErrors
  WriteRegStr HKCU $RegistryKey "DisplayName" "$MenuGroup 0.1 alpha"
- WriteRegStr HKCU $RegistryKey "DisplayVersion" "0.1.0-alpha.3"
+ WriteRegStr HKCU $RegistryKey "DisplayVersion" "${MV_VERSION}"
  WriteRegStr HKCU $RegistryKey "InstallLocation" "$INSTDIR"
  WriteRegStr HKCU $RegistryKey "DisplayIcon" "$INSTDIR\Motivelium.exe,0"
  WriteRegStr HKCU $RegistryKey "UninstallString" '$\"$INSTDIR\Uninstall.exe$\"'
@@ -194,14 +250,14 @@ Section "Программа и ярлык в меню «Пуск»" Core
   FileOpen $R1 "$INSTDIR\installation-error.txt" w
   FileWrite $R1 "Registration failed: key=$RegistryKey read=$R0 target=$INSTDIR startmenu=$SMPROGRAMS user=$PROFILE"
   FileClose $R1
-  MessageBox MB_OK|MB_ICONSTOP "Не удалось зарегистрировать программу в Windows. Данные проектов не изменены." /SD IDOK
+  MessageBox MB_OK|MB_ICONSTOP "$(MVText17)" /SD IDOK
   SetErrorLevel 15
   Abort
  ${EndIf}
  integration_done:
 SectionEnd
 
-Section /o "Ярлык на рабочем столе" Desktop
+Section /o "$(MVText18)" Desktop
  ${If} $QA != "true"
   CreateShortcut "$DESKTOP\$MenuGroup.lnk" "$INSTDIR\Motivelium.exe" "" "$INSTDIR\Motivelium.exe" 0
  ${Else}
@@ -210,6 +266,7 @@ Section /o "Ярлык на рабочем столе" Desktop
 SectionEnd
 
 Function un.onInit
+ ReadINIStr $LANGUAGE "$INSTDIR\language.ini" "Motivelium" "Language"
  SetShellVarContext current
  SetRegView 64
  StrCpy $RegistryKey "Software\Microsoft\Windows\CurrentVersion\Uninstall\Motivelium"
@@ -248,7 +305,7 @@ Function un.onInit
  !insertmacro CheckRunning uninstall
  Return
  un_bad:
- MessageBox MB_OK|MB_ICONSTOP "Папка не совпадает с зарегистрированной установкой Motivelium. Файлы не удалены." /SD IDOK
+ MessageBox MB_OK|MB_ICONSTOP "$(MVText19)" /SD IDOK
  SetErrorLevel 14
  Quit
 FunctionEnd
@@ -256,11 +313,13 @@ FunctionEnd
 Section "Uninstall"
  !insertmacro CheckRunning uninstall
  !include "${GENERATED}\uninstall-files.nsh"
+ Delete "$INSTDIR\language.ini"
  Delete "$INSTDIR\installed.json"
  Delete "$INSTDIR\.motivelium-folder"
  Delete "$INSTDIR\Uninstall.exe"
  ${If} $QA == "true"
   Delete "$INSTDIR\qa-shell\StartMenu\Motivelium.lnk"
+  Delete "$INSTDIR\qa-shell\StartMenu\Uninstall Motivelium.lnk"
   Delete "$INSTDIR\qa-shell\StartMenu\Удалить Motivelium.lnk"
   Delete "$INSTDIR\qa-shell\Desktop.lnk"
   RMDir "$INSTDIR\qa-shell\StartMenu"
@@ -268,6 +327,7 @@ Section "Uninstall"
   Delete "$INSTDIR\qa-installation.ini"
  ${Else}
   Delete "$SMPROGRAMS\$MenuGroup\Motivelium.lnk"
+  Delete "$SMPROGRAMS\$MenuGroup\Uninstall Motivelium.lnk"
   Delete "$SMPROGRAMS\$MenuGroup\Удалить Motivelium.lnk"
   RMDir "$SMPROGRAMS\$MenuGroup"
   Delete "$DESKTOP\$MenuGroup.lnk"

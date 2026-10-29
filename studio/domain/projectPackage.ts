@@ -1,7 +1,10 @@
 import {validateProject,type Project} from './schema.ts';
+import {checkReader,type ReaderRequirement} from './version.ts';
+import {BUNDLED_FONTS} from './fonts.ts';
+export function packageFeatures(p:Project){return[...(p.effects.some(e=>e.definitionId==='3d-discharge')?['discharge3d-v1']:[]),...(p.effects.some(e=>e.definitionId==='storm-lightning')?['storm-lightning-v1']:[]),...(p.effects.some(e=>e.definitionId==='electric-arc')?['electric-arc-v1']:[]),...(p.effects.some(e=>e.definitionId==='3d-studio-stage')?['studio-stage-v1']:[]),...(p.storyboard?['storyboard-v1']:[]),...(p.effects.some(e=>e.definitionId==='glyph-motion')||p.nodes.some(n=>n.kind==='text'&&(n.fontWeight!==undefined||(BUNDLED_FONTS as readonly string[]).includes(n.fontFamily)))?['kinetic-type-v1']:[])];}
 
 export const PACKAGE_MAX_BYTES=256*1024*1024,PACKAGE_FILE_MAX=64*1024*1024,PACKAGE_MAX_ASSETS=256;
-export type PackageManifest={format:'motivelium-project';version:1;createdAt:string;project:{entry:'project.json';bytes:number;sha256:string;id:string;revision:number};assets:Array<{id:string;entry:string;bytes:number;sha256:string}>};
+export type PackageManifest={format:'motivelium-project';version:1|2;compatibility?:ReaderRequirement;createdAt:string;project:{entry:'project.json';bytes:number;sha256:string;id:string;revision:number};assets:Array<{id:string;entry:string;bytes:number;sha256:string}>};
 export type PackagePreview={id:string;status:'validated'|'imported';title:string;sourceProjectId:string;sourceRevision:number;durationSeconds:number;size:Project['size'];fps:Project['fps'];nodes:number;effects:number;sequences:number;models:number;images:number;audio:number;other:number;assetBytes:number;archiveBytes:number;assets:Array<{id:string;title:string;mime:string;bytes:number;sha256:string}>;projectId?:string;projectTitle?:string};
 export type PackageExport={id:string;revision:number;title:string;bytes:number;sha256:string;assets:number;assetBytes:number;downloadUrl:string;createdAt:string};
 
@@ -20,7 +23,8 @@ export function packageProject(input:unknown):Project{
 }
 export function packageManifest(input:unknown):PackageManifest{
  if(!input||typeof input!=='object'||Array.isArray(input))throw Error('В архиве нет manifest.json.');const m=input as PackageManifest;
- if(m.format!=='motivelium-project'||m.version!==1)throw Error('Неподдерживаемая версия архива Motivelium.');
+ if(m.format!=='motivelium-project'||![1,2].includes(m.version))throw Error('Неподдерживаемая версия архива Motivelium. Обновите приложение.');
+ if(m.version===2&&!m.compatibility)throw Error('В архиве нет требований к версии.');checkReader(m.compatibility);
  if(!m.project||m.project.entry!=='project.json'||!Number.isSafeInteger(m.project.bytes)||m.project.bytes<1||m.project.bytes>8*1024*1024||!/^[a-f0-9]{64}$/.test(m.project.sha256)||!Array.isArray(m.assets)||m.assets.length>PACKAGE_MAX_ASSETS)throw Error('Некорректный состав архива.');
  const ids=new Set<string>();let total=m.project.bytes;
  for(const a of m.assets){if(!a||typeof a.id!=='string'||ids.has(a.id)||a.entry!=='assets/'+a.sha256||!/^[a-f0-9]{64}$/.test(a.sha256)||!Number.isSafeInteger(a.bytes)||a.bytes<0||a.bytes>PACKAGE_FILE_MAX)throw Error('Некорректный ресурс manifest.');ids.add(a.id);total+=a.bytes;}

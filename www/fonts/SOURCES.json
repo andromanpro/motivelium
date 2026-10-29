@@ -1,0 +1,44 @@
+[
+  {
+    "file": "Unbounded.ttf",
+    "sha256": "323b511be380c8d474ef030686b71aedde501f8d9cd46da558b7c40454372c3f",
+    "bytes": 778272,
+    "url": "https://raw.githubusercontent.com/google/fonts/9862abc066c9b83bf84c3e8ed1fc2d8d48f9bbf0/ofl/unbounded/Unbounded%5Bwght%5D.ttf"
+  },
+  {
+    "file": "unbounded-OFL.txt",
+    "sha256": "31e5d4e83955e7103c34570dd49b0570ef490800bd65b42923c0dd02445263b3",
+    "bytes": 4392,
+    "url": "https://raw.githubusercontent.com/google/fonts/9862abc066c9b83bf84c3e8ed1fc2d8d48f9bbf0/ofl/unbounded/OFL.txt"
+  },
+  {
+    "file": "Literata-Italic.ttf",
+    "sha256": "d483dfaeba9cbf4ce71d32a52ee65df82f7e35b15fff8d1011cdb242d1fcd465",
+    "bytes": 902728,
+    "url": "https://raw.githubusercontent.com/google/fonts/9862abc066c9b83bf84c3e8ed1fc2d8d48f9bbf0/ofl/literata/Literata-Italic%5Bopsz%2Cwght%5D.ttf"
+  },
+  {
+    "file": "literata-OFL.txt",
+    "sha256": "8742963604cd89dc81437811a850018fc03b2bfad686d7422c8235967c87614e",
+    "bytes": 4389,
+    "url": "https://raw.githubusercontent.com/google/fonts/9862abc066c9b83bf84c3e8ed1fc2d8d48f9bbf0/ofl/literata/OFL.txt"
+  },
+  {
+    "file": "RubikMonoOne.ttf",
+    "sha256": "b22624b6a36e543e942106edfccd198c50b57b65b924bfe02a6f0a5699429e6b",
+    "bytes": 141088,
+    "url": "https://raw.githubusercontent.com/google/fonts/9862abc066c9b83bf84c3e8ed1fc2d8d48f9bbf0/ofl/rubikmonoone/RubikMonoOne-Regular.ttf"
+  },
+  {
+    "file": "rubikmonoone-OFL.txt",
+    "sha256": "43d530580461a574f6dfed9e15af6a74e95f7c04d9bfa1174a63ff036e8eee07",
+    "bytes": 4462,
+    "url": "https://raw.githubusercontent.com/google/fonts/9862abc066c9b83bf84c3e8ed1fc2d8d48f9bbf0/ofl/rubikmonoone/OFL.txt"
+  },
+  {
+    "file": "Onest.ttf",
+    "sha256": "966c5c29b4755da84b6854d5c21dd4eaa2420225d0e9874de602de176d4a9f31",
+    "bytes": 193056,
+    "source": "Existing project Onest-Variable.ttf; original OFL in onest-OFL.txt; source https://github.com/simpals/onest"
+  }
+]

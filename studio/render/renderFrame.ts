@@ -14,6 +14,10 @@ import type { FrameState, FrameItem } from './evaluate.ts';
 import { applyMatrix } from '../domain/matrix.ts';
 import {morphContour,nativeContourShape,maskIsPass} from '../effects/contours.ts';
 import {maskLayer} from './layerMasks.ts';
+import {drawLetterMorph,asciiLayer} from './typography.ts';
+import {drawGlyphMotion} from './glyphMotion.ts';
+import {drawElectricArc} from './electricArc.ts';
+import {drawLightningBolt} from './lightningBolt.ts';
 
 export type AssetBitmaps = Map<string, CanvasImageSource & { width: number; height: number }>;
 
@@ -52,10 +56,12 @@ function surface(key:string,w:number,h:number):HTMLCanvasElement {
  if(c.width!==w||c.height!==h){c.width=w;c.height=h}return c;
 }
 function compositeNode(ctx:CanvasRenderingContext2D,item:FrameItem,project:Project,bitmaps:AssetBitmaps,result:RenderResult,state:FrameState,threeLayer?:ThreeLayerRenderer):void {
- const w=item.bounds.width,h=item.bounds.height,padTop=item.node.kind==='text'?Math.ceil(item.node.fontSize*.32):0,paintH=h+padTop,k=Math.min(1,2048/w,2048/paintH),sw=Math.max(1,Math.ceil(w*k)),sh=Math.max(1,Math.ceil(paintH*k));
+ const w=item.bounds.width,h=item.bounds.height,gm=item.deltas.glyphMotion;
+ const margin=gm?Math.ceil(gm.amplitude*(gm.mode==='assemble'?3:1)+(item.node.kind==='text'?item.node.fontSize*.55:0)):0;
+ const padLeft=margin,padTop=margin+(item.node.kind==='text'?Math.ceil(item.node.fontSize*.32):0),paintW=w+margin*2,paintH=h+padTop+margin,k=Math.min(1,2048/paintW,2048/paintH),sw=Math.max(1,Math.ceil(paintW*k)),sh=Math.max(1,Math.ceil(paintH*k));
  let source=surface(item.node.id+':source',sw,sh);const sc=source.getContext('2d')!;
  sc.setTransform(1,0,0,1,0,0);sc.clearRect(0,0,sw,sh);sc.filter='none';sc.globalAlpha=1;sc.globalCompositeOperation='source-over';
- drawNode(sc,{...item,opacity:1,screen:{a:k,b:0,c:0,d:k,e:0,f:padTop*k},deltas:{...item.deltas,glow:0,chromatic:0,echoes:0,glitch:0,prism:0,shaderFilters:[],fluid:undefined,memory:undefined}},project,bitmaps,result,state,threeLayer,true);
+ drawNode(sc,{...item,opacity:1,screen:{a:k,b:0,c:0,d:k,e:padLeft*k,f:padTop*k},deltas:{...item.deltas,glow:0,chromatic:0,echoes:0,glitch:0,prism:0,shaderFilters:[],fluid:undefined,memory:undefined}},project,bitmaps,result,state,threeLayer,true);
  if(item.deltas.fluid){
   const f=item.deltas.fluid,field=fluidAt({seed:f.seed,swirl:f.swirl,retention:f.retention},Math.min(3600,Math.floor(f.seconds*30+1e-6))),map=surface('fluid-map',FLUID_W,FLUID_H),mc=map.getContext('2d')!,pixels=mc.createImageData(FLUID_W,FLUID_H);pixels.data.set(fluidPixels(field,f.palette));mc.putImageData(pixels,0,0);
   const flowed=surface(item.node.id+':flow',sw,sh),fc=flowed.getContext('2d')!;fc.setTransform(1,0,0,1,0,0);fc.clearRect(0,0,sw,sh);fc.globalCompositeOperation='source-over';fc.globalAlpha=1;fc.imageSmoothingEnabled=true;fc.imageSmoothingQuality='high';fc.drawImage(renderShader('motivelium-ink-surface',sw,sh,f.seconds,{},map),0,0,sw,sh);fc.globalCompositeOperation='destination-in';fc.drawImage(source,0,0);fc.globalCompositeOperation='source-over';
@@ -70,13 +76,14 @@ function compositeNode(ctx:CanvasRenderingContext2D,item:FrameItem,project:Proje
   for(let i=0;i<n;i++){fc.save();fc.rotate(i*step);fc.beginPath();fc.moveTo(0,0);fc.lineTo(r*Math.cos(-step/2),r*Math.sin(-step/2));fc.lineTo(r*Math.cos(step/2),r*Math.sin(step/2));fc.closePath();fc.clip();if(i%2)fc.scale(1,-1);fc.drawImage(source,-sw/2,-sh/2);fc.restore()}
   fc.restore();source=folded;
  }
+ if(item.deltas.ascii)source=asciiLayer(source,item.deltas.ascii,item.node.id);
  if(item.deltas.masks?.length)source=maskLayer(source,item.deltas.masks,item.node.kind==='shape'?item.node.shape:'rect');
  ctx.save();setTransformFromItem(ctx,item);
  const paint=()=>{
   if((item.deltas.glitch??0)>.1){
    const bands=18;
-   for(let i=0;i<bands;i++){const sy=i*sh/bands,sy2=(i+1)*sh/bands,shift=Math.sin(i*17.31+state.frame*.73)*(item.deltas.glitch??0)*(i%3===0?1:.18);ctx.drawImage(source,0,sy,sw,sy2-sy,shift,-padTop+i*paintH/bands,w,paintH/bands+.5)}
-  }else ctx.drawImage(source,0,-padTop,w,paintH);
+   for(let i=0;i<bands;i++){const sy=i*sh/bands,sy2=(i+1)*sh/bands,shift=Math.sin(i*17.31+state.frame*.73)*(item.deltas.glitch??0)*(i%3===0?1:.18);ctx.drawImage(source,0,sy,sw,sy2-sy,shift-padLeft,-padTop+i*paintH/bands,paintW,paintH/bands+.5)}
+  }else ctx.drawImage(source,-padLeft,-padTop,paintW,paintH);
  };
  const copies=item.deltas.echoes??0;
  for(let i=copies;i>=1;i--){ctx.save();ctx.globalAlpha=item.opacity*.22/(1+i*.35);ctx.translate((item.deltas.echoX??0)*i,(item.deltas.echoY??0)*i);ctx.translate(w/2,h/2);ctx.scale(1+i*.015,1+i*.015);ctx.translate(-w/2,-h/2);paint();ctx.restore()}
@@ -114,7 +121,7 @@ function drawNode(
    drawNode(ctx,{...item,deltas:{...item.deltas,feedback:undefined}},project,bitmaps,result,state,threeLayer);return;
   }
   if(!plain&&item.deltas.memory){const m=item.deltas.memory;for(let i=m.copies;i>=1;i--){const f=state.frame-i*m.spacing;if(f<m.fromFrame)continue;const history=evaluateFrame(project,f);if(history.sequence?.id!==state.sequence?.id)continue;const old=history.items.find(n=>n.node.id===node.id);if(old)drawNode(ctx,{...old,opacity:old.opacity*Math.pow(m.decay,i)*.55,deltas:{...old.deltas,memory:undefined,feedback:undefined}},project,bitmaps,result,history,threeLayer);}}
-  if(!plain&&node.kind!=='group'&&((item.deltas.chromatic??0)>.1||(item.deltas.echoes??0)>0||(item.deltas.glitch??0)>.1||(item.deltas.prism??0)>=3||!!item.deltas.shaderFilters?.length||!!item.deltas.fluid||!!item.deltas.masks?.length)){
+  if(!plain&&node.kind!=='group'&&((item.deltas.chromatic??0)>.1||(item.deltas.echoes??0)>0||(item.deltas.glitch??0)>.1||(item.deltas.prism??0)>=3||!!item.deltas.shaderFilters?.length||!!item.deltas.fluid||!!item.deltas.masks?.length||!!item.deltas.ascii)){
     compositeNode(ctx,item,project,bitmaps,result,state,threeLayer);return;
   }
   ctx.save();
@@ -130,6 +137,8 @@ function drawNode(
 
   switch (node.kind) {
     case 'shape':
+      if(item.deltas.stormLightning){drawLightningBolt(ctx,item.deltas.stormLightning,node.geometry.width,node.geometry.height);break;}
+      if(item.deltas.electricArc){drawElectricArc(ctx,item.deltas.electricArc,node.geometry.width,node.geometry.height);break;}
       if(item.deltas.morph){const native=nativeContourShape(item.deltas.morph,node.shape);ctx.beginPath();if(native==='rect')ctx.rect(0,0,node.geometry.width,node.geometry.height);else if(native==='ellipse')ctx.ellipse(node.geometry.width/2,node.geometry.height/2,node.geometry.width/2,node.geometry.height/2,0,0,Math.PI*2);else{const points=morphContour(item.deltas.morph,node.shape);for(const[i,[x,y]]of points.entries()){if(i===0)ctx.moveTo(x*node.geometry.width/100,y*node.geometry.height/100);else ctx.lineTo(x*node.geometry.width/100,y*node.geometry.height/100);}ctx.closePath();}if(node.generator)ctx.clip();}
       if(node.generator){const g=node.generator,k=Math.min(1,1280/node.geometry.width,720/node.geometry.height);ctx.filter=[ctx.filter==='none'?'':ctx.filter,`hue-rotate(${g.hue}deg)`].filter(Boolean).join(' ');const image=renderShader(g.shaderId,node.geometry.width*k,node.geometry.height*k,state.frame*project.fps.den/project.fps.num*g.speed,g.params);ctx.drawImage(image,0,0,node.geometry.width,node.geometry.height);break;}
       if(!item.deltas.morph){ctx.beginPath();
@@ -145,8 +154,10 @@ function drawNode(
       }
       break;
     case 'text': {
+      if(item.deltas.letterMorph){drawLetterMorph(ctx,node,item.deltas.letterMorph,item.deltas.glyphMotion);break;}
+      if(item.deltas.glyphMotion){drawGlyphMotion(ctx,node,item.deltas.glyphMotion);break;}
       ctx.fillStyle = node.color;
-      ctx.font = `${String(node.fontSize)}px ${node.fontFamily}`;
+      ctx.font = `${node.fontWeight??400} ${String(node.fontSize)}px ${node.fontFamily}`;
       ctx.textBaseline = 'top';
       ctx.textAlign = node.align === 'center' ? 'center' : node.align === 'right' ? 'right' : 'left';
       const x = node.align === 'center' ? node.geometry.width / 2 : node.align === 'right' ? node.geometry.width : 0;

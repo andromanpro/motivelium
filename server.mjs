@@ -1,4 +1,6 @@
 import {localDataDir} from './server/dataPaths.ts';
+import {requestGuard} from './server/requestGuard.ts';
+import {APP_VERSION,BUILD_ID} from './studio/domain/version.ts';
 import http from 'node:http';
 import fs from 'node:fs';import fsp from 'node:fs/promises';
 import path from 'node:path';import {fileURLToPath} from 'node:url';
@@ -14,8 +16,9 @@ function respond(res,code,value){res.writeHead(code,{'Content-Type':'application
 let studioAPI;try{studioAPI=(await import('./server/api.ts')).studioAPI;}catch(e){console.error('Motivelium: API студии не запущен. Выполните SETUP.cmd.\n'+e.stack);process.exit(1);}
 const server=http.createServer(async(req,res)=>{try{
  const u=new URL(req.url,'http://127.0.0.1');
+ const denied=requestGuard(req,{binary:u.pathname==='/api/v1/project-packages/imports'});if(denied){respond(res,denied.status,{error:denied.error});return;}
  if(studioAPI&&u.pathname.startsWith('/api/v1/'))return await studioAPI(req,res,u);
- if(u.pathname==='/api/health'){respond(res,200,{application:'workshop-live-lab',root:ROOT,dataRoot:localDataDir(ROOT),studioReady:true,pid:process.pid});return;}
+ if(u.pathname==='/api/health'){respond(res,200,{application:'workshop-live-lab',version:APP_VERSION,buildId:BUILD_ID,root:ROOT,dataRoot:localDataDir(ROOT),studioReady:true,pid:process.pid});return;}
  if(u.pathname==='/'){res.writeHead(302,{Location:'/studio/','Cache-Control':'no-store'});res.end();return;}
  if(u.pathname==='/events'){res.writeHead(200,{'Content-Type':'text/event-stream','Cache-Control':'no-cache',Connection:'keep-alive'});res.write(': connected\n\n');clients.add(res);req.on('close',()=>clients.delete(res));return;}
  if(u.pathname==='/api/notes'&&req.method==='POST'){
@@ -33,8 +36,8 @@ const server=http.createServer(async(req,res)=>{try{
  }
  let pathname=decodeURIComponent(u.pathname);if(pathname==='/')pathname='/index.html';
  // Каталоги (например /studio/) отдают свой index.html, как корень.
- if(pathname.endsWith('/')&&pathname!=='/'){const d=path.join(WWW,pathname);let st=null;try{st=await fsp.stat(d);}catch{}if(st&&st.isDirectory())pathname+='index.html';}
- const file=path.resolve(WWW,'.'+pathname);if(!file.startsWith(WWW+path.sep)){respond(res,403,{error:'outside www'});return;}
+ if(pathname.endsWith('/')&&pathname!=='/'){const d=process.env.MOTIVELIUM_STUDIO_DIR&&pathname==='/studio/'?path.resolve(process.env.MOTIVELIUM_STUDIO_DIR):path.join(WWW,pathname);let st=null;try{st=await fsp.stat(d);}catch{}if(st&&st.isDirectory())pathname+='index.html';}
+ const staticRoot=process.env.MOTIVELIUM_STUDIO_DIR&&pathname.startsWith('/studio/')?path.resolve(process.env.MOTIVELIUM_STUDIO_DIR):WWW;const staticPath=staticRoot===WWW?pathname:pathname.slice('/studio'.length);const file=path.resolve(staticRoot,'.'+staticPath);if(!file.startsWith(staticRoot+path.sep)){respond(res,403,{error:'outside www'});return;}
  const stat=await fsp.stat(file);let start=0,end=stat.size-1;const range=req.headers.range;
  if(range){const m=/^bytes=(\d+)-(\d*)$/.exec(range);if(!m){res.writeHead(416);res.end();return;}start=Number(m[1]);end=m[2]?Math.min(end,Number(m[2])):end;if(start>end){res.writeHead(416,{'Content-Range':`bytes */${stat.size}`});res.end();return;}}
  const h={'Content-Type':MIME[path.extname(file)]||'application/octet-stream','Content-Length':end-start+1,'Cache-Control':'no-cache','Accept-Ranges':'bytes'};if(range)h['Content-Range']=`bytes ${start}-${end}/${stat.size}`;

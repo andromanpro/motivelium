@@ -1,0 +1,3202 @@
+{
+  "schemaVersion": 2,
+  "id": "template-spectrum-v1-en",
+  "revision": 1,
+  "title": "Spectrum — new project",
+  "size": {
+    "width": 1280,
+    "height": 720
+  },
+  "fps": {
+    "num": 30,
+    "den": 1
+  },
+  "durationFrames": 360,
+  "seed": 20261020,
+  "assets": [
+    {
+      "id": "template-image",
+      "path": "assets/titanium-knot.png",
+      "mime": "image/png",
+      "bytes": 2197385,
+      "sha256": "eaf49619ee408689ca44d5513dc613b815fd19d3cd34c34cafc6f17581e32620",
+      "width": 1672,
+      "height": 941,
+      "origin": "generated",
+      "title": "Spectrum · illustration"
+    },
+    {
+      "id": "template-score",
+      "path": "assets/spectrum.mp3",
+      "mime": "audio/mpeg",
+      "bytes": 289196,
+      "sha256": "9f552798724a5bdbf6afc58cf381f495ec9d49486b81ebef3205381ec600dc98",
+      "durationSeconds": 12,
+      "origin": "generated",
+      "title": "Spectrum · original score"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "opening-background",
+      "name": "background",
+      "sequenceId": "opening",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 1480,
+        "height": 920
+      },
+      "transform": {
+        "x": -100,
+        "y": -100,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "rect",
+      "fill": "#070a0b"
+    },
+    {
+      "id": "opening-sculpture",
+      "name": "opening sculpture",
+      "sequenceId": "opening",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 1280,
+        "height": 720
+      },
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "image",
+      "assetId": "template-image",
+      "fit": "cover",
+      "metadata": {
+        "slot": "hero",
+        "slotLabel": "Image",
+        "templateName": "Spectrum",
+        "templateId": "spectrum-en",
+        "templateVersion": 1
+      },
+      "transformKeys": [
+        {
+          "frame": 0,
+          "transform": {
+            "x": -155,
+            "y": -65,
+            "rotation": 0,
+            "scaleX": 1.16,
+            "scaleY": 1.16,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 119,
+          "transform": {
+            "x": -10,
+            "y": 0,
+            "rotation": 0,
+            "scaleX": 1.03,
+            "scaleY": 1.03,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "opening-eyebrow",
+      "name": "01 / MOTION STUDY",
+      "sequenceId": "opening",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 550,
+        "height": 24
+      },
+      "transform": {
+        "x": 66,
+        "y": 67,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "text",
+      "text": "01 / MOTION STUDY",
+      "fontFamily": "Segoe UI",
+      "fontSize": 16,
+      "color": "#d7f979",
+      "align": "left",
+      "lineHeight": 1.02,
+      "metadata": {
+        "slotLabel": "01 / MOTION STUDY",
+        "slotMax": 100,
+        "slotFontSize": 16,
+        "templateName": "Spectrum",
+        "templateId": "spectrum-en",
+        "templateVersion": 1
+      }
+    },
+    {
+      "id": "opening-headline",
+      "name": "FORM. CHARACTER.",
+      "sequenceId": "opening",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 675,
+        "height": 235
+      },
+      "transform": {
+        "x": 60,
+        "y": 245,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "text",
+      "text": "FORM.\nCHARACTER.",
+      "fontFamily": "Arial Black",
+      "fontSize": 90.13513513513513,
+      "color": "#eff4de",
+      "align": "left",
+      "lineHeight": 1.02,
+      "metadata": {
+        "slot": "headline",
+        "slotLabel": "Main heading",
+        "slotMax": 34,
+        "slotFontSize": 103,
+        "templateName": "Spectrum",
+        "templateId": "spectrum-en",
+        "templateVersion": 1
+      },
+      "transformKeys": [
+        {
+          "frame": 0,
+          "transform": {
+            "x": 60,
+            "y": 315,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 18,
+          "transform": {
+            "x": 60,
+            "y": 245,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 119,
+          "transform": {
+            "x": 60,
+            "y": 245,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "opening-intro-note",
+      "name": "An idea worth a closer look.",
+      "sequenceId": "opening",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 640,
+        "height": 58
+      },
+      "transform": {
+        "x": 67,
+        "y": 552,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "text",
+      "text": "An idea worth a closer look.",
+      "fontFamily": "Segoe UI",
+      "fontSize": 24,
+      "color": "#c4cbb6",
+      "align": "left",
+      "lineHeight": 1.02,
+      "metadata": {
+        "slot": "intro-note",
+        "slotLabel": "Short introduction",
+        "slotMax": 90,
+        "slotFontSize": 24,
+        "templateName": "Spectrum",
+        "templateId": "spectrum-en",
+        "templateVersion": 1
+      },
+      "transformKeys": [
+        {
+          "frame": 0,
+          "transform": {
+            "x": 67,
+            "y": 577,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 12,
+          "transform": {
+            "x": 67,
+            "y": 577,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 30,
+          "transform": {
+            "x": 67,
+            "y": 552,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 119,
+          "transform": {
+            "x": 67,
+            "y": 552,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "opening-rule",
+      "name": "rule",
+      "sequenceId": "opening",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 175,
+        "height": 3
+      },
+      "transform": {
+        "x": 67,
+        "y": 208,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "rect",
+      "fill": "#d7f979",
+      "transformKeys": [
+        {
+          "frame": 0,
+          "transform": {
+            "x": 67,
+            "y": 208,
+            "rotation": 0,
+            "scaleX": 0.001,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 28,
+          "transform": {
+            "x": 67,
+            "y": 208,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 119,
+          "transform": {
+            "x": 67,
+            "y": 208,
+            "rotation": 0,
+            "scaleX": 1.4,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "details-background",
+      "name": "background",
+      "sequenceId": "details",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 1480,
+        "height": 920
+      },
+      "transform": {
+        "x": -100,
+        "y": -100,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "rect",
+      "fill": "#dfe5c9"
+    },
+    {
+      "id": "details-detail",
+      "name": "details detail",
+      "sequenceId": "details",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 730,
+        "height": 810
+      },
+      "transform": {
+        "x": 670,
+        "y": -30,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "image",
+      "assetId": "template-image",
+      "fit": "cover",
+      "metadata": {
+        "slot": "hero",
+        "slotLabel": "Image",
+        "templateName": "Spectrum",
+        "templateId": "spectrum-en",
+        "templateVersion": 1
+      }
+    },
+    {
+      "id": "details-eyebrow",
+      "name": "02 / CLOSE ENOUGH",
+      "sequenceId": "details",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 500,
+        "height": 24
+      },
+      "transform": {
+        "x": 65,
+        "y": 70,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "text",
+      "text": "02 / CLOSE ENOUGH",
+      "fontFamily": "Segoe UI",
+      "fontSize": 16,
+      "color": "#344a35",
+      "align": "left",
+      "lineHeight": 1.02,
+      "metadata": {
+        "slotLabel": "02 / CLOSE ENOUGH",
+        "slotMax": 100,
+        "slotFontSize": 16,
+        "templateName": "Spectrum",
+        "templateId": "spectrum-en",
+        "templateVersion": 1
+      }
+    },
+    {
+      "id": "details-detail-title",
+      "name": "CLOSER TO THE CORE.",
+      "sequenceId": "details",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 610,
+        "height": 235
+      },
+      "transform": {
+        "x": 60,
+        "y": 210,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "text",
+      "text": "CLOSER\nTO THE CORE.",
+      "fontFamily": "Arial Black",
+      "fontSize": 67.7927927927928,
+      "color": "#152d25",
+      "align": "left",
+      "lineHeight": 1.02,
+      "metadata": {
+        "slot": "detail-title",
+        "slotLabel": "Detail heading",
+        "slotMax": 30,
+        "slotFontSize": 108,
+        "templateName": "Spectrum",
+        "templateId": "spectrum-en",
+        "templateVersion": 1
+      },
+      "transformKeys": [
+        {
+          "frame": 120,
+          "transform": {
+            "x": 60,
+            "y": 255,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 122,
+          "transform": {
+            "x": 60,
+            "y": 255,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 140,
+          "transform": {
+            "x": 60,
+            "y": 210,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 239,
+          "transform": {
+            "x": 60,
+            "y": 210,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "details-detail-note",
+      "name": "Show what usually stays out of frame.",
+      "sequenceId": "details",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 515,
+        "height": 100
+      },
+      "transform": {
+        "x": 66,
+        "y": 530,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "text",
+      "text": "Show what usually stays out of frame.",
+      "fontFamily": "Segoe UI",
+      "fontSize": 18.517165814463112,
+      "color": "#425844",
+      "align": "left",
+      "lineHeight": 1.02,
+      "metadata": {
+        "slot": "detail-note",
+        "slotLabel": "Detail caption",
+        "slotMax": 100,
+        "slotFontSize": 25,
+        "templateName": "Spectrum",
+        "templateId": "spectrum-en",
+        "templateVersion": 1
+      },
+      "transformKeys": [
+        {
+          "frame": 120,
+          "transform": {
+            "x": 66,
+            "y": 555,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 134,
+          "transform": {
+            "x": 66,
+            "y": 555,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 152,
+          "transform": {
+            "x": 66,
+            "y": 530,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 239,
+          "transform": {
+            "x": 66,
+            "y": 530,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "details-detail-rail",
+      "name": "detail-rail",
+      "sequenceId": "details",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 2,
+        "height": 555
+      },
+      "transform": {
+        "x": 620,
+        "y": 80,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "rect",
+      "fill": "#7d9461",
+      "transformKeys": [
+        {
+          "frame": 120,
+          "transform": {
+            "x": 620,
+            "y": 80,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 0.001,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 152,
+          "transform": {
+            "x": 620,
+            "y": 80,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 239,
+          "transform": {
+            "x": 620,
+            "y": 80,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-background",
+      "name": "background",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 1480,
+        "height": 920
+      },
+      "transform": {
+        "x": -100,
+        "y": -100,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "rect",
+      "fill": "#0d1713"
+    },
+    {
+      "id": "end-small",
+      "name": "end small",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 370,
+        "height": 390
+      },
+      "transform": {
+        "x": 790,
+        "y": 125,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "image",
+      "assetId": "template-image",
+      "fit": "cover",
+      "metadata": {
+        "slot": "hero",
+        "slotLabel": "Image",
+        "templateName": "Spectrum",
+        "templateId": "spectrum-en",
+        "templateVersion": 1
+      },
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 1000,
+            "y": 125,
+            "rotation": 5,
+            "scaleX": 0.7,
+            "scaleY": 0.7,
+            "opacity": 0.1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 266,
+          "transform": {
+            "x": 790,
+            "y": 125,
+            "rotation": -3,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 790,
+            "y": 125,
+            "rotation": 2,
+            "scaleX": 1.07,
+            "scaleY": 1.07,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-0",
+      "name": "spark-0",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 1.6359973952639848,
+        "height": 1.6359973952639848
+      },
+      "transform": {
+        "x": 1261.5607896447182,
+        "y": 503.74708861112595,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 1261.5607896447182,
+            "y": 503.74708861112595,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 1276.5607896447182,
+            "y": 483.74708861112595,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 1296.5607896447182,
+            "y": 458.74708861112595,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-1",
+      "name": "spark-1",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 3.583873297087848,
+        "height": 3.583873297087848
+      },
+      "transform": {
+        "x": 329.623766541481,
+        "y": 237.47032346203923,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 329.623766541481,
+            "y": 237.47032346203923,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 344.623766541481,
+            "y": 217.47032346203923,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 364.623766541481,
+            "y": 192.47032346203923,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-2",
+      "name": "spark-2",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 2.5885383838322014,
+        "height": 2.5885383838322014
+      },
+      "transform": {
+        "x": 1240.763336122036,
+        "y": 345.5018646642566,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 1240.763336122036,
+            "y": 345.5018646642566,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 1255.763336122036,
+            "y": 325.5018646642566,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 1275.763336122036,
+            "y": 300.5018646642566,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-3",
+      "name": "spark-3",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 1.9929057131521404,
+        "height": 1.9929057131521404
+      },
+      "transform": {
+        "x": 879.5956110954285,
+        "y": 217.5331631116569,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 879.5956110954285,
+            "y": 217.5331631116569,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 894.5956110954285,
+            "y": 197.5331631116569,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 914.5956110954285,
+            "y": 172.5331631116569,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-4",
+      "name": "spark-4",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 3.2716418320778757,
+        "height": 3.2716418320778757
+      },
+      "transform": {
+        "x": 1105.2324202656746,
+        "y": 504.28672157227993,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 1105.2324202656746,
+            "y": 504.28672157227993,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 1120.2324202656746,
+            "y": 484.28672157227993,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 1140.2324202656746,
+            "y": 459.28672157227993,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-5",
+      "name": "spark-5",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 3.6272331923246384,
+        "height": 3.6272331923246384
+      },
+      "transform": {
+        "x": 1206.9304937124252,
+        "y": 653.7451949156821,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 1206.9304937124252,
+            "y": 653.7451949156821,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 1221.9304937124252,
+            "y": 633.7451949156821,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 1241.9304937124252,
+            "y": 608.7451949156821,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-6",
+      "name": "spark-6",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 1.7612489748280495,
+        "height": 1.7612489748280495
+      },
+      "transform": {
+        "x": 1082.7341172099113,
+        "y": 488.5964060202241,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 1082.7341172099113,
+            "y": 488.5964060202241,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 1097.7341172099113,
+            "y": 468.5964060202241,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 1117.7341172099113,
+            "y": 443.5964060202241,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-7",
+      "name": "spark-7",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 4.299551506061107,
+        "height": 4.299551506061107
+      },
+      "transform": {
+        "x": 67.42595314979553,
+        "y": 453.8439386151731,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 67.42595314979553,
+            "y": 453.8439386151731,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 82.42595314979553,
+            "y": 433.8439386151731,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 102.42595314979553,
+            "y": 408.8439386151731,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-8",
+      "name": "spark-8",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 1.745907810749486,
+        "height": 1.745907810749486
+      },
+      "transform": {
+        "x": 76.30092054605484,
+        "y": 524.2156465351582,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 76.30092054605484,
+            "y": 524.2156465351582,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 91.30092054605484,
+            "y": 504.21564653515816,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 111.30092054605484,
+            "y": 479.21564653515816,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-9",
+      "name": "spark-9",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 1.546154667623341,
+        "height": 1.546154667623341
+      },
+      "transform": {
+        "x": 173.60712826251984,
+        "y": 510.37772404029965,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 173.60712826251984,
+            "y": 510.37772404029965,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 188.60712826251984,
+            "y": 490.37772404029965,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 208.60712826251984,
+            "y": 465.37772404029965,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-10",
+      "name": "spark-10",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 2.7511783910449594,
+        "height": 2.7511783910449594
+      },
+      "transform": {
+        "x": 984.0339884161949,
+        "y": 20.6637030467391,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 984.0339884161949,
+            "y": 20.6637030467391,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 999.0339884161949,
+            "y": 0.6637030467391014,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 1019.0339884161949,
+            "y": -24.3362969532609,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-11",
+      "name": "spark-11",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 2.1658620103262365,
+        "height": 2.1658620103262365
+      },
+      "transform": {
+        "x": 179.01142597198486,
+        "y": 368.9904506318271,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 179.01142597198486,
+            "y": 368.9904506318271,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 194.01142597198486,
+            "y": 348.9904506318271,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 214.01142597198486,
+            "y": 323.9904506318271,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-12",
+      "name": "spark-12",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 3.218087790766731,
+        "height": 3.218087790766731
+      },
+      "transform": {
+        "x": 286.26867085695267,
+        "y": 664.6079105883837,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 286.26867085695267,
+            "y": 664.6079105883837,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 301.26867085695267,
+            "y": 644.6079105883837,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 321.26867085695267,
+            "y": 619.6079105883837,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-13",
+      "name": "spark-13",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 3.379535475745797,
+        "height": 3.379535475745797
+      },
+      "transform": {
+        "x": 1189.6020954847336,
+        "y": 635.711473915726,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 1189.6020954847336,
+            "y": 635.711473915726,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 1204.6020954847336,
+            "y": 615.711473915726,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 1224.6020954847336,
+            "y": 590.711473915726,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-14",
+      "name": "spark-14",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 1.7604638643097132,
+        "height": 1.7604638643097132
+      },
+      "transform": {
+        "x": 1064.9470683932304,
+        "y": 158.16613901406527,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 1064.9470683932304,
+            "y": 158.16613901406527,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 1079.9470683932304,
+            "y": 138.16613901406527,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 1099.9470683932304,
+            "y": 113.16613901406527,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-15",
+      "name": "spark-15",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 2.572223244700581,
+        "height": 2.572223244700581
+      },
+      "transform": {
+        "x": 564.0294587612152,
+        "y": 628.3189783059061,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 564.0294587612152,
+            "y": 628.3189783059061,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 579.0294587612152,
+            "y": 608.3189783059061,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 599.0294587612152,
+            "y": 583.3189783059061,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-16",
+      "name": "spark-16",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 1.757031574146822,
+        "height": 1.757031574146822
+      },
+      "transform": {
+        "x": 471.2913718819618,
+        "y": 232.28371560573578,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 471.2913718819618,
+            "y": 232.28371560573578,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 486.2913718819618,
+            "y": 212.28371560573578,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 506.2913718819618,
+            "y": 187.28371560573578,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-17",
+      "name": "spark-17",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 1.9071142813190818,
+        "height": 1.9071142813190818
+      },
+      "transform": {
+        "x": 80.70854723453522,
+        "y": 324.4233206100762,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 80.70854723453522,
+            "y": 324.4233206100762,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 95.70854723453522,
+            "y": 304.4233206100762,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 115.70854723453522,
+            "y": 279.4233206100762,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-18",
+      "name": "spark-18",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 1.679272869369015,
+        "height": 1.679272869369015
+      },
+      "transform": {
+        "x": 259.12173360586166,
+        "y": 554.5109824463725,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 259.12173360586166,
+            "y": 554.5109824463725,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 274.12173360586166,
+            "y": 534.5109824463725,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 294.12173360586166,
+            "y": 509.5109824463725,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-19",
+      "name": "spark-19",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 2.122949298005551,
+        "height": 2.122949298005551
+      },
+      "transform": {
+        "x": 375.9318947792053,
+        "y": 640.8699536137283,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 375.9318947792053,
+            "y": 640.8699536137283,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 390.9318947792053,
+            "y": 620.8699536137283,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 410.9318947792053,
+            "y": 595.8699536137283,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-20",
+      "name": "spark-20",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 2.4027307780925184,
+        "height": 2.4027307780925184
+      },
+      "transform": {
+        "x": 592.412419617176,
+        "y": 261.52328543365,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 592.412419617176,
+            "y": 261.52328543365,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 607.412419617176,
+            "y": 241.52328543365002,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 627.412419617176,
+            "y": 216.52328543365002,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-21",
+      "name": "spark-21",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 2.4818070866167545,
+        "height": 2.4818070866167545
+      },
+      "transform": {
+        "x": 1133.4862369298935,
+        "y": 180.38966411724687,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 1133.4862369298935,
+            "y": 180.38966411724687,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 1148.4862369298935,
+            "y": 160.38966411724687,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 1168.4862369298935,
+            "y": 135.38966411724687,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-22",
+      "name": "spark-22",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 1.885180565295741,
+        "height": 1.885180565295741
+      },
+      "transform": {
+        "x": 916.9299933314323,
+        "y": 224.615816809237,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 916.9299933314323,
+            "y": 224.615816809237,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 931.9299933314323,
+            "y": 204.615816809237,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 951.9299933314323,
+            "y": 179.615816809237,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-23",
+      "name": "spark-23",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 1.5597710986621678,
+        "height": 1.5597710986621678
+      },
+      "transform": {
+        "x": 592.491866350174,
+        "y": 487.1269848011434,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 592.491866350174,
+            "y": 487.1269848011434,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 607.491866350174,
+            "y": 467.1269848011434,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 627.491866350174,
+            "y": 442.1269848011434,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-24",
+      "name": "spark-24",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 2.2073954951483756,
+        "height": 2.2073954951483756
+      },
+      "transform": {
+        "x": 937.0472803711891,
+        "y": 26.171358078718185,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 937.0472803711891,
+            "y": 26.171358078718185,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 952.0472803711891,
+            "y": 6.171358078718185,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 972.0472803711891,
+            "y": -18.828641921281815,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-spark-25",
+      "name": "spark-25",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 2.3063795948401093,
+        "height": 2.3063795948401093
+      },
+      "transform": {
+        "x": 936.4333945512772,
+        "y": 527.7557642944157,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "shape",
+      "shape": "ellipse",
+      "fill": "#b6cc82",
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 936.4333945512772,
+            "y": 527.7557642944157,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.12,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 300,
+          "transform": {
+            "x": 951.4333945512772,
+            "y": 507.7557642944157,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.65,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 971.4333945512772,
+            "y": 482.7557642944157,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0.15,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-closing",
+      "name": "YOUR NEXT MOVE.",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 900,
+        "height": 380
+      },
+      "transform": {
+        "x": 65,
+        "y": 140,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "text",
+      "text": "YOUR\nNEXT\nMOVE.",
+      "fontFamily": "Arial Black",
+      "fontSize": 103,
+      "color": "#eff5e0",
+      "align": "left",
+      "lineHeight": 1.02,
+      "metadata": {
+        "slot": "closing",
+        "slotLabel": "Closing line",
+        "slotMax": 38,
+        "slotFontSize": 103,
+        "templateName": "Spectrum",
+        "templateId": "spectrum-en",
+        "templateVersion": 1
+      },
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 65,
+            "y": 200,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 243,
+          "transform": {
+            "x": 65,
+            "y": 200,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 261,
+          "transform": {
+            "x": 65,
+            "y": 140,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 65,
+            "y": 140,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    },
+    {
+      "id": "end-signature",
+      "name": "yourproject.example",
+      "sequenceId": "end",
+      "parentId": null,
+      "visible": true,
+      "locked": false,
+      "geometry": {
+        "width": 720,
+        "height": 60
+      },
+      "transform": {
+        "x": 73,
+        "y": 599,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": 1,
+        "pivotX": 0,
+        "pivotY": 0
+      },
+      "kind": "text",
+      "text": "yourproject.example",
+      "fontFamily": "Segoe UI",
+      "fontSize": 30,
+      "color": "#d7f979",
+      "align": "left",
+      "lineHeight": 1.02,
+      "metadata": {
+        "slot": "signature",
+        "slotLabel": "Signature or website",
+        "slotMax": 60,
+        "slotFontSize": 30,
+        "templateName": "Spectrum",
+        "templateId": "spectrum-en",
+        "templateVersion": 1
+      },
+      "transformKeys": [
+        {
+          "frame": 240,
+          "transform": {
+            "x": 73,
+            "y": 619,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 258,
+          "transform": {
+            "x": 73,
+            "y": 619,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 0,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 276,
+          "transform": {
+            "x": 73,
+            "y": 599,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        },
+        {
+          "frame": 359,
+          "transform": {
+            "x": 73,
+            "y": 599,
+            "rotation": 0,
+            "scaleX": 1,
+            "scaleY": 1,
+            "opacity": 1,
+            "pivotX": 0,
+            "pivotY": 0
+          },
+          "easing": "smooth"
+        }
+      ]
+    }
+  ],
+  "effects": [
+    {
+      "id": "details-detail-fx-0",
+      "definitionId": "fade-slide",
+      "definitionVersion": 1,
+      "targetId": "details-detail",
+      "fromFrame": 120,
+      "toFrame": 240,
+      "params": {
+        "delay": 0,
+        "span": 0.16,
+        "dx": 30,
+        "dy": 0,
+        "blur": 2
+      },
+      "enabled": true,
+      "order": 0
+    },
+    {
+      "id": "end-small-fx-1",
+      "definitionId": "fade-slide",
+      "definitionVersion": 1,
+      "targetId": "end-small",
+      "fromFrame": 240,
+      "toFrame": 360,
+      "params": {
+        "delay": 0,
+        "span": 0.16,
+        "dx": 30,
+        "dy": 0,
+        "blur": 2
+      },
+      "enabled": true,
+      "order": 1
+    }
+  ],
+  "sequences": [
+    {
+      "id": "opening",
+      "name": "The opening",
+      "fromFrame": 0,
+      "toFrame": 120
+    },
+    {
+      "id": "details",
+      "name": "A closer look",
+      "fromFrame": 120,
+      "toFrame": 240,
+      "transition": {
+        "shaderId": "gl-crosszoom",
+        "durationFrames": 16,
+        "params": {}
+      }
+    },
+    {
+      "id": "end",
+      "name": "Your next move",
+      "fromFrame": 240,
+      "toFrame": 360,
+      "transition": {
+        "shaderId": "gl-directional",
+        "durationFrames": 16,
+        "params": {}
+      }
+    }
+  ],
+  "cameraTracks": [
+    {
+      "id": "camera-opening",
+      "name": "The opening · camera",
+      "scope": {
+        "sequenceId": "opening",
+        "fromFrame": 0,
+        "toFrame": 120
+      },
+      "keys": [
+        {
+          "frame": 0,
+          "cx": 640,
+          "cy": 360,
+          "zoom": 1,
+          "rotation": 0
+        },
+        {
+          "frame": 75,
+          "cx": 646,
+          "cy": 354,
+          "zoom": 1.035,
+          "rotation": 0
+        },
+        {
+          "frame": 119,
+          "cx": 640,
+          "cy": 360,
+          "zoom": 1,
+          "rotation": 0
+        }
+      ],
+      "enabled": true
+    },
+    {
+      "id": "camera-details",
+      "name": "A closer look · camera",
+      "scope": {
+        "sequenceId": "details",
+        "fromFrame": 120,
+        "toFrame": 240
+      },
+      "keys": [
+        {
+          "frame": 120,
+          "cx": 662,
+          "cy": 360,
+          "zoom": 1.04,
+          "rotation": -0.6
+        },
+        {
+          "frame": 170,
+          "cx": 640,
+          "cy": 360,
+          "zoom": 1,
+          "rotation": 0
+        },
+        {
+          "frame": 239,
+          "cx": 638,
+          "cy": 360,
+          "zoom": 1.025,
+          "rotation": 0
+        }
+      ],
+      "enabled": true
+    },
+    {
+      "id": "camera-end",
+      "name": "Your next move · camera",
+      "scope": {
+        "sequenceId": "end",
+        "fromFrame": 240,
+        "toFrame": 360
+      },
+      "keys": [
+        {
+          "frame": 240,
+          "cx": 640,
+          "cy": 360,
+          "zoom": 0.96,
+          "rotation": 0
+        },
+        {
+          "frame": 267,
+          "cx": 640,
+          "cy": 360,
+          "zoom": 1.025,
+          "rotation": 0
+        },
+        {
+          "frame": 359,
+          "cx": 640,
+          "cy": 360,
+          "zoom": 1,
+          "rotation": 0
+        }
+      ],
+      "enabled": true
+    }
+  ],
+  "audioTracks": [
+    {
+      "id": "template-music",
+      "kind": "music",
+      "assetId": "template-score",
+      "gain": 0.8,
+      "offsetSeconds": 0,
+      "mute": false,
+      "name": "Spectrum · score"
+    }
+  ],
+  "cues": [
+    {
+      "id": "beat-0",
+      "trackId": "template-music",
+      "frame": 0,
+      "kind": "bar",
+      "label": "1"
+    },
+    {
+      "id": "beat-1",
+      "trackId": "template-music",
+      "frame": 15,
+      "kind": "beat",
+      "label": "2"
+    },
+    {
+      "id": "beat-2",
+      "trackId": "template-music",
+      "frame": 30,
+      "kind": "beat",
+      "label": "3"
+    },
+    {
+      "id": "beat-3",
+      "trackId": "template-music",
+      "frame": 45,
+      "kind": "beat",
+      "label": "4"
+    },
+    {
+      "id": "beat-4",
+      "trackId": "template-music",
+      "frame": 60,
+      "kind": "bar",
+      "label": "5"
+    },
+    {
+      "id": "beat-5",
+      "trackId": "template-music",
+      "frame": 75,
+      "kind": "beat",
+      "label": "6"
+    },
+    {
+      "id": "beat-6",
+      "trackId": "template-music",
+      "frame": 90,
+      "kind": "beat",
+      "label": "7"
+    },
+    {
+      "id": "beat-7",
+      "trackId": "template-music",
+      "frame": 105,
+      "kind": "beat",
+      "label": "8"
+    },
+    {
+      "id": "beat-8",
+      "trackId": "template-music",
+      "frame": 120,
+      "kind": "bar",
+      "label": "9"
+    },
+    {
+      "id": "beat-9",
+      "trackId": "template-music",
+      "frame": 135,
+      "kind": "beat",
+      "label": "10"
+    },
+    {
+      "id": "beat-10",
+      "trackId": "template-music",
+      "frame": 150,
+      "kind": "beat",
+      "label": "11"
+    },
+    {
+      "id": "beat-11",
+      "trackId": "template-music",
+      "frame": 165,
+      "kind": "beat",
+      "label": "12"
+    },
+    {
+      "id": "beat-12",
+      "trackId": "template-music",
+      "frame": 180,
+      "kind": "bar",
+      "label": "13"
+    },
+    {
+      "id": "beat-13",
+      "trackId": "template-music",
+      "frame": 195,
+      "kind": "beat",
+      "label": "14"
+    },
+    {
+      "id": "beat-14",
+      "trackId": "template-music",
+      "frame": 210,
+      "kind": "beat",
+      "label": "15"
+    },
+    {
+      "id": "beat-15",
+      "trackId": "template-music",
+      "frame": 225,
+      "kind": "beat",
+      "label": "16"
+    },
+    {
+      "id": "beat-16",
+      "trackId": "template-music",
+      "frame": 240,
+      "kind": "bar",
+      "label": "17"
+    },
+    {
+      "id": "beat-17",
+      "trackId": "template-music",
+      "frame": 255,
+      "kind": "beat",
+      "label": "18"
+    },
+    {
+      "id": "beat-18",
+      "trackId": "template-music",
+      "frame": 270,
+      "kind": "beat",
+      "label": "19"
+    },
+    {
+      "id": "beat-19",
+      "trackId": "template-music",
+      "frame": 285,
+      "kind": "beat",
+      "label": "20"
+    },
+    {
+      "id": "beat-20",
+      "trackId": "template-music",
+      "frame": 300,
+      "kind": "bar",
+      "label": "21"
+    },
+    {
+      "id": "beat-21",
+      "trackId": "template-music",
+      "frame": 315,
+      "kind": "beat",
+      "label": "22"
+    },
+    {
+      "id": "beat-22",
+      "trackId": "template-music",
+      "frame": 330,
+      "kind": "beat",
+      "label": "23"
+    },
+    {
+      "id": "beat-23",
+      "trackId": "template-music",
+      "frame": 345,
+      "kind": "beat",
+      "label": "24"
+    }
+  ]
+}

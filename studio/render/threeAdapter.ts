@@ -4,8 +4,11 @@
 // который сцена маппит на тот же nodeId, что виден в дереве проекта.
 
 import * as THREE from 'three';
+import {createDischarge3d} from './discharge3d.ts';
 import {createAnatomyDevice} from './anatomyDevice.ts';
 import {RoomEnvironment} from 'three/examples/jsm/environments/RoomEnvironment.js';
+import {RectAreaLightUniformsLib} from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js';
+import {stageLighting3d} from '../effects/stageLighting3d.ts';
 import type { FrameItem, FrameState } from './evaluate.ts';
 import type { ThreeLayerRenderer } from './renderFrame.ts';
 import type { Project, Scene3dNode } from '../domain/schema.ts';
@@ -23,9 +26,10 @@ export type ThreeAdapter = {
 
 const PART_NAMES = ['gear-a', 'gear-b', 'gear-c', 'axle'] as const;
 
-export function createThreeAdapter(project: Project): ThreeAdapter {
+export function createThreeAdapter(project: Project, options?:{modelBytes:ReadonlyMap<string,Uint8Array>}): ThreeAdapter {
   const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, preserveDrawingBuffer: true });
   renderer.setPixelRatio(1);
+  renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
   const canvas = renderer.domElement;
@@ -34,13 +38,20 @@ export function createThreeAdapter(project: Project): ThreeAdapter {
   camera.position.set(0, 1.6, 6.2);
   camera.lookAt(0, 0, 0);
 
-  scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+  const ambient=new THREE.AmbientLight(0xffffff,.55);scene.add(ambient);
+  const discharge=createDischarge3d(scene);
   const key = new THREE.DirectionalLight(0xfff2d8, 1.15);
   key.position.set(3, 5, 4);
   scene.add(key);
+  key.shadow.mapSize.set(1024,1024);key.shadow.camera.left=-4;key.shadow.camera.right=4;key.shadow.camera.top=4;key.shadow.camera.bottom=-4;key.shadow.camera.near=.1;key.shadow.camera.far=20;key.shadow.bias=-.0004;key.shadow.normalBias=.015;
+  const floor=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshStandardMaterial({color:0x0a1018,roughness:.65,metalness:.12}));floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;floor.visible=false;scene.add(floor);const stageFog=new THREE.FogExp2(0x000000,.055);
+  const contact=new THREE.Mesh(floor.geometry,new THREE.ShadowMaterial({opacity:.72,depthWrite:false}));contact.rotation.x=-Math.PI/2;contact.receiveShadow=true;contact.visible=false;scene.add(contact);
   const rim = new THREE.DirectionalLight(0x6ea8ff, 0.35);
   rim.position.set(-4, 2, -3);
   scene.add(rim);
+  RectAreaLightUniformsLib.init();
+  const strip=new THREE.RectAreaLight(0xcce9ff,0,3,.6);
+  strip.position.set(1.5,2.3,1.5);strip.lookAt(0,0,0);scene.add(strip);
 
   // Studio reflections for curved glass/metal; generated locally, no HDR download.
   const room = new RoomEnvironment();
@@ -48,7 +59,7 @@ export function createThreeAdapter(project: Project): ThreeAdapter {
   const environment = pmrem.fromScene(room, .04);
   room.dispose();pmrem.dispose();
   scene.environment = environment.texture;
-  scene.add(new THREE.HemisphereLight(0xe8ffda,0x142a23,1.2));
+  const hemisphere=new THREE.HemisphereLight(0xe8ffda,0x142a23,1.2);scene.add(hemisphere);
 
   // Механизм: три шестерни на стойке. Геометрия детерминирована, без случайности.
   const gearGroup = new THREE.Group();
@@ -138,7 +149,7 @@ export function createThreeAdapter(project: Project): ThreeAdapter {
     ['logo-monolith',{root:sculpture,objects:new Map<string,THREE.Object3D>([['core',core],['halo',halo],['satellite',satellite]])}],
     ['neon-reactor',{root:reactor,objects:new Map<string,THREE.Object3D>([['core',reactorCore],...shards.map((s,i)=>['shard-'+(i+1),s] as [string,THREE.Object3D])])}],
     ['ribbon-tunnel',{root:tunnel,objects:new Map([['tunnel',tunnel]])}],
-  ]));
+  ]),options?.modelBytes);
   const volume=createVolume3d(renderer,scene),renderStats=new Map<string,RenderStats3d>();
   const labelCanvas=document.createElement('canvas');
   const raycaster = new THREE.Raycaster();
@@ -193,11 +204,26 @@ export function createThreeAdapter(project: Project): ThreeAdapter {
         );
       }
       gearGroup.rotation.y = Math.sin(t * 0.35) * 0.28;
+      const stage=item.deltas.stage3d,modelRoot=controls.getRoot(node),ground=stage?.groundPart?controls.getPart(node,stage.groundPart):modelRoot,homeFloor=ground?new THREE.Box3().setFromObject(ground,!!stage?.groundPart).min.y:0;
       controls.apply(node,state.frame,item.deltas,camera,t);
+      floor.visible=!!stage;scene.fog=stage?stageFog:null;key.castShadow=!!stage;key.intensity=stage?1.15*stage.strength:1.15;
+      if(stage){floor.position.y=Number.isFinite(homeFloor)?homeFloor-(stage.groundPart?.001:.015):-1.5;floor.material.color.set(stage.floor==='paper'?'#b7bbbd':'#0a1018');}
+      modelRoot?.traverse(o=>{const mesh=o as THREE.Mesh;if(!mesh.isMesh)return;const materials=Array.isArray(mesh.material)?mesh.material:[mesh.material];mesh.castShadow=!!stage&&!materials.every(m=>(m as THREE.MeshPhysicalMaterial).transmission>.25||m.transparent&&m.opacity<.5);mesh.receiveShadow=!!stage;});
+      if(stage?.isolate&&node.cameraTargetPart){const focus=controls.getPart(node,node.cameraTargetPart);if(focus){const members=new Set<THREE.Object3D>();focus.traverse(o=>members.add(o));modelRoot?.traverse(o=>{if((o as THREE.Mesh).isMesh&&!members.has(o))o.layers.disable(0);});}}
       if(item.deltas.surface3d){const root=controls.getRoot(node)??(isDevice?device.group:isSculpture?sculpture:isReactor?reactor:isTunnel?tunnel:gearGroup);volume.surface(root,item.deltas.surface3d);}
       const w = Math.max(64, Math.round(item.bounds.width));
       const h = Math.max(64, Math.round(item.bounds.height));
 
+      const event=item.deltas.discharge3d,lighting=stageLighting3d(stage?.lighting,stage?.strength??1,!!event);
+      ambient.intensity=lighting.ambient;hemisphere.intensity=lighting.hemisphere;rim.intensity=lighting.rim;scene.environmentIntensity=lighting.environment;
+      key.intensity=lighting.key;key.color.set(lighting.keyColor);rim.color.set(lighting.rimColor);strip.intensity=lighting.strip;strip.visible=lighting.strip>0;stageFog.density=lighting.fog;
+      contact.visible=!!stage&&stage.lighting==='dramatic';contact.position.y=floor.position.y+.0005;
+      key.shadow.normalBias=contact.visible?.002:.015;key.shadow.bias=contact.visible?-.0001:-.0004;
+      if(lighting.strip>0){const focus=node.cameraTargetPart?controls.getPart(node,node.cameraTargetPart):modelRoot;if(focus){const at=new THREE.Box3().setFromObject(focus).getCenter(new THREE.Vector3());strip.position.copy(at).add(new THREE.Vector3(1.2,.8,-.2));strip.lookAt(at);}}
+      floor.material.roughness=lighting.roughness;floor.material.metalness=lighting.metalness;
+      const anchor=event?.sourcePart?controls.getPart(node,event.sourcePart):undefined;
+      const origin=anchor?new THREE.Box3().setFromObject(anchor).getCenter(new THREE.Vector3()):modelRoot?new THREE.Box3().setFromObject(modelRoot).getCenter(new THREE.Vector3()).setY(new THREE.Box3().setFromObject(modelRoot).max.y):new THREE.Vector3(0,1.5,0);
+      origin.x-=.025;origin.y+=.035;discharge.update(event,origin,floor.position.y,w,h);
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
       const atmosphere=item.deltas.volume3d,grade=item.deltas.grade3d,hasVolume=atmosphere&&(atmosphere.density>0||atmosphere.strength>0),hasGrade=grade&&(grade.glow>0||grade.exposure!==1.05||grade.contrast!==1||grade.vignette>0);
@@ -233,8 +259,9 @@ export function createThreeAdapter(project: Project): ThreeAdapter {
       return `${node.id}::axle`;
     },
     dispose() {
-      volume.dispose();controls.dispose();disposeObject(scene);
+      discharge.dispose();volume.dispose();controls.dispose();disposeObject(scene);
       environment.dispose();
+      key.shadow.dispose();
       renderer.dispose();
       renderer.forceContextLoss();
     },

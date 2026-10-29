@@ -1,10 +1,11 @@
 {
   "name": "video-workshop",
-  "version": "0.1.0-alpha.3",
+  "version": "0.2.0-beta.1",
   "private": true,
   "type": "module",
   "scripts": {
     "start": "node launch.mjs",
+    "mcp": "node mcp/server.mjs",
     "test:browser": "node tests/browser-smoke.mjs",
     "setup": "node tools/setup.mjs",
     "check": "node launch.mjs --check"

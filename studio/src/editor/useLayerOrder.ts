@@ -1,18 +1,70 @@
-import {useEffect,useRef,useState,type PointerEvent as ReactPointerEvent,type RefObject} from 'react';
-import type {Project,SceneNode} from '../../domain/schema.ts';import type {Operation} from '../../domain/operations.ts';import {dropLayerOperations,layerLockReason} from '../../domain/layers.ts';
-type Target={id:string;edge:'before'|'after'};type Drag={id:string;revision:number;projectId:string;pointerId:number;element:HTMLElement;startX:number;startY:number;x:number;y:number;moved:boolean;target:Target|null};
-export function useLayerOrder(project:Project,disabled:boolean,list:RefObject<HTMLDivElement|null>,onAction:(label:string,ops:Operation[],revision?:number)=>void,onActive:(value:boolean)=>void){
- const live=useRef<Drag|null>(null),raf=useRef(0),[view,setView]=useState<{id:string;name:string;x:number;y:number;target:Target|null}|null>(null);
- const latest=useRef({project,disabled,onAction,onActive});latest.current={project,disabled,onAction,onActive};
- function clear(){const d=live.current;live.current=null;cancelAnimationFrame(raf.current);setView(null);latest.current.onActive(false);if(d?.element.hasPointerCapture(d.pointerId))d.element.releasePointerCapture(d.pointerId);}
- const clearRef=useRef(clear);clearRef.current=clear;
- useEffect(()=>{const d=live.current;if(d&&(disabled||project.id!==d.projectId||project.revision!==d.revision))clear();},[project.id,project.revision,disabled]);
- useEffect(()=>{const key=(e:KeyboardEvent)=>{if(live.current&&e.key==='Escape'){e.preventDefault();e.stopPropagation();clearRef.current();}},blur=()=>clearRef.current();window.addEventListener('keydown',key,true);window.addEventListener('blur',blur);return()=>{window.removeEventListener('keydown',key,true);window.removeEventListener('blur',blur);cancelAnimationFrame(raf.current);latest.current.onActive(false);};},[]);
- function locate(d:Drag){const row=document.elementFromPoint(d.x,d.y)?.closest<HTMLElement>('[data-layer-row]'),id=row?.dataset.layerRow,target=latest.current.project.nodes.find(n=>n.id===id),source=latest.current.project.nodes.find(n=>n.id===d.id);d.target=row&&target&&source&&target.id!==source.id&&target.parentId===source.parentId&&target.sequenceId===source.sequenceId?{id:target.id,edge:d.y<row.getBoundingClientRect().top+row.getBoundingClientRect().height/2?'before':'after'}:null;}
- function draw(d:Drag){setView({id:d.id,name:latest.current.project.nodes.find(n=>n.id===d.id)?.name??'Слой',x:d.x,y:d.y,target:d.target});}
- function scroll(){const d=live.current,el=list.current;if(!d||!d.moved||!el)return;const b=el.getBoundingClientRect();if(d.x>=b.left-15&&d.x<=b.right+15){const amount=d.y<b.top+30?-Math.min(12,(b.top+30-d.y)*.3):d.y>b.bottom-30?Math.min(12,(d.y-b.bottom+30)*.3):0;if(amount){el.scrollTop+=amount;locate(d);draw(d);}}raf.current=requestAnimationFrame(scroll);}
- function start(node:SceneNode,e:ReactPointerEvent<HTMLButtonElement>){if(e.button!==0||!e.isPrimary||disabled||layerLockReason(project,node.id)||live.current)return;e.preventDefault();e.stopPropagation();live.current={id:node.id,projectId:project.id,revision:project.revision,pointerId:e.pointerId,element:e.currentTarget,startX:e.clientX,startY:e.clientY,x:e.clientX,y:e.clientY,moved:false,target:null};e.currentTarget.setPointerCapture(e.pointerId);}
- function move(e:ReactPointerEvent<HTMLButtonElement>){const d=live.current;if(!d||d.pointerId!==e.pointerId)return;d.x=e.clientX;d.y=e.clientY;if(!d.moved&&Math.hypot(d.x-d.startX,d.y-d.startY)<4)return;if(!d.moved){d.moved=true;latest.current.onActive(true);raf.current=requestAnimationFrame(scroll);}locate(d);draw(d);e.preventDefault();}
- function end(e:ReactPointerEvent<HTMLButtonElement>){const d=live.current;if(!d||d.pointerId!==e.pointerId)return;move(e);const target=d.target,current=latest.current;clear();if(!d.moved||!target||current.disabled||current.project.id!==d.projectId||current.project.revision!==d.revision)return;const ops=dropLayerOperations(current.project,d.id,target.id,target.edge);if(ops.length)current.onAction('Переставить слой',ops,d.revision);}
- return{view,events:(node:SceneNode)=>({onPointerDown:(e:ReactPointerEvent<HTMLButtonElement>)=>start(node,e),onPointerMove:move,onPointerUp:end,onPointerCancel:clear,onLostPointerCapture:()=>{if(live.current)clear();},onClick:(e:React.MouseEvent)=>e.stopPropagation()})};
+import {ui} from './i18n.ts';
+import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent, type RefObject } from 'react';
+import type { Project, SceneNode } from '../../domain/schema.ts';
+import type { Operation } from '../../domain/operations.ts';
+import { dropLayerOperations, layerLockReason } from '../../domain/layers.ts';
+type Target = {
+    id: string;
+    edge: 'before' | 'after';
+};
+type Drag = {
+    id: string;
+    revision: number;
+    projectId: string;
+    pointerId: number;
+    element: HTMLElement;
+    startX: number;
+    startY: number;
+    x: number;
+    y: number;
+    moved: boolean;
+    target: Target | null;
+};
+export function useLayerOrder(project: Project, disabled: boolean, list: RefObject<HTMLDivElement | null>, onAction: (label: string, ops: Operation[], revision?: number) => void, onActive: (value: boolean) => void) {
+    const live = useRef<Drag | null>(null), raf = useRef(0), [view, setView] = useState<{
+        id: string;
+        name: string;
+        x: number;
+        y: number;
+        target: Target | null;
+    } | null>(null);
+    const latest = useRef({ project, disabled, onAction, onActive });
+    latest.current = { project, disabled, onAction, onActive };
+    function clear() { const d = live.current; live.current = null; cancelAnimationFrame(raf.current); setView(null); latest.current.onActive(false); if (d?.element.hasPointerCapture(d.pointerId))
+        d.element.releasePointerCapture(d.pointerId); }
+    const clearRef = useRef(clear);
+    clearRef.current = clear;
+    useEffect(() => { const d = live.current; if (d && (disabled || project.id !== d.projectId || project.revision !== d.revision))
+        clear(); }, [project.id, project.revision, disabled]);
+    useEffect(() => { const key = (e: KeyboardEvent) => { if (live.current && e.key === 'Escape') {
+        e.preventDefault();
+        e.stopPropagation();
+        clearRef.current();
+    } }, blur = () => clearRef.current(); window.addEventListener('keydown', key, true); window.addEventListener('blur', blur); return () => { window.removeEventListener('keydown', key, true); window.removeEventListener('blur', blur); cancelAnimationFrame(raf.current); latest.current.onActive(false); }; }, []);
+    function locate(d: Drag) { const row = document.elementFromPoint(d.x, d.y)?.closest<HTMLElement>('[data-layer-row]'), id = row?.dataset.layerRow, target = latest.current.project.nodes.find(n => n.id === id), source = latest.current.project.nodes.find(n => n.id === d.id); d.target = row && target && source && target.id !== source.id && target.parentId === source.parentId && target.sequenceId === source.sequenceId ? { id: target.id, edge: d.y < row.getBoundingClientRect().top + row.getBoundingClientRect().height / 2 ? 'before' : 'after' } : null; }
+    function draw(d: Drag) { setView({ id: d.id, name: latest.current.project.nodes.find(n => n.id === d.id)?.name ?? ui("Слой"), x: d.x, y: d.y, target: d.target }); }
+    function scroll() { const d = live.current, el = list.current; if (!d || !d.moved || !el)
+        return; const b = el.getBoundingClientRect(); if (d.x >= b.left - 15 && d.x <= b.right + 15) {
+        const amount = d.y < b.top + 30 ? -Math.min(12, (b.top + 30 - d.y) * .3) : d.y > b.bottom - 30 ? Math.min(12, (d.y - b.bottom + 30) * .3) : 0;
+        if (amount) {
+            el.scrollTop += amount;
+            locate(d);
+            draw(d);
+        }
+    } raf.current = requestAnimationFrame(scroll); }
+    function start(node: SceneNode, e: ReactPointerEvent<HTMLButtonElement>) { if (e.button !== 0 || !e.isPrimary || disabled || layerLockReason(project, node.id) || live.current)
+        return; e.preventDefault(); e.stopPropagation(); live.current = { id: node.id, projectId: project.id, revision: project.revision, pointerId: e.pointerId, element: e.currentTarget, startX: e.clientX, startY: e.clientY, x: e.clientX, y: e.clientY, moved: false, target: null }; e.currentTarget.setPointerCapture(e.pointerId); }
+    function move(e: ReactPointerEvent<HTMLButtonElement>) { const d = live.current; if (!d || d.pointerId !== e.pointerId)
+        return; d.x = e.clientX; d.y = e.clientY; if (!d.moved && Math.hypot(d.x - d.startX, d.y - d.startY) < 4)
+        return; if (!d.moved) {
+        d.moved = true;
+        latest.current.onActive(true);
+        raf.current = requestAnimationFrame(scroll);
+    } locate(d); draw(d); e.preventDefault(); }
+    function end(e: ReactPointerEvent<HTMLButtonElement>) { const d = live.current; if (!d || d.pointerId !== e.pointerId)
+        return; move(e); const target = d.target, current = latest.current; clear(); if (!d.moved || !target || current.disabled || current.project.id !== d.projectId || current.project.revision !== d.revision)
+        return; const ops = dropLayerOperations(current.project, d.id, target.id, target.edge); if (ops.length)
+        current.onAction(ui("Переставить слой"), ops, d.revision); }
+    return { view, events: (node: SceneNode) => ({ onPointerDown: (e: ReactPointerEvent<HTMLButtonElement>) => start(node, e), onPointerMove: move, onPointerUp: end, onPointerCancel: clear, onLostPointerCapture: () => { if (live.current)
+                clear(); }, onClick: (e: React.MouseEvent) => e.stopPropagation() }) };
 }

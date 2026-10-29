@@ -1,6 +1,6 @@
 {
   "name": "motivelium-studio",
-  "version": "0.1.0-alpha.3",
+  "version": "0.2.0-beta.1",
   "private": true,
   "type": "module",
   "description": "Motivelium studio UI and domain: Project v2, frame evaluation, editor. Built to ../www/studio/.",
@@ -13,15 +13,18 @@
     "node": ">=24.12.0 <25"
   },
   "dependencies": {
+    "@modelcontextprotocol/server": "2.3.1",
     "flubber": "0.4.2",
     "playwright-core": "1.62.1",
     "react": "19.2.7",
     "react-dom": "19.2.7",
     "three": "0.180.0",
     "yauzl": "3.4.0",
-    "yazl": "3.3.1"
+    "yazl": "3.3.1",
+    "zod": "4.6.7"
   },
   "devDependencies": {
+    "@modelcontextprotocol/client": "2.3.1",
     "@types/node": "24.10.1",
     "@types/react": "19.2.5",
     "@types/react-dom": "19.2.3",

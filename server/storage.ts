@@ -1,3 +1,4 @@
+import{englishFilm}from'../studio/domain/contentVariants.ts';
 import {localDataDir} from './dataPaths.ts';
 // Хранилище проектов Motivelium: согласованная фиксация состояния, протокол v2.
 //
@@ -28,6 +29,9 @@ import { buildDemo } from '../studio/domain/demo.ts';
 import { buildShowcase } from '../studio/domain/showcase.ts';
 import {buildMatter} from '../studio/domain/matter.ts';
 import { buildEnergy } from '../studio/domain/energy.ts';
+import {loadExampleFilm,FILM_PRESETS} from './exampleContent.ts';
+import {buildLetterShow} from '../studio/domain/letterShow.ts';
+import {refreshExhibit} from '../studio/domain/exhibitRefresh.ts';
 import { newId } from '../studio/domain/ids.ts';
 import {inspectGltf,MAX_MODEL_BYTES} from '../studio/domain/gltf.ts';
 import { applyTransaction, RevisionConflictError } from '../studio/domain/transaction.ts';
@@ -663,16 +667,16 @@ export function createStore(rootDir: string, opts: { dataRoot?:string; injectFai
 
     /** Создание всегда даёт НОВЫЙ проект с уникальным id (перезаписи нет). */
     async create(options: { fixture?: boolean; preset?: string; title?: string; durationFrames?: number } = {}): Promise<{ project: Project }> {
-      let project: Project;
+      let project: Project;let filmResources:Awaited<ReturnType<typeof loadExampleFilm>>['resources']|null=null;
       let demoAsset: Buffer | null = null;
       let showcaseAsset: Buffer | null = null;
       let energyAudio: Buffer | null = null;let matterAudio:Buffer|null=null;
-      if(options.preset==='matter-v1'){try{matterAudio=await fsp.readFile(matterAudioSource)}catch{throw new StoreError(500,'Не найдена музыка демонстрационного проекта Материя')}project=buildMatter({sha256:crypto.createHash('sha256').update(matterAudio).digest('hex'),bytes:matterAudio.length});
-      }else if(options.preset === 'energy-v1'){
+      if(FILM_PRESETS.includes(options.preset??'')){const loaded=await loadExampleFilm(rootDir,options.preset!);project=loaded.project;filmResources=loaded.resources;}else if(options.preset==='matter-v1'||options.preset==='matter-v2'){try{matterAudio=await fsp.readFile(matterAudioSource)}catch{throw new StoreError(500,'Не найдена музыка демонстрационного проекта Материя')}project=buildMatter({sha256:crypto.createHash('sha256').update(matterAudio).digest('hex'),bytes:matterAudio.length});
+      }else if(['energy-v1','energy-v2','letters-v1','letters-en-v1'].includes(options.preset??'')){
         try {energyAudio=await fsp.readFile(energyAudioSource)}
         catch {throw new StoreError(500,'Не найдена музыка демонстрационного проекта Разряд')}
-        project=buildEnergy({sha256:crypto.createHash('sha256').update(energyAudio).digest('hex'),bytes:energyAudio.length});
-      } else if (options.preset === 'showcase-v1') {
+        const meta={sha256:crypto.createHash('sha256').update(energyAudio).digest('hex'),bytes:energyAudio.length};project=options.preset==='letters-v1'?buildLetterShow(meta):options.preset==='letters-en-v1'?englishFilm(buildLetterShow(meta),'letters'):buildEnergy(meta);
+      } else if (options.preset === 'showcase-v1'||options.preset==='showcase-v2') {
         try { showcaseAsset=await fsp.readFile(showcaseAssetSource); }
         catch { throw new StoreError(500,'Не найдено изображение демонстрационного проекта Motivelium'); }
         const size=pngSize(showcaseAsset);
@@ -688,11 +692,13 @@ export function createStore(rootDir: string, opts: { dataRoot?:string; injectFai
         const title = typeof options.title === 'string' && options.title.trim() ? options.title.trim().slice(0, 300) : 'Новый проект';
         project = emptyProject(title, duration);
       }
+      if(['showcase-v2','energy-v2','matter-v2'].includes(options.preset??''))project=refreshExhibit(project);
       project = { ...project, id: newId(project.id), revision: 1 };
       if (typeof options.title === 'string' && options.title.trim()) project.title = options.title.trim().slice(0, 300);
       validateProject(project);
       const id = project.id;
       if (fs.existsSync(dirOf(id))) throw new StoreError(500, `Коллизия id проекта "${id}"`);
+      if(filmResources){for(const a of project.assets){const target=path.join(dirOf(id),a.path);await fsp.mkdir(path.dirname(target),{recursive:true});await fsp.writeFile(target,filmResources.get(a.id)!.bytes);}}
       if (demoAsset) {
         const assetsDir = path.join(dirOf(id), 'assets');
         await fsp.mkdir(assetsDir, { recursive: true });

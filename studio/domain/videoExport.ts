@@ -1,4 +1,5 @@
 import type {Project,AudioTrack} from './schema.ts';
+import {audioPlan} from './audio.ts';
 
 export type VideoExportStatus='preparing'|'rendering'|'mixing'|'verifying'|'ready'|'cancelling'|'cancelled'|'failed';
 export type VideoExportJob={id:string;projectId:string;title:string;revision:number;snapshotHash:string;requestId:string;status:VideoExportStatus;progress:number;renderedFrames:number;totalFrames:number;createdAt:string;updatedAt:string;size:{width:number;height:number};fps:Project['fps'];durationSeconds:number;withAudio:boolean;error?:string;bytes?:number;sha256?:string;downloadUrl?:string;posterUrl?:string;encoder?:string;renderer?:string;audioTracks?:number};
@@ -8,7 +9,7 @@ export function videoExportPlan(p:Project){
  const duration=p.durationFrames*p.fps.den/p.fps.num;
  if(!Number.isInteger(p.size.width)||!Number.isInteger(p.size.height)||p.size.width>4096||p.size.height>4096||p.size.width*p.size.height>8_847_360)throw Error('MP4: размер кадра — целые числа до 4096 по стороне и до 8,8 млн пикселей.');
  if(duration>300||p.durationFrames>36_000||p.fps.num/p.fps.den>120)throw Error('MP4: первая версия поддерживает ролики до 5 минут, 36 000 кадров и 120 fps.');
- const audio=p.audioTracks.filter(t=>!t.mute&&t.gain>0&&(!!t.synth||!!t.assetId)&&t.offsetSeconds<duration);
+ const audio=audioPlan(p).tracks;
  for(const t of audio){if(!t.synth&&!p.assets.find(a=>a.id===t.assetId&&a.mime.startsWith('audio/')))throw Error('Звуковая дорожка ссылается не на аудиоресурс: '+t.id);}
  if(audio.length>64)throw Error('MP4: не более 64 активных звуковых дорожек.');
  return{duration,width:Math.ceil(p.size.width/2)*2,height:Math.ceil(p.size.height/2)*2,audio};

@@ -35,7 +35,7 @@ namespace MotiveliumDesktop {
   public async Task Start() {
    Directory.CreateDirectory(Program.DataRoot);
    var test=Path.Combine(Program.DataRoot,"write-"+Guid.NewGuid().ToString("N"));File.WriteAllText(test,"");File.Delete(test);
-   string node=Path.Combine(Program.Root,"runtime","node","node.exe");if(!File.Exists(node))throw new Exception("В комплекте нет runtime/node/node.exe. Распакуйте всю папку приложения.");
+   string node=Path.Combine(Program.Root,"runtime","node","node.exe");if(!File.Exists(node))throw new Exception(Program.T("В комплекте нет runtime/node/node.exe. Распакуйте всю папку приложения.","Missing runtime/node/node.exe. Extract the complete application folder."));
    Origin="http://127.0.0.1:8676";if(await Ready())return;
    // Reuse a server previously started by this copy, even when 8676 belongs to another copy.
    var state=Path.Combine(Program.DataRoot,"desktop-server.json");int preferred=8676;
@@ -43,22 +43,22 @@ namespace MotiveliumDesktop {
    // Keep the origin (and browser preferences) stable when this copy's old port is free.
    // If another process owns it, choose a free port without touching that process.
    int selected=preferred;var listener=new TcpListener(IPAddress.Loopback,selected);try{listener.Start();}catch(SocketException){listener=new TcpListener(IPAddress.Loopback,0);listener.Start();selected=((IPEndPoint)listener.LocalEndpoint).Port;}listener.Stop();Origin="http://127.0.0.1:"+selected;
-   job=CreateJobObject(IntPtr.Zero,null);if(job==IntPtr.Zero)throw new Exception("Не удалось создать контейнер локального процесса.");
+   job=CreateJobObject(IntPtr.Zero,null);if(job==IntPtr.Zero)throw new Exception(Program.T("Не удалось создать контейнер локального процесса.","Could not create a container for the local process."));
    var info=new JobExtended();info.Basic.LimitFlags=0x2000;
-   int size=Marshal.SizeOf(info);IntPtr ptr=Marshal.AllocHGlobal(size);try{Marshal.StructureToPtr(info,ptr,false);if(!SetInformationJobObject(job,9,ptr,(uint)size))throw new Exception("Не удалось настроить завершение локального процесса.");}finally{Marshal.FreeHGlobal(ptr);}
+   int size=Marshal.SizeOf(info);IntPtr ptr=Marshal.AllocHGlobal(size);try{Marshal.StructureToPtr(info,ptr,false);if(!SetInformationJobObject(job,9,ptr,(uint)size))throw new Exception(Program.T("Не удалось настроить завершение локального процесса.","Could not configure local process cleanup."));}finally{Marshal.FreeHGlobal(ptr);}
    log=new StreamWriter(Path.Combine(Program.DataRoot,"desktop-server.log"),true,new UTF8Encoding(false)){AutoFlush=true};
    var start=new ProcessStartInfo(node,Quote(Path.Combine(Root,"server.mjs"))){WorkingDirectory=Root,UseShellExecute=false,CreateNoWindow=true,RedirectStandardOutput=true,RedirectStandardError=true};
    start.EnvironmentVariables["PORT"]=selected.ToString();start.EnvironmentVariables["MOTIVELIUM_DATA_DIR"]=Program.DataRoot;start.EnvironmentVariables.Remove("NODE_PATH");start.EnvironmentVariables.Remove("NODE_OPTIONS");
    child=new Process {StartInfo=start,EnableRaisingEvents=true};
    child.OutputDataReceived+=(s,e)=>WriteLog(e.Data);child.ErrorDataReceived+=(s,e)=>WriteLog(e.Data);
    startedAt=DateTime.UtcNow;child.Start();OwnsServer=true;Pid=child.Id;
-   if(!AssignProcessToJobObject(job,child.Handle)){child.Kill();throw new Exception("Не удалось изолировать локальный сервер. Он остановлен.");}
+   if(!AssignProcessToJobObject(job,child.Handle)){child.Kill();throw new Exception(Program.T("Не удалось изолировать локальный сервер. Он остановлен.","Could not isolate the local server. It has been stopped."));}
    child.BeginOutputReadLine();child.BeginErrorReadLine();
-   for(int i=0;i<100;i++){if(child.HasExited)throw new Exception("Локальный сервер завершился при запуске. Подробности: .local/desktop-server.log");if(await Ready()){
-     if(Pid!=child.Id)throw new Exception("Порт успела занять другая программа. Повторите запуск.");
+   for(int i=0;i<100;i++){if(child.HasExited)throw new Exception(Program.T("Локальный сервер завершился при запуске. Подробности: .local/desktop-server.log","The local server exited during startup. See desktop-server.log in the data folder."));if(await Ready()){
+     if(Pid!=child.Id)throw new Exception(Program.T("Порт успела занять другая программа. Повторите запуск.","Another application took the port. Try again."));
      File.WriteAllText(state,Json.Serialize(new {port=selected,pid=Pid,root=Root}),Encoding.UTF8);return;
     }await Task.Delay(100);}
-   throw new Exception("Локальный сервер не подтвердил готовность. Подробности: .local/desktop-server.log");
+   throw new Exception(Program.T("Локальный сервер не подтвердил готовность. Подробности: .local/desktop-server.log","The local server did not become ready. See desktop-server.log in the data folder."));
   }
   void WriteLog(string s){if(s==null)return;lock(this){if(log!=null)try{log.WriteLine(s);}catch(ObjectDisposedException){}}}
   public bool HasRunningJobs() {

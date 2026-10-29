@@ -7,7 +7,9 @@ import { validFps, type Fps } from './time.ts';
 import { REGISTRY, type EffectDefinition } from '../effects/registry.ts';
 import {SHADER_MAP,shaderParamErrors,type ShaderParams} from '../effects/shaders/library.ts';
 import {contourParamErrors} from '../effects/contours.ts';
+import {typographyErrors,unsupportedLetters} from '../effects/typography.ts';
 import {validate3d,type ModelRef,type PartEdit,type CameraPose3d,type CameraKey3d} from './model3d.ts';
+import {validateStoryboard,type Storyboard} from './storyboard.ts';
 
 export type Vec2 = { x: number; y: number };
 
@@ -38,7 +40,7 @@ export type NodeBase = {
   metadata?: Record<string, string | number | boolean>;
 };
 
-export type TextNode = NodeBase & { kind: 'text'; text: string; fontFamily: string; fontSize: number; color: string; align: 'left' | 'center' | 'right'; lineHeight: number };
+export type TextNode = NodeBase & { kind: 'text'; text: string; fontFamily: string; fontSize: number; fontWeight?:number; color: string; align: 'left' | 'center' | 'right'; lineHeight: number };
 export type ImageNode = NodeBase & { kind: 'image'; assetId: string; fit: 'contain' | 'cover' | 'fill' };
 export type ShapeNode = NodeBase & { kind: 'shape'; shape: 'rect' | 'ellipse'; fill: string; fillOpacity?: number; stroke?: string; strokeWidth?: number; generator?:{shaderId:string;params:ShaderParams;speed:number;hue:number} };
 export type GroupNode = NodeBase & { kind: 'group' };
@@ -72,7 +74,9 @@ export type CameraKey = { frame: number; cx: number; cy: number; zoom: number; r
 export type CameraTrack = { id:string;name:string;keys:CameraKey[];scope?:{sequenceId:string;fromFrame:number;toFrame:number};enabled?:boolean };
 export type SynthAccent = {voice:'impact'|'chime'|'sweep';durationSeconds:number;pitch:number;seed:number};
 
-export type AudioTrack = { id: string; kind: 'music' | 'voice' | 'sfx'; assetId: string | null; gain: number; offsetSeconds: number; mute: boolean; synth?:SynthAccent };
+export type AudioClip = {sourceStartSeconds:number;durationSeconds:number;fadeInSeconds:number;fadeOutSeconds:number;pan:number;duckMusicDb:number};
+export type SoundCredit = {author:string;source:string;license:string};
+export type AudioTrack = { id: string; kind: 'music' | 'voice' | 'sfx'; assetId: string | null; gain: number; offsetSeconds: number; mute: boolean; synth?:SynthAccent;name?:string;clip?:AudioClip;credit?:SoundCredit };
 export type Cue = { id: string; trackId: string | null; frame: number; kind: 'beat' | 'bar' | 'accent' | 'drop' | 'phrase' | 'mark'; label: string };
 
 export type Project = {
@@ -91,6 +95,7 @@ export type Project = {
   cameraTracks: CameraTrack[];
   audioTracks: AudioTrack[];
   cues: Cue[];
+  storyboard?: Storyboard;
 };
 
 export const CURRENT_SCHEMA_VERSION = 2;
@@ -106,7 +111,7 @@ export class ValidationError extends Error {
 }
 
 const HEX_COLOR = /^#[0-9a-f]{6}$/i;
-const TOP_KEYS = new Set(['schemaVersion','id','revision','title','size','fps','durationFrames','seed','assets','sequences','nodes','effects','cameraTracks','audioTracks','cues']);
+const TOP_KEYS = new Set(['schemaVersion','id','revision','title','size','fps','durationFrames','seed','assets','sequences','nodes','effects','cameraTracks','audioTracks','cues','storyboard']);
 
 function fin(v: unknown, min: number, max: number, what: string, errors: string[], integer = false): number {
   if (typeof v !== 'number' || !Number.isFinite(v) || v < min || v > max || (integer && !Number.isInteger(v))) {
@@ -144,7 +149,7 @@ function validateTransform(t: unknown, what: string, errors: string[]): void {
 
 const NODE_KIND_KEYS: Record<NodeKind, Set<string>> = {
   group: new Set(['kind']),
-  text: new Set(['kind','text','fontFamily','fontSize','color','align','lineHeight']),
+  text: new Set(['kind','text','fontFamily','fontSize','fontWeight','color','align','lineHeight']),
   image: new Set(['kind','assetId','fit']),
   shape: new Set(['kind','shape','fill','fillOpacity','stroke','strokeWidth','generator']),
   scene3d: new Set(['kind','adapter','preset','spin','explode','model','parts3d','camera3d','camera3dKeys','cameraTargetPart']),
@@ -179,6 +184,7 @@ function validateNode(n: unknown, project: { durationFrames: number }, errors: s
   if (kind === 'text') {
     str(o.text, 4000, `nodes[${id}].text`, errors);
     str(o.fontFamily, 200, `nodes[${id}].fontFamily`, errors);
+    if(o.fontWeight!==undefined)fin(o.fontWeight,100,900,`nodes[${id}].fontWeight`,errors,true);
     fin(o.fontSize, 6, 480, `nodes[${id}].fontSize`, errors);
     if (!HEX_COLOR.test(String(o.color))) errors.push(`nodes[${id}].color: формат #rrggbb`);
     if (!['left','center','right'].includes(String(o.align))) errors.push(`nodes[${id}].align: left|center|right`);
@@ -267,6 +273,9 @@ export function validateProject(input: unknown, registry: ReadonlyMap<string, Ef
     if (!['photo','diagram','staged','generated'].includes(String(ao.origin))) errors.push(`assets[${String(ao.id)}].origin: photo|diagram|staged|generated`);
   }
   const assetIds = new Set(assetsRaw.map(a => String(a.id)));
+  // Links may outlive deleted scenes/objects: retain discussion and report a broken link in UI.
+  // Images themselves must remain packaged assets; deleting one in use is rejected.
+  // Claim card IDs after all regular IDs below, so cross-collection collisions are caught.
 
   for (const so of sequencesRaw) {
     checkUnknown(so, new Set(['id','name','fromFrame','toFrame','transition']), `sequences[${String(so.id)}]`, errors);
@@ -337,9 +346,11 @@ export function validateProject(input: unknown, registry: ReadonlyMap<string, Ef
       if (def.version !== eo.definitionVersion) errors.push(`effects[${fxId}].definitionVersion: реестр поддерживает ${String(def.version)}, получено ${String(eo.definitionVersion)}`);
       const target = nodeById.get(String(eo.targetId));
       if (target && !def.targets.includes(target.kind)) errors.push(`effects[${fxId}]: тип цели ${target.kind} не поддерживается эффектом ${def.id} (${def.targets.join('|')})`);
+      if(def.id==='letter-morph'&&target?.kind==='text'&&([...target.text].length>120||target.text.split('\n').length>3||unsupportedLetters(target.text).length))errors.push(`effects[${fxId}]: морфинг — до 120 знаков, 3 строки, поддерживаемые буквы Onest.`);
       const params = eo.params as Record<string, unknown> | undefined;
       if (params && typeof params === 'object' && !Array.isArray(params)) {
         errors.push(...contourParamErrors(def.id,params).map(message=>`effects[${fxId}]: ${message}`));
+        errors.push(...typographyErrors(def.id,params).map(message=>`effects[${fxId}]: ${message}`));
         const specNames = new Set(def.params.map(pp => pp.name));
         for (const k of Object.keys(params)) if (!specNames.has(k)) errors.push(`effects[${fxId}].params["${k}"]: параметра нет у эффекта ${def.id}`);
         for (const pp of def.params) {
@@ -359,6 +370,7 @@ export function validateProject(input: unknown, registry: ReadonlyMap<string, Ef
 
   for(const node of nodesTyped){const feedback=effectsRaw.filter(e=>e.enabled&&e.targetId===node.id&&['feedback-trail','feedback-smoke','comet-tails'].includes(String(e.definitionId))).sort((a,b)=>Number(a.fromFrame)-Number(b.fromFrame));for(let i=1;i<feedback.length;i++)if(Number(feedback[i]!.fromFrame)<Number(feedback[i-1]!.toFrame))errors.push(`effects[${node.id}]: интервалы накопления изображения не должны пересекаться.`);}
   for(const node of nodesTyped){const morph=effectsRaw.filter(e=>e.enabled&&e.targetId===node.id&&e.definitionId==='contour-morph').sort((a,b)=>Number(a.fromFrame)-Number(b.fromFrame));for(let i=1;i<morph.length;i++)if(Number(morph[i]!.fromFrame)<Number(morph[i-1]!.toFrame))errors.push(`effects[${node.id}]: интервалы превращения контура не должны пересекаться.`);}
+  for(const node of nodesTyped)for(const id of ['letter-morph','ascii-screen','glyph-motion','electric-arc','storm-lightning','3d-discharge']){const list=effectsRaw.filter(e=>e.enabled&&e.targetId===node.id&&e.definitionId===id).sort((a,b)=>Number(a.fromFrame)-Number(b.fromFrame));for(let i=1;i<list.length;i++)if(Number(list[i]!.fromFrame)<Number(list[i-1]!.toFrame))errors.push(`effects[${node.id}]: интервалы ${id} не должны пересекаться.`);}
 
   for (const t of cameraRaw) {
     checkUnknown(t, new Set(['id','name','keys','scope','enabled']), `cameraTracks[${String(t.id)}]`, errors);
@@ -391,7 +403,16 @@ export function validateProject(input: unknown, registry: ReadonlyMap<string, Ef
   }
 
   for (const t of audioRaw) {
-    checkUnknown(t, new Set(['id','kind','assetId','gain','offsetSeconds','mute','synth']), `audioTracks[${String(t.id)}]`, errors);
+    checkUnknown(t, new Set(['id','kind','assetId','gain','offsetSeconds','mute','synth','name','clip','credit']), `audioTracks[${String(t.id)}]`, errors);
+    if(t.name!==undefined)str(t.name,160,'audioTracks.name',errors);
+    if(t.clip!==undefined){const c=t.clip as Record<string,unknown>;
+      if(!c||typeof c!=='object'||Array.isArray(c))errors.push('audioTracks.clip: требуется объект');
+      else{checkUnknown(c,new Set(['sourceStartSeconds','durationSeconds','fadeInSeconds','fadeOutSeconds','pan','duckMusicDb']),'audioTracks.clip',errors);fin(c.sourceStartSeconds,0,3600,'audioTracks.clip.sourceStartSeconds',errors);fin(c.durationSeconds,.001,300,'audioTracks.clip.durationSeconds',errors);fin(c.fadeInSeconds,0,10,'audioTracks.clip.fadeInSeconds',errors);fin(c.fadeOutSeconds,0,10,'audioTracks.clip.fadeOutSeconds',errors);fin(c.pan,-1,1,'audioTracks.clip.pan',errors);fin(c.duckMusicDb,0,24,'audioTracks.clip.duckMusicDb',errors);}
+    }
+    if(t.credit!==undefined){const c=t.credit as Record<string,unknown>;
+      if(!c||typeof c!=='object'||Array.isArray(c))errors.push('audioTracks.credit: требуется объект');
+      else{checkUnknown(c,new Set(['author','source','license']),'audioTracks.credit',errors);str(c.author,160,'audioTracks.credit.author',errors);str(c.license,120,'audioTracks.credit.license',errors);str(c.source,500,'audioTracks.credit.source',errors);if(typeof c.source!=='string'||!/^https:\/\/[^\s]+$/.test(c.source))errors.push('audioTracks.credit.source: требуется HTTPS-источник');}
+    }
     claim(str(t.id, 64, 'audioTracks.id', errors), 'audioTrack');
     if (!['music','voice','sfx'].includes(String(t.kind))) errors.push(`audioTracks[${String(t.id)}].kind: music|voice|sfx`);
     if (t.assetId !== null && !assetIds.has(String(t.assetId))) errors.push(`audioTracks[${String(t.id)}].assetId: ассет не найден`);
@@ -414,6 +435,7 @@ export function validateProject(input: unknown, registry: ReadonlyMap<string, Ef
     str(c.label, 300, `cues[${String(c.id)}].label`, errors);
   }
 
+  errors.push(...validateStoryboard(project.storyboard,project,claim));
   if (errors.length > 0) throw new ValidationError(errors);
   return project;
 }

@@ -8,8 +8,8 @@ import {createRequire} from 'node:module';
 import {once} from 'node:events';
 import type {Browser} from 'playwright-core';
 import type {Project} from '../studio/domain/schema.ts';
-import {accentSamples} from '../studio/domain/synthAudio.ts';
-import {videoExportPlan,videoExportSamples,audioMixGraph,exportTerminal,type VideoExportJob} from '../studio/domain/videoExport.ts';
+import {mixProjectAudio,mixWav,AUDIO_RATE,audioSourceEnd} from '../studio/domain/audio.ts';
+import {videoExportPlan,videoExportSamples,exportTerminal,type VideoExportJob} from '../studio/domain/videoExport.ts';
 import {StoreError,type Store} from './storage.ts';
 import {runtimeTools} from './runtime.ts';
 
@@ -60,7 +60,7 @@ export function createVideoExportService(store:Store,root:string,options:Options
   if(!ID.test(pid))throw new StoreError(400,'Некорректный проект');
   let names:string[];try{names=await fs.readdir(path.join(base,pid))}catch{return[];}
   const result:VideoExportJob[]=[];
-  for(const name of names.filter(n=>ID.test(n)).sort().reverse().slice(0,20)){try{result.push((await load(pid,name)).job)}catch{/* Ignore incomplete creation; never publish it as a result. */}}
+  for(const name of names.filter(n=>ID.test(n)&&n!=='requests').sort().reverse().slice(0,20)){try{result.push((await load(pid,name)).job)}catch{/* Ignore incomplete creation; never publish it as a result. */}}
   return result.sort((a,b)=>b.createdAt.localeCompare(a.createdAt));
  }
  function wav(samples:Float32Array){
@@ -114,11 +114,21 @@ export function createVideoExportService(store:Store,root:string,options:Options
     const file=path.join(e.dir,'assets',asset.sha256+path.extname(asset.path));await fs.writeFile(file,bytes);e.assets.set(asset.id,{file,mime:asset.mime});
    }
    await render(e,origin,info.chrome!);ensure(e);e.job.status='mixing';e.job.progress=.82;await save(e);
-   const plan=videoExportPlan(e.project),audio=plan.audio,inputs:string[]=[];
-   for(const [index,t] of audio.entries()){ensure(e);let file:string;if(t.synth){file=path.join(e.dir,'accent-'+index+'.wav');await fs.writeFile(file,wav(accentSamples(t.synth)));}else{file=e.assets.get(t.assetId!)!.file;}inputs.push('-i',file);}
-   const output=path.join(e.dir,'result.tmp.mp4'),graph=audioMixGraph(audio,plan.duration);
-   const args=['-hide_banner','-loglevel','error','-nostdin','-y','-i',path.join(e.dir,'video-only.mp4'),...inputs];
-   if(graph)args.push('-filter_complex',graph,'-map','0:v:0','-map','[mix]','-c:a','aac','-b:a','256k','-ar','48000');else args.push('-map','0:v:0','-an');
+   const plan=videoExportPlan(e.project),audio=plan.audio;
+   const output=path.join(e.dir,'result.tmp.mp4'),args=['-hide_banner','-loglevel','error','-nostdin','-y','-i',path.join(e.dir,'video-only.mp4')];
+   if(audio.length){
+    const mix=await mixProjectAudio(e.project,async asset=>{
+     const metadata=JSON.parse(await runTool(ffprobe,['-v','error','-select_streams','a:0','-show_entries','stream=channels','-of','json',e.assets.get(asset.id)!.file],e)),channels=Number(metadata.streams?.[0]?.channels);if(![1,2].includes(channels))throw Error('Для общего микса нужен моно или стереофайл: '+(asset.title??asset.id));
+     const decoded=path.join(e.dir,'decode.f32');
+     // Preserve mono samples; FFmpeg's implicit mono→stereo rematrix attenuates them by 3 dB,
+     // while decodeAudioData returns mono and our shared mixer duplicates it unchanged.
+     const sourceEnd=audioSourceEnd(audio,asset.id,plan.duration);if(sourceEnd*AUDIO_RATE*channels*4>512*1024*1024)throw Error('Источник слишком длинный для экспорта. Обрежьте аудиофайл до нужного фрагмента.');
+     await runTool(ffmpeg,['-hide_banner','-loglevel','error','-nostdin','-y','-i',e.assets.get(asset.id)!.file,'-vn','-t',String(sourceEnd),'-ac',String(channels),'-ar',String(AUDIO_RATE),'-f','f32le',decoded],e);
+     ensure(e);const bytes=await fs.readFile(decoded),pcm=Array.from({length:channels},()=>new Float32Array(bytes.length/(channels*4)));for(let i=0;i<pcm[0]!.length;i++)for(let c=0;c<channels;c++)pcm[c]![i]=bytes.readFloatLE((i*channels+c)*4);await fs.unlink(decoded);return{sampleRate:AUDIO_RATE,channels:pcm};
+    },()=>ensure(e));
+    const mixFile=path.join(e.dir,'mix.wav');await fs.writeFile(mixFile,mixWav(mix));
+    args.push('-i',mixFile,'-map','0:v:0','-map','1:a:0','-c:a','aac','-b:a','256k','-ar','48000');
+   }else args.push('-map','0:v:0','-an');
    args.push('-c:v','copy','-t',String(plan.duration),'-movflags','+faststart',output);
    await runTool(ffmpeg,args,e);ensure(e);e.job.status='verifying';e.job.progress=.94;await save(e);
    const probe=JSON.parse(await runTool(ffprobe,['-v','error','-count_frames','-show_streams','-show_format','-of','json',output],e)) as {streams:Array<Record<string,unknown>>;format:Record<string,unknown>};
@@ -129,7 +139,7 @@ export function createVideoExportService(store:Store,root:string,options:Options
    const digest=crypto.createHash('sha256');for await(const chunk of createReadStream(output))digest.update(chunk);const stat=await fs.stat(output);await fs.rename(output,path.join(e.dir,'result.mp4'));
    await fs.copyFile(path.join(e.dir,'frames','000000.png'),path.join(e.dir,'poster.png'));
    e.job.bytes=stat.size;e.job.sha256=digest.digest('hex');e.job.downloadUrl=`/api/v1/projects/${e.project.id}/video-exports/${e.job.id}/file`;e.job.posterUrl=`/api/v1/projects/${e.project.id}/video-exports/${e.job.id}/poster`;
-   await atomic(path.join(e.dir,'manifest.json'),{...e.job,status:'ready',assets:e.project.assets,frames:e.frames,audio:'Все активные дорожки: gain/mute/offset, отрицательный offset обрезает начало. accentSamples; компрессор шины акцентов, ограничитель .95 с компенсацией задержки.',probe});
+   await atomic(path.join(e.dir,'manifest.json'),{...e.job,status:'ready',assets:e.project.assets,frames:e.frames,audio:'Shared mixProjectAudio PCM48 stereo; native mono preserved; gain/mute/offset, source clips/fades/pan/ducking. Legacy ceiling .95; edited clips use .84 look-ahead ceiling. Same algorithm as studio.',probe});
    ensure(e);e.job.status='ready';e.job.progress=1;await save(e);
    await fs.rm(path.join(e.dir,'video-only.mp4'),{force:true});
   }catch(error){
@@ -141,7 +151,14 @@ export function createVideoExportService(store:Store,root:string,options:Options
   info:runtime,list,
   async start(pid:string,input:Record<string,unknown>,origin:string){
    if(!Number.isInteger(input.expectedRevision)||typeof input.requestId!=='string'||!ID.test(input.requestId))throw new StoreError(400,'Экспорт требует expectedRevision и requestId.');
-   const previous=(await list(pid)).find(j=>j.requestId===input.requestId);if(previous){if(previous.revision!==input.expectedRevision)throw new StoreError(409,'requestId уже относится к другой ревизии.');return previous;}
+   if(!ID.test(pid))throw new StoreError(400,'Некорректный проект');
+   const receiptDir=path.join(base,pid,'requests'),receiptFile=path.join(receiptDir,hash(String(input.requestId))+'.json');
+   let previous:VideoExportJob|undefined;
+   try{const receipt=JSON.parse(await fs.readFile(receiptFile,'utf8'));previous=(await load(pid,receipt.jobId)).job;}catch(err){if((err as NodeJS.ErrnoException).code!=='ENOENT')throw err;}
+   if(!previous){ // Migrate old jobs lazily without limiting the search to the UI page.
+    const names=await fs.readdir(path.join(base,pid)).catch(()=>[]);
+    for(const name of names.filter(n=>ID.test(n)&&n!=='requests')){try{const candidate=(await load(pid,name)).job;if(candidate.requestId===input.requestId){previous=candidate;break}}catch{}}
+   }if(previous){if(previous.revision!==input.expectedRevision)throw new StoreError(409,'requestId уже относится к другой ревизии.');await fs.mkdir(receiptDir,{recursive:true});await atomic(receiptFile,{requestId:input.requestId,revision:previous.revision,jobId:previous.id});return previous;}
    if(starting||active)throw new StoreError(409,'Уже выполняется экспорт. Дождитесь завершения или отмените его.');starting=true;
    try{
     const p=(await store.get(pid)).project;if(p.revision!==input.expectedRevision)throw new StoreError(409,'Проект изменился. Перечитайте его перед экспортом.');
@@ -149,7 +166,7 @@ export function createVideoExportService(store:Store,root:string,options:Options
     const info=await runtime();if(!info.ready)throw new StoreError(503,info.reason!);
     const id='mp4-'+Date.now().toString(36)+'-'+crypto.randomBytes(5).toString('hex'),dir=dirFor(pid,id),at=new Date().toISOString();await fs.mkdir(path.join(dir,'assets'),{recursive:true});
     const e:Entry={job:{id,projectId:pid,title:p.title,revision:p.revision,snapshotHash:hash(JSON.stringify(p)),requestId:input.requestId,status:'preparing',progress:0,renderedFrames:0,totalFrames:p.durationFrames,createdAt:at,updatedAt:at,size:{width:plan.width,height:plan.height},fps:p.fps,durationSeconds:plan.duration,withAudio:!!plan.audio.length,audioTracks:plan.audio.length,encoder:info.encoder,renderer:'studio evaluateFrame/renderFrame/createThreeAdapter; headless Chrome, PNG → H.264'},dir,project:p,assets:new Map(),frames:[],cancel:false};
-    await atomic(path.join(dir,'snapshot.json'),p);await save(e);jobs.set(id,e);active=e;void run(e,origin,info).catch(error=>{e.job.status='failed';e.job.error='Не удалось сохранить состояние экспорта: '+(error as Error).message;e.job.downloadUrl=undefined;e.job.posterUrl=undefined;});return e.job;
+    await atomic(path.join(dir,'snapshot.json'),p);await save(e);await fs.mkdir(receiptDir,{recursive:true});await atomic(receiptFile,{requestId:input.requestId,revision:p.revision,jobId:id});jobs.set(id,e);active=e;void run(e,origin,info).catch(error=>{e.job.status='failed';e.job.error='Не удалось сохранить состояние экспорта: '+(error as Error).message;e.job.downloadUrl=undefined;e.job.posterUrl=undefined;});return e.job;
    }finally{starting=false;}
   },
   async get(pid:string,id:string){return(await load(pid,id)).job;},

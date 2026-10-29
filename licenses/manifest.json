@@ -1,10 +1,36 @@
 {
   "format": "motivelium-third-party-inventory",
   "version": 1,
-  "applicationVersion": "0.1.0-alpha.3",
+  "applicationVersion": "0.2.0-beta.1",
   "date": "2026-10-20",
   "applicationLicense": "MIT",
   "npm": [
+    {
+      "name": "@modelcontextprotocol/core",
+      "version": "2.3.1",
+      "license": "Apache-2.0",
+      "source": "git+https://github.com/modelcontextprotocol/typescript-sdk.git",
+      "lockIntegrity": "sha512-laVmIhPGpWi7rG9q+0UigblRN0Hws/Yjlb6qLFtVqryXVLkc4h+yN8z731POD2LnAGQlFe7/tXhUm7Bi0YB91g==",
+      "notices": [
+        {
+          "file": "licenses/npm/@modelcontextprotocol/core/LICENSE",
+          "sha256": "0382b0057770ca05e9c350a50aa3b1c1fea84da0bc81d723bf00b9aa841be58a"
+        }
+      ]
+    },
+    {
+      "name": "@modelcontextprotocol/server",
+      "version": "2.3.1",
+      "license": "Apache-2.0",
+      "source": "git+https://github.com/modelcontextprotocol/typescript-sdk.git",
+      "lockIntegrity": "sha512-e59MfWuSssj6DoQ96JCTqdW1AXT5/XtnTl0WWd6MU1Ka434fFUGGosCLJbGNySDhHGvxQWoRWK137FXYFkYNWw==",
+      "notices": [
+        {
+          "file": "licenses/npm/@modelcontextprotocol/server/LICENSE",
+          "sha256": "0382b0057770ca05e9c350a50aa3b1c1fea84da0bc81d723bf00b9aa841be58a"
+        }
+      ]
+    },
     {
       "name": "buffer-crc32",
       "version": "1.0.0",
@@ -239,6 +265,19 @@
         {
           "file": "licenses/npm/yazl/LICENSE",
           "sha256": "b303783d5eb7ca50b853ffa5f145e4e7998fab339831d848f507ca6cd970577a"
+        }
+      ]
+    },
+    {
+      "name": "zod",
+      "version": "4.6.7",
+      "license": "MIT",
+      "source": "git+https://github.com/colinhacks/zod.git",
+      "lockIntegrity": "sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg==",
+      "notices": [
+        {
+          "file": "licenses/npm/zod/LICENSE",
+          "sha256": "3f1189b28e3866e0d979968d466b78f813f76827cfdca1fbb124cc0a5c8841f8"
         }
       ]
     }
@@ -2535,33 +2574,33 @@
             "NAME": "xrot",
             "LABEL": "X rotate",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 2.0,
-            "DEFAULT": 1.0
+            "MIN": 0,
+            "MAX": 2,
+            "DEFAULT": 1
           },
           {
             "NAME": "yrot",
             "LABEL": "Y rotate",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 2.0,
-            "DEFAULT": 1.0
+            "MIN": 0,
+            "MAX": 2,
+            "DEFAULT": 1
           },
           {
             "NAME": "zrot",
             "LABEL": "Z rotate",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 2.0,
-            "DEFAULT": 1.0
+            "MIN": 0,
+            "MAX": 2,
+            "DEFAULT": 1
           },
           {
             "NAME": "zoom",
             "LABEL": "Zoom Level",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
-            "DEFAULT": 1.0
+            "MIN": 0,
+            "MAX": 1,
+            "DEFAULT": 1
           }
         ]
       },
@@ -2597,38 +2636,38 @@
           {
             "NAME": "size",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
+            "MIN": 0,
+            "MAX": 1,
             "DEFAULT": 0.1
           },
           {
             "NAME": "gamma",
             "TYPE": "float",
-            "DEFAULT": 1.0,
+            "DEFAULT": 1,
             "MIN": 0.5,
-            "MAX": 2.0
+            "MAX": 2
           },
           {
             "NAME": "tint",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
-            "DEFAULT": 1.0
+            "MIN": 0,
+            "MAX": 1,
+            "DEFAULT": 1
           },
           {
             "NAME": "tintColor",
             "TYPE": "color",
             "DEFAULT": [
-              0.0,
-              1.0,
-              0.0,
-              1.0
+              0,
+              1,
+              0,
+              1
             ]
           },
           {
             "NAME": "alphaMode",
             "TYPE": "bool",
-            "DEFAULT": 0.0
+            "DEFAULT": 0
           }
         ]
       },
@@ -2744,58 +2783,58 @@
           {
             "NAME": "noiseLevel",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
+            "MIN": 0,
+            "MAX": 1,
             "DEFAULT": 0.5
           },
           {
             "NAME": "distortion1",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 5.0,
-            "DEFAULT": 1.0
+            "MIN": 0,
+            "MAX": 5,
+            "DEFAULT": 1
           },
           {
             "NAME": "distortion2",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 5.0,
-            "DEFAULT": 5.0
+            "MIN": 0,
+            "MAX": 5,
+            "DEFAULT": 5
           },
           {
             "NAME": "speed",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
+            "MIN": 0,
+            "MAX": 1,
             "DEFAULT": 0.3
           },
           {
             "NAME": "scroll",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
-            "DEFAULT": 0.0
+            "MIN": 0,
+            "MAX": 1,
+            "DEFAULT": 0
           },
           {
             "NAME": "scanLineThickness",
             "TYPE": "float",
-            "MIN": 1.0,
-            "MAX": 50.0,
-            "DEFAULT": 25.0
+            "MIN": 1,
+            "MAX": 50,
+            "DEFAULT": 25
           },
           {
             "NAME": "scanLineIntensity",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
+            "MIN": 0,
+            "MAX": 1,
             "DEFAULT": 0.5
           },
           {
             "NAME": "scanLineOffset",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
-            "DEFAULT": 0.0
+            "MIN": 0,
+            "MAX": 1,
+            "DEFAULT": 0
           }
         ]
       },
@@ -2977,25 +3016,25 @@
           {
             "NAME": "box_width",
             "TYPE": "float",
-            "MAX": 1.0,
+            "MAX": 1,
             "DEFAULT": 0.2,
-            "MIN": 0.0,
+            "MIN": 0,
             "LABEL": "Box Width"
           },
           {
             "NAME": "box_height",
             "TYPE": "float",
-            "MAX": 1.0,
+            "MAX": 1,
             "DEFAULT": 0.2,
-            "MIN": 0.0,
+            "MIN": 0,
             "LABEL": "Box Height"
           },
           {
             "NAME": "border_thickness",
             "TYPE": "float",
-            "MAX": 1.0,
+            "MAX": 1,
             "DEFAULT": 0.5,
-            "MIN": 0.0,
+            "MIN": 0,
             "LABEL": "Border Size"
           },
           {
@@ -3225,29 +3264,29 @@
             "NAME": "rate",
             "TYPE": "float",
             "DEFAULT": 2.5,
-            "MIN": 0.0,
-            "MAX": 10.0
+            "MIN": 0,
+            "MAX": 10
           },
           {
             "NAME": "edge",
             "TYPE": "float",
             "DEFAULT": 0.001,
-            "MIN": 0.0,
+            "MIN": 0,
             "MAX": 0.01
           },
           {
             "NAME": "blend",
             "TYPE": "float",
             "DEFAULT": 0.95,
-            "MIN": -1.0,
-            "MAX": 1.0
+            "MIN": -1,
+            "MAX": 1
           },
           {
             "NAME": "randomize",
             "TYPE": "float",
             "DEFAULT": 0.5,
-            "MIN": 0.0,
-            "MAX": 1.0
+            "MIN": 0,
+            "MAX": 1
           },
           {
             "NAME": "gamma",
@@ -3260,16 +3299,16 @@
             "NAME": "grid",
             "TYPE": "point2D",
             "DEFAULT": [
-              64.0,
-              36.0
+              64,
+              36
             ],
             "MIN": [
               1.5,
               1.5
             ],
             "MAX": [
-              900.0,
-              600.0
+              900,
+              600
             ]
           }
         ]
@@ -3384,9 +3423,9 @@
           {
             "NAME": "bright",
             "TYPE": "float",
-            "MIN": -1.0,
-            "MAX": 1.0,
-            "DEFAULT": 0.0
+            "MIN": -1,
+            "MAX": 1,
+            "DEFAULT": 0
           }
         ]
       },
@@ -3924,16 +3963,16 @@
             "LABEL": "slide amount",
             "TYPE": "color",
             "DEFAULT": [
-              0.0,
-              0.0,
-              0.0,
-              0.0
+              0,
+              0,
+              0,
+              0
             ]
           },
           {
             "NAME": "reflection",
             "TYPE": "bool",
-            "DEFAULT": 0.0
+            "DEFAULT": 0
           }
         ]
       },
@@ -4127,23 +4166,23 @@
             "DEFAULT": 0.02,
             "LABEL": "Amount",
             "MAX": 0.2,
-            "MIN": 0.0,
+            "MIN": 0,
             "NAME": "amount",
             "TYPE": "float"
           },
           {
-            "DEFAULT": 2.0,
+            "DEFAULT": 2,
             "LABEL": "Falloff",
-            "MAX": 4.0,
-            "MIN": 1.0,
+            "MAX": 4,
+            "MIN": 1,
             "NAME": "falloff",
             "TYPE": "float"
           },
           {
-            "DEFAULT": 0.0,
+            "DEFAULT": 0,
             "LABEL": "Red / Blue Balance",
-            "MAX": 1.0,
-            "MIN": -1.0,
+            "MAX": 1,
+            "MIN": -1,
             "NAME": "balance",
             "TYPE": "float"
           },
@@ -4154,12 +4193,12 @@
             ],
             "LABEL": "Center",
             "MAX": [
-              1.0,
-              1.0
+              1,
+              1
             ],
             "MIN": [
-              0.0,
-              0.0
+              0,
+              0
             ],
             "NAME": "center",
             "TYPE": "point2D"
@@ -4692,9 +4731,9 @@
             "NAME": "colorShift",
             "LABEL": "Color Shift",
             "TYPE": "float",
-            "DEFAULT": 0.0,
-            "MIN": 0.0,
-            "MAX": 1.0
+            "DEFAULT": 0,
+            "MIN": 0,
+            "MAX": 1
           }
         ]
       },
@@ -4729,30 +4768,30 @@
           {
             "NAME": "bright",
             "TYPE": "float",
-            "MIN": -1.0,
-            "MAX": 1.0,
-            "DEFAULT": 0.0
+            "MIN": -1,
+            "MAX": 1,
+            "DEFAULT": 0
           },
           {
             "NAME": "contrast",
             "TYPE": "float",
-            "MIN": -4.0,
-            "MAX": 4.0,
-            "DEFAULT": 1.0
+            "MIN": -4,
+            "MAX": 4,
+            "DEFAULT": 1
           },
           {
             "NAME": "hue",
             "TYPE": "float",
-            "MIN": -1.0,
-            "MAX": 1.0,
-            "DEFAULT": 0.0
+            "MIN": -1,
+            "MAX": 1,
+            "DEFAULT": 0
           },
           {
             "NAME": "saturation",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 4.0,
-            "DEFAULT": 1.0
+            "MIN": 0,
+            "MAX": 4,
+            "DEFAULT": 1
           }
         ]
       },
@@ -4818,24 +4857,24 @@
             "NAME": "minLevel",
             "LABEL": "Minimum Point",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
+            "MIN": 0,
+            "MAX": 1,
             "DEFAULT": 0.2
           },
           {
             "NAME": "midLevel",
             "LABEL": "Mid Point",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
+            "MIN": 0,
+            "MAX": 1,
             "DEFAULT": 0.5
           },
           {
             "NAME": "maxLevel",
             "LABEL": "Maximum Point",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
+            "MIN": 0,
+            "MAX": 1,
             "DEFAULT": 0.8
           },
           {
@@ -4902,7 +4941,7 @@
             "NAME": "levelsMode",
             "LABEL": "Levels Mode",
             "TYPE": "bool",
-            "DEFAULT": 0.0
+            "DEFAULT": 0
           }
         ]
       },
@@ -5020,7 +5059,7 @@
               0.25,
               0.59,
               0.9,
-              1.0
+              1
             ]
           },
           {
@@ -5271,8 +5310,8 @@
           {
             "NAME": "mix_amount",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
+            "MIN": 0,
+            "MAX": 1,
             "DEFAULT": 0.5
           }
         ]
@@ -5405,7 +5444,7 @@
               0.25,
               0.59,
               0.9,
-              1.0
+              1
             ]
           },
           {
@@ -5651,23 +5690,23 @@
           {
             "NAME": "horizontal_magnitude",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
+            "MIN": 0,
+            "MAX": 1,
             "DEFAULT": 0.125
           },
           {
             "NAME": "vertical_magnitude",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
+            "MIN": 0,
+            "MAX": 1,
             "DEFAULT": 0.125
           },
           {
             "NAME": "color_magnitude",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 2.0,
-            "DEFAULT": 1.0
+            "MIN": 0,
+            "MAX": 2,
+            "DEFAULT": 1
           },
           {
             "NAME": "mode",
@@ -6178,16 +6217,16 @@
             "NAME": "width",
             "LABEL": "Width",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
-            "DEFAULT": 0.0
+            "MIN": 0,
+            "MAX": 1,
+            "DEFAULT": 0
           },
           {
             "NAME": "angle",
             "LABEL": "Angle",
             "TYPE": "float",
-            "MIN": -1.0,
-            "MAX": 1.0,
+            "MIN": -1,
+            "MAX": 1,
             "DEFAULT": 0.125
           },
           {
@@ -6242,9 +6281,9 @@
             "NAME": "width",
             "LABEL": "Width",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
-            "DEFAULT": 0.0
+            "MIN": 0,
+            "MAX": 1,
+            "DEFAULT": 0
           },
           {
             "NAME": "angle",
@@ -7082,16 +7121,16 @@
           {
             "NAME": "slidetop",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 2.0,
-            "DEFAULT": 0.0
+            "MIN": 0,
+            "MAX": 2,
+            "DEFAULT": 0
           },
           {
             "NAME": "shifttop",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 2.0,
-            "DEFAULT": 0.0
+            "MIN": 0,
+            "MAX": 2,
+            "DEFAULT": 0
           },
           {
             "NAME": "mirrorHorizontaltop",
@@ -7110,16 +7149,16 @@
           {
             "NAME": "slidebot",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 2.0,
-            "DEFAULT": 0.0
+            "MIN": 0,
+            "MAX": 2,
+            "DEFAULT": 0
           },
           {
             "NAME": "shiftbot",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 2.0,
-            "DEFAULT": 0.0
+            "MIN": 0,
+            "MAX": 2,
+            "DEFAULT": 0
           },
           {
             "NAME": "mirrorHorizontalbot",
@@ -7172,28 +7211,28 @@
           {
             "NAME": "softness",
             "TYPE": "float",
-            "MIN": 0.0,
+            "MIN": 0,
             "MAX": 1,
-            "DEFAULT": 0.0
+            "DEFAULT": 0
           },
           {
             "NAME": "brightColor",
             "TYPE": "color",
             "DEFAULT": [
-              1.0,
-              1.0,
-              1.0,
-              1.0
+              1,
+              1,
+              1,
+              1
             ]
           },
           {
             "NAME": "darkColor",
             "TYPE": "color",
             "DEFAULT": [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ]
           }
         ]
@@ -7318,14 +7357,14 @@
           {
             "NAME": "intensity",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 10.0,
+            "MIN": 0,
+            "MAX": 10,
             "DEFAULT": 0.2
           },
           {
             "NAME": "invert_map",
             "TYPE": "bool",
-            "DEFAULT": 0.0
+            "DEFAULT": 0
           }
         ]
       },
@@ -7359,16 +7398,16 @@
           {
             "NAME": "intensity",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 50.0,
+            "MIN": 0,
+            "MAX": 50,
             "DEFAULT": 2.5
           },
           {
             "NAME": "spread",
             "TYPE": "float",
-            "MIN": 1.0,
-            "MAX": 20.0,
-            "DEFAULT": 5.0
+            "MIN": 1,
+            "MAX": 20,
+            "DEFAULT": 5
           },
           {
             "NAME": "invert_lines",
@@ -7407,21 +7446,21 @@
           {
             "NAME": "intensity",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 50.0,
-            "DEFAULT": 50.0
+            "MIN": 0,
+            "MAX": 50,
+            "DEFAULT": 50
           },
           {
             "NAME": "threshold",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
-            "DEFAULT": 0.0
+            "MIN": 0,
+            "MAX": 1,
+            "DEFAULT": 0
           },
           {
             "NAME": "sobel",
             "TYPE": "bool",
-            "DEFAULT": 1.0
+            "DEFAULT": 1
           },
           {
             "NAME": "opaque",
@@ -7460,16 +7499,16 @@
           {
             "NAME": "intensity",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 10.0,
-            "DEFAULT": 2.0
+            "MIN": 0,
+            "MAX": 10,
+            "DEFAULT": 2
           },
           {
             "NAME": "colorize",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
-            "DEFAULT": 1.0
+            "MIN": 0,
+            "MAX": 1,
+            "DEFAULT": 1
           },
           {
             "NAME": "brightness",
@@ -7510,8 +7549,8 @@
           {
             "NAME": "inputEV",
             "TYPE": "float",
-            "MIN": -10.0,
-            "MAX": 10.0,
+            "MIN": -10,
+            "MAX": 10,
             "DEFAULT": 0.5
           }
         ]
@@ -7558,7 +7597,7 @@
             "NAME": "rangeFFT",
             "TYPE": "float",
             "MAX": 1,
-            "DEFAULT": 1.0,
+            "DEFAULT": 1,
             "MIN": 0
           },
           {
@@ -7652,49 +7691,49 @@
           {
             "NAME": "strokeSize",
             "TYPE": "float",
-            "MIN": 0.0,
+            "MIN": 0,
             "MAX": 0.25,
             "DEFAULT": 0.1
           },
           {
             "NAME": "gain",
             "TYPE": "float",
-            "MIN": 1.0,
-            "MAX": 5.0,
-            "DEFAULT": 1.0
+            "MIN": 1,
+            "MAX": 5,
+            "DEFAULT": 1
           },
           {
             "NAME": "minRange",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
-            "DEFAULT": 0.0
+            "MIN": 0,
+            "MAX": 1,
+            "DEFAULT": 0
           },
           {
             "NAME": "maxRange",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
-            "DEFAULT": 1.0
+            "MIN": 0,
+            "MAX": 1,
+            "DEFAULT": 1
           },
           {
             "NAME": "topColor",
             "TYPE": "color",
             "DEFAULT": [
-              0.0,
-              0.0,
-              0.0,
-              0.0
+              0,
+              0,
+              0,
+              0
             ]
           },
           {
             "NAME": "bottomColor",
             "TYPE": "color",
             "DEFAULT": [
-              0.0,
+              0,
               0.5,
               0.9,
-              1.0
+              1
             ]
           },
           {
@@ -7704,7 +7743,7 @@
               0.25,
               0.25,
               0.25,
-              1.0
+              1
             ]
           }
         ]
@@ -7893,10 +7932,10 @@
             "NAME": "brightColor",
             "TYPE": "color",
             "DEFAULT": [
-              1.0,
+              1,
               0.9,
               0.8,
-              1.0
+              1
             ]
           },
           {
@@ -7904,9 +7943,9 @@
             "TYPE": "color",
             "DEFAULT": [
               0.3,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              1
             ]
           }
         ]
@@ -8161,8 +8200,8 @@
           {
             "NAME": "gamma",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
+            "MIN": 0,
+            "MAX": 1,
             "DEFAULT": 0.5
           }
         ]
@@ -8906,16 +8945,16 @@
             "NAME": "width",
             "LABEL": "Width",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
-            "DEFAULT": 0.0
+            "MIN": 0,
+            "MAX": 1,
+            "DEFAULT": 0
           },
           {
             "NAME": "angle",
             "LABEL": "Angle",
             "TYPE": "float",
-            "MIN": -1.0,
-            "MAX": 1.0,
+            "MIN": -1,
+            "MAX": 1,
             "DEFAULT": 0.125
           },
           {
@@ -9009,8 +9048,8 @@
             "NAME": "size",
             "LABEL": "Size",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
+            "MIN": 0,
+            "MAX": 1,
             "DEFAULT": 0.25
           },
           {
@@ -9018,10 +9057,10 @@
             "LABEL": "Fill Color",
             "TYPE": "color",
             "DEFAULT": [
-              1.0,
-              0.0,
-              0.0,
-              1.0
+              1,
+              0,
+              0,
+              1
             ]
           }
         ]
@@ -9114,25 +9153,25 @@
           {
             "NAME": "box_width",
             "TYPE": "float",
-            "MAX": 1.0,
+            "MAX": 1,
             "DEFAULT": 0.2,
-            "MIN": 0.0,
+            "MIN": 0,
             "LABEL": "Box Width"
           },
           {
             "NAME": "box_height",
             "TYPE": "float",
-            "MAX": 1.0,
+            "MAX": 1,
             "DEFAULT": 0.2,
-            "MIN": 0.0,
+            "MIN": 0,
             "LABEL": "Box Height"
           },
           {
             "NAME": "border_thickness",
             "TYPE": "float",
-            "MAX": 1.0,
+            "MAX": 1,
             "DEFAULT": 0.5,
-            "MIN": 0.0,
+            "MIN": 0,
             "LABEL": "Border Size"
           },
           {
@@ -9394,50 +9433,50 @@
             "TYPE": "image"
           },
           {
-            "DEFAULT": 8.0,
+            "DEFAULT": 8,
             "LABEL": "Block Size (px)",
-            "MAX": 64.0,
-            "MIN": 2.0,
+            "MAX": 64,
+            "MIN": 2,
             "NAME": "blockSize",
             "TYPE": "float"
           },
           {
             "DEFAULT": 0.5,
             "LABEL": "Quantize (Flatten)",
-            "MAX": 1.0,
-            "MIN": 0.0,
+            "MAX": 1,
+            "MIN": 0,
             "NAME": "quantize",
             "TYPE": "float"
           },
           {
-            "DEFAULT": 2.0,
+            "DEFAULT": 2,
             "LABEL": "Chroma Subsample",
-            "MAX": 4.0,
-            "MIN": 1.0,
+            "MAX": 4,
+            "MIN": 1,
             "NAME": "chromaSubsample",
             "TYPE": "float"
           },
           {
-            "DEFAULT": 0.0,
+            "DEFAULT": 0,
             "LABEL": "DC Corruption",
             "MAX": 0.5,
-            "MIN": 0.0,
+            "MIN": 0,
             "NAME": "dcCorrupt",
             "TYPE": "float"
           },
           {
-            "DEFAULT": 0.0,
+            "DEFAULT": 0,
             "LABEL": "Block Displace",
-            "MAX": 1.0,
-            "MIN": 0.0,
+            "MAX": 1,
+            "MIN": 0,
             "NAME": "blockDisplace",
             "TYPE": "float"
           },
           {
-            "DEFAULT": 0.0,
+            "DEFAULT": 0,
             "LABEL": "Seed",
-            "MAX": 100.0,
-            "MIN": 0.0,
+            "MAX": 100,
+            "MIN": 0,
             "NAME": "seed",
             "TYPE": "float"
           }
@@ -9881,18 +9920,18 @@
               0.5
             ],
             "MIN": [
-              0.0,
-              0.0
+              0,
+              0
             ],
             "MAX": [
-              1.0,
-              1.0
+              1,
+              1
             ]
           },
           {
             "NAME": "repeatImage",
             "TYPE": "bool",
-            "DEFAULT": 0.0
+            "DEFAULT": 0
           }
         ]
       },
@@ -10053,44 +10092,44 @@
           {
             "NAME": "sharpness",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 10.0,
-            "DEFAULT": 1.0
+            "MIN": 0,
+            "MAX": 10,
+            "DEFAULT": 1
           },
           {
             "NAME": "offset",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
-            "DEFAULT": 0.0
+            "MIN": 0,
+            "MAX": 1,
+            "DEFAULT": 0
           },
           {
             "NAME": "angle",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
+            "MIN": 0,
+            "MAX": 1,
             "DEFAULT": 0.5
           },
           {
             "NAME": "scale",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 2.0,
-            "DEFAULT": 1.0
+            "MIN": 0,
+            "MAX": 2,
+            "DEFAULT": 1
           },
           {
             "NAME": "colorize",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
-            "DEFAULT": 0.0
+            "MIN": 0,
+            "MAX": 1,
+            "DEFAULT": 0
           },
           {
             "NAME": "fill",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
-            "DEFAULT": 0.0
+            "MIN": 0,
+            "MAX": 1,
+            "DEFAULT": 0
           }
         ]
       },
@@ -10175,9 +10214,9 @@
           {
             "NAME": "frequency",
             "TYPE": "float",
-            "MAX": 16.0,
-            "MIN": 1.0,
-            "DEFAULT": 1.0
+            "MAX": 16,
+            "MIN": 1,
+            "DEFAULT": 1
           },
           {
             "NAME": "curve",
@@ -10197,26 +10236,26 @@
           {
             "NAME": "vertical",
             "TYPE": "bool",
-            "DEFAULT": 0.0
+            "DEFAULT": 0
           },
           {
             "NAME": "startColor",
             "TYPE": "color",
             "DEFAULT": [
-              1.0,
+              1,
               0.75,
-              0.0,
-              1.0
+              0,
+              1
             ]
           },
           {
             "NAME": "endColor",
             "TYPE": "color",
             "DEFAULT": [
-              0.0,
+              0,
               0.25,
               0.75,
-              1.0
+              1
             ]
           }
         ]
@@ -10455,9 +10494,9 @@
             "NAME": "radius",
             "LABEL": "Radius",
             "TYPE": "float",
-            "DEFAULT": 4.0,
-            "MIN": 0.0,
-            "MAX": 8.0
+            "DEFAULT": 4,
+            "MIN": 0,
+            "MAX": 8
           }
         ]
       },
@@ -10493,22 +10532,22 @@
             "NAME": "cell_size",
             "TYPE": "float",
             "MIN": 0.001,
-            "MAX": 1.0,
+            "MAX": 1,
             "DEFAULT": 0.125
           },
           {
             "NAME": "zoom_tile",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 2.0,
-            "DEFAULT": 1.0
+            "MIN": 0,
+            "MAX": 2,
+            "DEFAULT": 1
           },
           {
             "NAME": "mixAmt",
             "LABEL": "mix",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
+            "MIN": 0,
+            "MAX": 1,
             "DEFAULT": 0.5
           },
           {
@@ -10640,12 +10679,12 @@
           {
             "NAME": "horizontal",
             "TYPE": "bool",
-            "DEFAULT": 1.0
+            "DEFAULT": 1
           },
           {
             "NAME": "vertical",
             "TYPE": "bool",
-            "DEFAULT": 0.0
+            "DEFAULT": 0
           }
         ]
       },
@@ -10786,7 +10825,7 @@
             "NAME": "frequency1",
             "TYPE": "float",
             "MAX": 16,
-            "DEFAULT": 1.0,
+            "DEFAULT": 1,
             "MIN": 0.5
           },
           {
@@ -10867,7 +10906,7 @@
             "NAME": "frequency2",
             "TYPE": "float",
             "MAX": 16,
-            "DEFAULT": 1.0,
+            "DEFAULT": 1,
             "MIN": 0.5
           },
           {
@@ -10948,7 +10987,7 @@
             "NAME": "frequency3",
             "TYPE": "float",
             "MAX": 16,
-            "DEFAULT": 2.0,
+            "DEFAULT": 2,
             "MIN": 0.5
           },
           {
@@ -11059,23 +11098,23 @@
           {
             "NAME": "shiftLow",
             "TYPE": "float",
-            "DEFAULT": 0.0,
-            "MIN": 0.0,
-            "MAX": 1.0
+            "DEFAULT": 0,
+            "MIN": 0,
+            "MAX": 1
           },
           {
             "NAME": "shiftMid",
             "TYPE": "float",
-            "DEFAULT": 0.0,
-            "MIN": 0.0,
-            "MAX": 1.0
+            "DEFAULT": 0,
+            "MIN": 0,
+            "MAX": 1
           },
           {
             "NAME": "shiftHigh",
             "TYPE": "float",
-            "DEFAULT": 0.0,
-            "MIN": 0.0,
-            "MAX": 1.0
+            "DEFAULT": 0,
+            "MIN": 0,
+            "MAX": 1
           }
         ]
       },
@@ -11233,25 +11272,25 @@
           {
             "NAME": "intensity",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 10.0,
-            "DEFAULT": 5.0
+            "MIN": 0,
+            "MAX": 10,
+            "DEFAULT": 5
           },
           {
             "NAME": "gain",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
-            "DEFAULT": 1.0
+            "MIN": 0,
+            "MAX": 1,
+            "DEFAULT": 1
           },
           {
             "NAME": "neonColor",
             "TYPE": "color",
             "DEFAULT": [
-              1.0,
+              1,
               0.4,
               0.64,
-              1.0
+              1
             ]
           }
         ]
@@ -11288,32 +11327,32 @@
             "NAME": "displaceX",
             "TYPE": "float",
             "MAX": 0.1,
-            "DEFAULT": 0.0,
-            "MIN": 0.0,
+            "DEFAULT": 0,
+            "MIN": 0,
             "LABEL": "Displace X"
           },
           {
             "NAME": "displaceY",
             "TYPE": "float",
             "MAX": 0.1,
-            "DEFAULT": 0.0,
-            "MIN": 0.0,
+            "DEFAULT": 0,
+            "MIN": 0,
             "LABEL": "Displace Y"
           },
           {
             "NAME": "detailX",
             "TYPE": "float",
-            "MAX": 1.0,
+            "MAX": 1,
             "DEFAULT": 0.1,
-            "MIN": 0.0,
+            "MIN": 0,
             "LABEL": "Detail X"
           },
           {
             "NAME": "detailY",
             "TYPE": "float",
-            "MAX": 1.0,
+            "MAX": 1,
             "DEFAULT": 0.1,
-            "MIN": 0.0,
+            "MIN": 0,
             "LABEL": "Detail Y"
           },
           {
@@ -11321,7 +11360,7 @@
             "TYPE": "float",
             "MAX": 0.1,
             "DEFAULT": 0.01,
-            "MIN": 0.0,
+            "MIN": 0,
             "LABEL": "Frequency"
           }
         ],
@@ -11365,9 +11404,9 @@
           {
             "NAME": "sigGain",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
-            "DEFAULT": 0.0
+            "MIN": 0,
+            "MAX": 1,
+            "DEFAULT": 0
           },
           {
             "NAME": "mode",
@@ -11425,14 +11464,14 @@
             "LABEL": "Random Seed",
             "TYPE": "float",
             "MIN": 0.01,
-            "MAX": 1.0,
+            "MAX": 1,
             "DEFAULT": 0.5
           },
           {
             "NAME": "cell_size",
             "LABEL": "Cell Size",
             "TYPE": "float",
-            "MIN": 0.0,
+            "MIN": 0,
             "MAX": 0.5,
             "DEFAULT": 0.125
           },
@@ -11440,15 +11479,15 @@
             "NAME": "threshold",
             "LABEL": "Threshold",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
-            "DEFAULT": 0.0
+            "MIN": 0,
+            "MAX": 1,
+            "DEFAULT": 0
           },
           {
             "NAME": "use_time",
             "LABEL": "Animated",
             "TYPE": "bool",
-            "DEFAULT": 1.0
+            "DEFAULT": 1
           },
           {
             "NAME": "color_mode",
@@ -11938,14 +11977,14 @@
             "LABEL": "Random Seed",
             "TYPE": "float",
             "MIN": 0.01,
-            "MAX": 1.0,
+            "MAX": 1,
             "DEFAULT": 0.239
           },
           {
             "NAME": "sizeSpread",
             "LABEL": "Poly Size",
             "TYPE": "float",
-            "MIN": 0.0,
+            "MIN": 0,
             "MAX": 0.25,
             "DEFAULT": 0.025
           },
@@ -11953,9 +11992,9 @@
             "NAME": "sizeGain",
             "LABEL": "Size Gain",
             "TYPE": "float",
-            "MIN": 1.0,
-            "MAX": 2.0,
-            "DEFAULT": 1.0
+            "MIN": 1,
+            "MAX": 2,
+            "DEFAULT": 1
           },
           {
             "NAME": "sampleMode",
@@ -12431,30 +12470,30 @@
           {
             "NAME": "red",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 2.0,
-            "DEFAULT": 1.0
+            "MIN": 0,
+            "MAX": 2,
+            "DEFAULT": 1
           },
           {
             "NAME": "green",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 2.0,
-            "DEFAULT": 1.0
+            "MIN": 0,
+            "MAX": 2,
+            "DEFAULT": 1
           },
           {
             "NAME": "blue",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 2.0,
-            "DEFAULT": 1.0
+            "MIN": 0,
+            "MAX": 2,
+            "DEFAULT": 1
           },
           {
             "NAME": "gain",
             "TYPE": "float",
-            "MIN": -1.0,
-            "MAX": 1.0,
-            "DEFAULT": 0.0
+            "MIN": -1,
+            "MAX": 1,
+            "DEFAULT": 0
           }
         ]
       },
@@ -12961,9 +13000,9 @@
             "TYPE": "float"
           },
           {
-            "DEFAULT": 1.0,
-            "MAX": 8.0,
-            "MIN": 1.0,
+            "DEFAULT": 1,
+            "MAX": 8,
+            "MIN": 1,
             "NAME": "blockSize",
             "TYPE": "float"
           },
@@ -12979,9 +13018,9 @@
           },
           {
             "DEFAULT": [
-              0.0,
-              0.0,
-              0.0,
+              0,
+              0,
+              0,
               1
             ],
             "NAME": "bgColor",
@@ -13808,10 +13847,10 @@
         "ISFVSN": "2",
         "INPUTS": [
           {
-            "DEFAULT": 4.0,
+            "DEFAULT": 4,
             "LABEL": "Scale",
-            "MAX": 50.0,
-            "MIN": 1.0,
+            "MAX": 50,
+            "MIN": 1,
             "NAME": "scale",
             "TYPE": "float"
           },
@@ -13840,65 +13879,65 @@
           {
             "DEFAULT": 0.5,
             "LABEL": "Persistence",
-            "MAX": 1.0,
-            "MIN": 0.0,
+            "MAX": 1,
+            "MIN": 0,
             "NAME": "persistence",
             "TYPE": "float"
           },
           {
-            "DEFAULT": 2.0,
+            "DEFAULT": 2,
             "LABEL": "Lacunarity",
-            "MAX": 4.0,
-            "MIN": 1.0,
+            "MAX": 4,
+            "MIN": 1,
             "NAME": "lacunarity",
             "TYPE": "float"
           },
           {
-            "DEFAULT": 2.0,
+            "DEFAULT": 2,
             "LABEL": "Sharpness",
-            "MAX": 4.0,
-            "MIN": 1.0,
+            "MAX": 4,
+            "MIN": 1,
             "NAME": "sharpness",
             "TYPE": "float"
           },
           {
-            "DEFAULT": 2.0,
+            "DEFAULT": 2,
             "LABEL": "Cascade Gain",
-            "MAX": 4.0,
-            "MIN": 0.0,
+            "MAX": 4,
+            "MIN": 0,
             "NAME": "gain",
             "TYPE": "float"
           },
           {
-            "DEFAULT": 0.0,
+            "DEFAULT": 0,
             "LABEL": "Speed",
-            "MAX": 2.0,
-            "MIN": 0.0,
+            "MAX": 2,
+            "MIN": 0,
             "NAME": "speed",
             "TYPE": "float"
           },
           {
             "DEFAULT": 1.5,
             "LABEL": "Contrast",
-            "MAX": 3.0,
-            "MIN": 0.0,
+            "MAX": 3,
+            "MIN": 0,
             "NAME": "contrast",
             "TYPE": "float"
           },
           {
-            "DEFAULT": 0.0,
+            "DEFAULT": 0,
             "LABEL": "Seed",
-            "MAX": 100.0,
-            "MIN": 0.0,
+            "MAX": 100,
+            "MIN": 0,
             "NAME": "seed",
             "TYPE": "float"
           },
           {
             "DEFAULT": [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ],
             "LABEL": "Low Color",
             "NAME": "colorLow",
@@ -13906,10 +13945,10 @@
           },
           {
             "DEFAULT": [
-              1.0,
-              1.0,
-              1.0,
-              1.0
+              1,
+              1,
+              1,
+              1
             ],
             "LABEL": "High Color",
             "NAME": "colorHigh",
@@ -14672,9 +14711,9 @@
           {
             "NAME": "intensity",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 2.0,
-            "DEFAULT": 1.0
+            "MIN": 0,
+            "MAX": 2,
+            "DEFAULT": 1
           }
         ]
       },
@@ -14708,23 +14747,23 @@
           {
             "NAME": "intensityR",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 10.0,
-            "DEFAULT": 1.0
+            "MIN": 0,
+            "MAX": 10,
+            "DEFAULT": 1
           },
           {
             "NAME": "intensityG",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 10.0,
-            "DEFAULT": 1.0
+            "MIN": 0,
+            "MAX": 10,
+            "DEFAULT": 1
           },
           {
             "NAME": "intensityB",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 10.0,
-            "DEFAULT": 1.0
+            "MIN": 0,
+            "MAX": 10,
+            "DEFAULT": 1
           }
         ]
       },
@@ -14859,16 +14898,16 @@
           {
             "NAME": "slide",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 2.0,
-            "DEFAULT": 0.0
+            "MIN": 0,
+            "MAX": 2,
+            "DEFAULT": 0
           },
           {
             "NAME": "shift",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 2.0,
-            "DEFAULT": 0.0
+            "MIN": 0,
+            "MAX": 2,
+            "DEFAULT": 0
           },
           {
             "NAME": "mirrorHorizontal",
@@ -14963,10 +15002,10 @@
         "ISFVSN": "2",
         "INPUTS": [
           {
-            "DEFAULT": 8.0,
+            "DEFAULT": 8,
             "LABEL": "Scale",
-            "MAX": 50.0,
-            "MIN": 1.0,
+            "MAX": 50,
+            "MIN": 1,
             "NAME": "scale",
             "TYPE": "float"
           },
@@ -14997,49 +15036,49 @@
           {
             "DEFAULT": 0.5,
             "LABEL": "Persistence",
-            "MAX": 1.0,
-            "MIN": 0.0,
+            "MAX": 1,
+            "MIN": 0,
             "NAME": "persistence",
             "TYPE": "float"
           },
           {
-            "DEFAULT": 2.0,
+            "DEFAULT": 2,
             "LABEL": "Lacunarity",
-            "MAX": 4.0,
-            "MIN": 1.0,
+            "MAX": 4,
+            "MIN": 1,
             "NAME": "lacunarity",
             "TYPE": "float"
           },
           {
-            "DEFAULT": 0.0,
+            "DEFAULT": 0,
             "LABEL": "Speed",
-            "MAX": 2.0,
-            "MIN": 0.0,
+            "MAX": 2,
+            "MIN": 0,
             "NAME": "speed",
             "TYPE": "float"
           },
           {
-            "DEFAULT": 1.0,
+            "DEFAULT": 1,
             "LABEL": "Contrast",
-            "MAX": 3.0,
-            "MIN": 0.0,
+            "MAX": 3,
+            "MIN": 0,
             "NAME": "contrast",
             "TYPE": "float"
           },
           {
-            "DEFAULT": 0.0,
+            "DEFAULT": 0,
             "LABEL": "Seed",
-            "MAX": 100.0,
-            "MIN": 0.0,
+            "MAX": 100,
+            "MIN": 0,
             "NAME": "seed",
             "TYPE": "float"
           },
           {
             "DEFAULT": [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ],
             "LABEL": "Low Color",
             "NAME": "colorLow",
@@ -15047,10 +15086,10 @@
           },
           {
             "DEFAULT": [
-              1.0,
-              1.0,
-              1.0,
-              1.0
+              1,
+              1,
+              1,
+              1
             ],
             "LABEL": "High Color",
             "NAME": "colorHigh",
@@ -15247,9 +15286,9 @@
           {
             "NAME": "intensity",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 10.0,
-            "DEFAULT": 1.0
+            "MIN": 0,
+            "MAX": 10,
+            "DEFAULT": 1
           }
         ]
       },
@@ -15541,28 +15580,28 @@
           {
             "NAME": "centerBrightness",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
+            "MIN": 0,
+            "MAX": 1,
             "DEFAULT": 0.5
           },
           {
             "NAME": "powerCurve",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 4.0,
-            "DEFAULT": 1.0
+            "MIN": 0,
+            "MAX": 4,
+            "DEFAULT": 1
           },
           {
             "NAME": "colorize",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
-            "DEFAULT": 0.0
+            "MIN": 0,
+            "MAX": 1,
+            "DEFAULT": 0
           },
           {
             "NAME": "inverse",
             "TYPE": "bool",
-            "DEFAULT": 1.0
+            "DEFAULT": 1
           }
         ]
       },
@@ -16277,45 +16316,45 @@
           {
             "NAME": "brightness",
             "TYPE": "float",
-            "DEFAULT": 1.0,
-            "MIN": 0.0,
-            "MAX": 2.0
+            "DEFAULT": 1,
+            "MIN": 0,
+            "MAX": 2
           },
           {
             "NAME": "contrast",
             "TYPE": "float",
-            "DEFAULT": 1.0,
-            "MIN": 0.0,
-            "MAX": 2.0
+            "DEFAULT": 1,
+            "MIN": 0,
+            "MAX": 2
           },
           {
             "NAME": "saturation",
             "TYPE": "float",
-            "DEFAULT": 1.0,
-            "MIN": 0.0,
-            "MAX": 2.0
+            "DEFAULT": 1,
+            "MIN": 0,
+            "MAX": 2
           },
           {
             "NAME": "hue",
             "TYPE": "float",
-            "DEFAULT": 0.0,
-            "MIN": -1.0,
-            "MAX": 1.0
+            "DEFAULT": 0,
+            "MIN": -1,
+            "MAX": 1
           },
           {
             "NAME": "rotation",
             "TYPE": "float",
-            "DEFAULT": 0.0,
-            "MIN": 0.0,
-            "MAX": 1.0,
+            "DEFAULT": 0,
+            "MIN": 0,
+            "MAX": 1,
             "LABEL": "Pattern Rotation"
           },
           {
             "NAME": "timeSpeed",
             "TYPE": "float",
-            "DEFAULT": 0.0,
-            "MIN": -2.0,
-            "MAX": 2.0,
+            "DEFAULT": 0,
+            "MIN": -2,
+            "MAX": 2,
             "LABEL": "Animation Speed"
           },
           {
@@ -16398,7 +16437,7 @@
               0,
               0,
               0,
-              1.0
+              1
             ],
             "NAME": "bgColor",
             "TYPE": "color"
@@ -16460,16 +16499,16 @@
           {
             "NAME": "normalEdgeThreshold",
             "TYPE": "float",
-            "MIN": 0.0,
+            "MIN": 0,
             "MAX": 0.1,
             "DEFAULT": 0.03
           },
           {
             "NAME": "qLevel",
             "TYPE": "float",
-            "MIN": 2.0,
-            "MAX": 64.0,
-            "DEFAULT": 32.0
+            "MIN": 2,
+            "MAX": 64,
+            "DEFAULT": 32
           }
         ]
       },
@@ -16566,33 +16605,33 @@
           {
             "DEFAULT": 0.5,
             "LABEL": "Jitter",
-            "MAX": 1.0,
-            "MIN": 0.0,
+            "MAX": 1,
+            "MIN": 0,
             "NAME": "jitter",
             "TYPE": "float"
           },
           {
-            "DEFAULT": 0.0,
+            "DEFAULT": 0,
             "LABEL": "Seed",
-            "MAX": 100.0,
-            "MIN": 0.0,
+            "MAX": 100,
+            "MIN": 0,
             "NAME": "seed",
             "TYPE": "float"
           },
           {
-            "DEFAULT": 1.0,
+            "DEFAULT": 1,
             "LABEL": "Outline Width",
-            "MAX": 5.0,
-            "MIN": 0.0,
+            "MAX": 5,
+            "MIN": 0,
             "NAME": "outlineWidth",
             "TYPE": "float"
           },
           {
             "DEFAULT": [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ],
             "LABEL": "Outline Color",
             "NAME": "outlineColor",
@@ -16826,30 +16865,30 @@
             "NAME": "darkColor",
             "TYPE": "color",
             "DEFAULT": [
-              0.0,
+              0,
               0.164,
-              1.0,
-              1.0
+              1,
+              1
             ]
           },
           {
             "NAME": "midColor",
             "TYPE": "color",
             "DEFAULT": [
-              0.0,
-              1.0,
-              0.0,
-              1.0
+              0,
+              1,
+              0,
+              1
             ]
           },
           {
             "NAME": "brightColor",
             "TYPE": "color",
             "DEFAULT": [
-              1.0,
-              0.0,
-              0.0,
-              1.0
+              1,
+              0,
+              0,
+              1
             ]
           }
         ]
@@ -17167,9 +17206,9 @@
           {
             "NAME": "intensity",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 10.0,
-            "DEFAULT": 1.0
+            "MIN": 0,
+            "MAX": 10,
+            "DEFAULT": 1
           }
         ]
       },
@@ -17482,7 +17521,7 @@
             "TYPE": "float",
             "MIN": -0.25,
             "MAX": 0.6,
-            "DEFAULT": 0.0
+            "DEFAULT": 0
           }
         ]
       },
@@ -17544,7 +17583,7 @@
             "NAME": "crop",
             "LABEL": "Crop Image",
             "TYPE": "bool",
-            "DEFAULT": 0.0
+            "DEFAULT": 0
           },
           {
             "NAME": "brickOffset",
@@ -17656,10 +17695,10 @@
             "NAME": "newWhite",
             "TYPE": "color",
             "DEFAULT": [
-              1.0,
-              1.0,
-              1.0,
-              1.0
+              1,
+              1,
+              1,
+              1
             ]
           }
         ]
@@ -18013,26 +18052,26 @@
         "ISFVSN": "2",
         "INPUTS": [
           {
-            "DEFAULT": 10.0,
+            "DEFAULT": 10,
             "LABEL": "Density",
-            "MAX": 50.0,
-            "MIN": 1.0,
+            "MAX": 50,
+            "MIN": 1,
             "NAME": "density",
             "TYPE": "float"
           },
           {
-            "DEFAULT": 1.0,
+            "DEFAULT": 1,
             "LABEL": "Jitter",
-            "MAX": 1.0,
-            "MIN": 0.0,
+            "MAX": 1,
+            "MIN": 0,
             "NAME": "jitter",
             "TYPE": "float"
           },
           {
-            "DEFAULT": 0.0,
+            "DEFAULT": 0,
             "LABEL": "Speed",
-            "MAX": 2.0,
-            "MIN": 0.0,
+            "MAX": 2,
+            "MIN": 0,
             "NAME": "speed",
             "TYPE": "float"
           },
@@ -18073,7 +18112,7 @@
               0.1,
               0.4,
               0.8,
-              1.0
+              1
             ],
             "LABEL": "Color 1",
             "NAME": "cellColor1",
@@ -18084,7 +18123,7 @@
               0.9,
               0.7,
               0.2,
-              1.0
+              1
             ],
             "LABEL": "Color 2",
             "NAME": "cellColor2",
@@ -18094,26 +18133,26 @@
             "DEFAULT": 0.05,
             "LABEL": "Border Width",
             "MAX": 0.5,
-            "MIN": 0.0,
+            "MIN": 0,
             "NAME": "borderWidth",
             "TYPE": "float"
           },
           {
             "DEFAULT": [
-              0.0,
-              0.0,
-              0.0,
-              1.0
+              0,
+              0,
+              0,
+              1
             ],
             "LABEL": "Border Color",
             "NAME": "borderColor",
             "TYPE": "color"
           },
           {
-            "DEFAULT": 0.0,
+            "DEFAULT": 0,
             "LABEL": "Seed",
-            "MAX": 100.0,
-            "MIN": 0.0,
+            "MAX": 100,
+            "MIN": 0,
             "NAME": "seed",
             "TYPE": "float"
           }
@@ -18414,29 +18453,29 @@
           {
             "NAME": "invert",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
-            "DEFAULT": 0.0
+            "MIN": 0,
+            "MAX": 1,
+            "DEFAULT": 0
           },
           {
             "NAME": "separation",
             "TYPE": "float",
-            "MIN": 0.0,
+            "MIN": 0,
             "MAX": 0.5,
             "DEFAULT": 0.25
           },
           {
             "NAME": "greyscale",
             "TYPE": "float",
-            "MIN": 0.0,
-            "MAX": 1.0,
+            "MIN": 0,
+            "MAX": 1,
             "DEFAULT": 0.75
           },
           {
             "NAME": "thickness",
             "TYPE": "float",
             "MIN": 0.5,
-            "MAX": 1.0,
+            "MAX": 1,
             "DEFAULT": 0.75
           },
           {
@@ -18444,9 +18483,9 @@
             "TYPE": "color",
             "DEFAULT": [
               0.5,
-              0.0,
+              0,
               0.25,
-              1.0
+              1
             ]
           },
           {
@@ -18456,7 +18495,7 @@
               0.2,
               0.75,
               0.5,
-              1.0
+              1
             ]
           }
         ]
@@ -18493,7 +18532,7 @@
           {
             "NAME": "amount",
             "TYPE": "float",
-            "MIN": 0.0,
+            "MIN": 0,
             "MAX": 0.1,
             "DEFAULT": 0.01
           }
@@ -18531,7 +18570,7 @@
           {
             "NAME": "amount",
             "TYPE": "float",
-            "MIN": 0.0,
+            "MIN": 0,
             "MAX": 0.1,
             "DEFAULT": 0.01
           }
@@ -18574,7 +18613,7 @@
             "NAME": "inputDistortion",
             "TYPE": "float",
             "MAX": 5,
-            "DEFAULT": 0.0,
+            "DEFAULT": 0,
             "LABEL": "Distortion",
             "MIN": 0
           },
@@ -18590,7 +18629,7 @@
             "NAME": "inputVSYNC",
             "TYPE": "float",
             "MAX": 2,
-            "DEFAULT": 0.0,
+            "DEFAULT": 0,
             "LABEL": "V Sync",
             "MIN": 0
           },
@@ -18598,7 +18637,7 @@
             "NAME": "inputHSYNC",
             "TYPE": "float",
             "MAX": 2,
-            "DEFAULT": 0.0,
+            "DEFAULT": 0,
             "LABEL": "H Sync",
             "MIN": 0
           },

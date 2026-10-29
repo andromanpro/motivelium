@@ -1,0 +1,169 @@
+{
+  "preparedModelSource": "Поставки/2026-10-20_три-модели_движение/assets/models/6854c12a8f831ad6070ae9310dd99a2c0094d3b1171f3ccfdbda46d8bf8f78cb.glb",
+  "credits": "credits/Модели.md",
+  "files": [
+    {
+      "file": "assets/car.glb",
+      "bytes": 11482184,
+      "sha256": "b34933a866bf8bda93d0f3740f0fa64d87e977dde1446a83c760b5dbc9f07709"
+    },
+    {
+      "file": "assets/ingenuity.glb",
+      "bytes": 620552,
+      "sha256": "6854c12a8f831ad6070ae9310dd99a2c0094d3b1171f3ccfdbda46d8bf8f78cb"
+    },
+    {
+      "file": "covers/energy.webp",
+      "bytes": 44932,
+      "sha256": "8b0095f2dcadeb84cf1275c766f409eb4887012df3026c47bfee65905a53da2a"
+    },
+    {
+      "file": "covers/letters.webp",
+      "bytes": 23608,
+      "sha256": "1f210a1b0c9b1c32156eda8b75107f19adde48f2eec28e98b1abd00b2210bb9c"
+    },
+    {
+      "file": "covers/matter.webp",
+      "bytes": 44860,
+      "sha256": "25cfa6fc1ffa048472ffd7bc3fa71eb1d71aa4ce8f6a0a609edc76e2d792a3c6"
+    },
+    {
+      "file": "covers/showcase.webp",
+      "bytes": 47432,
+      "sha256": "6ab89c80234b55847d5c61c51622e9d7f8a25bdee45abd1ffa1ec5958016c35a"
+    },
+    {
+      "file": "covers-v3/energy.webp",
+      "bytes": 32118,
+      "sha256": "5e2512ef393f945cddea24bc71a9d862fb01d509b1bf20b6fa73df7c5c921586"
+    },
+    {
+      "file": "covers-v3/letters.webp",
+      "bytes": 23608,
+      "sha256": "1f210a1b0c9b1c32156eda8b75107f19adde48f2eec28e98b1abd00b2210bb9c"
+    },
+    {
+      "file": "covers-v3/matter.webp",
+      "bytes": 23846,
+      "sha256": "8f6ebed490cd2234f2bd98e9584b31e5c09eb54930fb08df9c3db1e8cf3077b3"
+    },
+    {
+      "file": "covers-v3/showcase.webp",
+      "bytes": 48864,
+      "sha256": "ee1c57e92a1056924f7c3c1132a422d6fc998514247e2645dd6cf1ff68048d00"
+    },
+    {
+      "file": "covers-v4/energy.webp",
+      "bytes": 35996,
+      "sha256": "791a0daafcadca776032db2833f4cb0a3b6a0f669cfb648ad76d5598f001ddfd"
+    },
+    {
+      "file": "covers-v4/letters.webp",
+      "bytes": 15964,
+      "sha256": "930c521a586269ad6eba45f85d685e080e45eeeb8d0769bb6007a8e76c31bf20"
+    },
+    {
+      "file": "covers-v4/matter.webp",
+      "bytes": 30824,
+      "sha256": "d3a56c178fb558f4ecd58b3591b885783f80d76e646edcc6a17678b773da31ff"
+    },
+    {
+      "file": "covers-v4/showcase.webp",
+      "bytes": 53478,
+      "sha256": "fb53004d1e4adf3fff45c5e0901a12b95d21b447f0c885ba19c82405a05c1b94"
+    },
+    {
+      "file": "credits/CarConcept-README.md",
+      "bytes": 20382,
+      "sha256": "af5f76ead54a5039288924f37081d6e1fcd5ccc5b2628faedb926325a73099cd"
+    },
+    {
+      "file": "credits/LicenseRef-LegalMark-Khronos.txt",
+      "bytes": 589,
+      "sha256": "2ea9821de870cf8d3faaa115ffc47f56632bf9f98d54d2ac1ce61592040b765c"
+    },
+    {
+      "file": "credits/NASA-media-guidelines.html",
+      "bytes": 313141,
+      "sha256": "1d157b9aaf54f9ec52c227cd56e3bb0b7927f1a0e68d72750f29e55f58145d35"
+    },
+    {
+      "file": "credits/NASA-README.md",
+      "bytes": 2396,
+      "sha256": "2e86b56d48a27803fa32f6fe66d252746c92a875865af162b3a0941435199a12"
+    },
+    {
+      "file": "credits/Модели.md",
+      "bytes": 4185,
+      "sha256": "982255e936befa70588b2ed65affe6bc252a4d23c9454d95df18db5d01db5591"
+    },
+    {
+      "file": "assets/discharge-device.glb",
+      "bytes": 2447432,
+      "sha256": "8860d81ce79c568dad2a4c9d030b195df67b6c8a13c243658942832c2fbcc672"
+    },
+    {
+      "file": "assets/one-strike-bed.wav",
+      "bytes": 1920044,
+      "sha256": "678338baa3c4261565cbdca3c352828b497dcf3a5d12d1e3f3df68766cfd28d6"
+    },
+    {
+      "file": "assets/one-strike-crack.wav",
+      "bytes": 153644,
+      "sha256": "86e777553658be3ded78a18762b633b4cdbb5c5930cb7baae19abe3e8845b1e0"
+    },
+    {
+      "file": "assets/one-strike-tick.wav",
+      "bytes": 28844,
+      "sha256": "f089bd4b82697e27b90b85a1a8e20d2aad6f221551916b7907379dd9b5e0ecc7"
+    },
+    {
+      "file": "covers-v5/energy.webp",
+      "bytes": 17388,
+      "sha256": "437a6a5a8f579e08b0899afaa4ca25122970fcd6755141fb110089101ecea14e"
+    },
+    {
+      "file": "assets/collage-score.wav",
+      "bytes": 3840078,
+      "sha256": "af9e6b921f7a042eaab7a3a769ef860e1eaad0f2582c11af90c9c139f5370eb4"
+    },
+    {
+      "file": "assets/collage-tick.wav",
+      "bytes": 30764,
+      "sha256": "db71c80ea63468eb92af1a45ce80772b29e9af60315763e103904cf5f46be15b"
+    },
+    {
+      "file": "assets/collage-sweep.wav",
+      "bytes": 124844,
+      "sha256": "fdb2a5bdf26c01ad73c31d9937f40164282bb051814656bbfa83a16920c23011"
+    },
+    {
+      "file": "credits/Дай-идее-ход.md",
+      "bytes": 1769,
+      "sha256": "731fe6ace7e58986b7d385515528ed9a356e1245ec9b4bf92e9477035f6c08bf"
+    },
+    {
+      "file": "covers-v5/showcase.webp",
+      "bytes": 61034,
+      "sha256": "ac9f976daf67962da0df235d435b4e4752eb54585c7e60401772b5191302060b"
+    },
+    {
+      "sourceSha256": "b34933a866bf8bda93d0f3740f0fa64d87e977dde1446a83c760b5dbc9f07709",
+      "sha256": "de30ecd884af00ef7c575f905b9ad5de344c9ad99a25110425201f0647f0eb2f",
+      "file": "assets/car-material-study.glb",
+      "bytes": 16039700,
+      "nodes": 102,
+      "rotorTriangles": 28120,
+      "realDrilledHoles": 54,
+      "caliperTriangles": 1360,
+      "sourceLicense": "CC BY 4.0",
+      "changedNodes": [
+        83,
+        84
+      ],
+      "derivedFrom": "assets/car.glb"
+    }
+  ],
+  "carPreparedModelSource": "lab/device-motion-20261020/prepared/car.glb",
+  "build": "20261028-visual-repair"
+}
