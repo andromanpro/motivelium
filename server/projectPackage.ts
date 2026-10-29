@@ -1,5 +1,4 @@
 import {APP_VERSION} from '../studio/domain/version.ts';
-import {localDataDir} from './dataPaths.ts';
 import fs from 'node:fs/promises';
 import {createReadStream,createWriteStream} from 'node:fs';
 import path from 'node:path';
@@ -62,7 +61,7 @@ export async function readProjectZip(file:string,destination:string){
 }
 
 export function createProjectPackageService(store:Store,root:string,onImported?:(p:Project)=>void){
- const base=path.join(localDataDir(root),'project-packages'),incoming=path.join(base,'incoming'),exports=path.join(base,'exports');let busy=false;
+ const base=path.join(path.dirname(store.root),'project-packages'),incoming=path.join(base,'incoming'),exports=path.join(base,'exports');let busy=false;
  const applying=new Map<string,Promise<{project:Project;preview:PackagePreview}>>();
  const stageDir=(id:string)=>{if(!identifier.test(id))throw new StoreError(400,'Неверный ID архива');return inside(incoming,path.join(incoming,id));};
  async function locked<T>(fn:()=>Promise<T>){if(busy)throw new StoreError(409,'Другой архив сейчас обрабатывается. Повторите после его завершения.');busy=true;try{return await fn()}finally{busy=false}}

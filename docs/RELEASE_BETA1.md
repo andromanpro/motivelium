@@ -10,6 +10,7 @@ AI-first video creation with a visual studio for manual refinement. The AI creat
 - Audio tracks, gain/offset/mute, beat grid and a common preview/export mix. MP4 H.264/AAC and project ZIP with assets.
 - Storage selection, safe copy from another local library, dependency diagnostics and illustrated first-run help.
 - Alpha/beta/rc/stable package-reader ordering and version-driven Windows metadata. Older compatible alpha ZIPs remain readable.
+- Project creation stages on the actual storage volume, even when the application directory is on another disk. Cleanup accepts canonical Windows path aliases and refuses export-directory links outside the selected store.
 
 ## Downloads and first run
 Setup: install with Windows UAC, then open from Start with ordinary rights. Portable: extract the entire ZIP and open Motivelium.exe. Both include Node and runtime libraries. Open Settings → AI and copy the MCP configuration into your own AI client. The client supplies the model and payment; no author keys are included.

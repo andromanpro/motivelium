@@ -65,7 +65,7 @@ export function studioAPIFactory(store: Store, options:{aiRoot?:string;aiProvide
   const packages=createProjectPackageService(store,options.videoRoot??options.aiRoot??KADRIL_ROOT,p=>broadcastRevision(p.id,p.revision));
   const workspaceRoot=options.videoRoot??options.aiRoot??KADRIL_ROOT;
   const templateCatalog=createTemplateCatalog(workspaceRoot);
-  const artifacts=createArtifactMaintenance(workspaceRoot);
+  const artifacts=createArtifactMaintenance(workspaceRoot,{dataRoot:path.dirname(store.root)});
   const projects=createProjectActions(store,workspaceRoot,p=>broadcastRevision(p.id,p.revision),templateCatalog);
   const media=createMediaService(store,workspaceRoot);
   const sounds=createSoundService(store,workspaceRoot);

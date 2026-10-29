@@ -14,8 +14,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 7728,
-      "sha256": "792d76d51aedcd0eece784f14ed971ed53a6e792b1212a8faf4b1fe0a535fe33"
+      "bytes": 7984,
+      "sha256": "c5c16f79be15cd1054015feb978de0952e59c4f9a75527b35dd08a2377134864"
     },
     {
       "path": "launch.mjs",
@@ -169,8 +169,8 @@
     },
     {
       "path": "docs/ALPHA_TEST.md",
-      "bytes": 5331,
-      "sha256": "4e41b5def05ab02958706b5bdae1684a850c6e05702dfed72efaa56eaa9d90ef"
+      "bytes": 5327,
+      "sha256": "4574a34a038c1af5ecf41ff820e4e2e7a2d3039ede30f1702793c4c36e42dc93"
     },
     {
       "path": "docs/APPEARANCE.md",
@@ -184,8 +184,8 @@
     },
     {
       "path": "docs/BETA_READINESS.md",
-      "bytes": 7075,
-      "sha256": "3edb42debe3c25240653aa664da2d891138d966f742161a28c257a8793feaebd"
+      "bytes": 7316,
+      "sha256": "22cf5b3a7296c692f6c8828237a8c205f7fa0811f996b06e23c87cd4d386d444"
     },
     {
       "path": "docs/CATALOG_IDS.md",
@@ -254,8 +254,8 @@
     },
     {
       "path": "docs/RELEASE_BETA1.md",
-      "bytes": 2982,
-      "sha256": "33d7b49a614b9a9b7ca9b0dbc83320921931ac0d09ccb083bc9cd6f0a9a0ce55"
+      "bytes": 3205,
+      "sha256": "7b23c3e1484462df0e23a68ecc67d8126a1d64732f57686f69877c55ce756968"
     },
     {
       "path": "docs/RELEASE_CHECKLIST_ALPHA4.md",
@@ -334,13 +334,13 @@
     },
     {
       "path": "server/api.ts",
-      "bytes": 24579,
-      "sha256": "2b2e7682d5daa49af501ed11f62b19ee97761b66b85d794242f0aa9ba4b5f4fd"
+      "bytes": 24615,
+      "sha256": "f4aa89805b544950f00e33d3130cda6c320b805ea3d1efdf016a76f829b7ed08"
     },
     {
       "path": "server/artifacts.ts",
-      "bytes": 2313,
-      "sha256": "7c3c2e505d3ef167e4dfa89494488e698688117f5afcbb62e7249c78199fd1a5"
+      "bytes": 2528,
+      "sha256": "471987e8c6a84e38c56fe9aa6a40017ea05af19df3898c988f21dc5b506240a1"
     },
     {
       "path": "server/dataPaths.ts",
@@ -369,13 +369,13 @@
     },
     {
       "path": "server/projectActions.ts",
-      "bytes": 6377,
-      "sha256": "120f8241bb2ce425c54e03aad3b4d4d41185bdc81a4b4e13819edb305cc70524"
+      "bytes": 6499,
+      "sha256": "8c4a5d7679388d21ade7637033124d64d506b94b951c47c6f0c6b6beff948fd5"
     },
     {
       "path": "server/projectPackage.ts",
-      "bytes": 16055,
-      "sha256": "1b5606e2815d7702c23b7e215f502dadc90a5f30e9950b982e84e001d7222d2a"
+      "bytes": 16015,
+      "sha256": "ed54e1d257416d025700bf225fb5b51b5cbe632e1ce0ef2ada24c529a2321947"
     },
     {
       "path": "server/requestGuard.ts",
@@ -459,8 +459,8 @@
     },
     {
       "path": "tools/prepare-runtime.mjs",
-      "bytes": 2966,
-      "sha256": "9b782c9e33cf819367999428b5002e7b631852fbd5f878ccbd387a1b6caf83ff"
+      "bytes": 2991,
+      "sha256": "c5c9b5e45509c21498f0ee0694a140365e250f0718f7fe8102dae8bffd4145f4"
     },
     {
       "path": "tools/prepare-windows-build.py",
@@ -3731,6 +3731,11 @@
       "path": "studio/tests/data-paths.test.ts",
       "bytes": 3481,
       "sha256": "adbe4ac16c2abe4ffe08d26be91683040c031b7d06186257ad9ee78af595da00"
+    },
+    {
+      "path": "studio/tests/data-volume.test.ts",
+      "bytes": 5077,
+      "sha256": "246d9dab244944d619318a62790b953c47048d8a2c93003f1361c10987ad3407"
     },
     {
       "path": "studio/tests/demoFilms.test.ts",

@@ -1,4 +1,3 @@
-import {localDataDir} from './dataPaths.ts';
 import fs from 'node:fs/promises';import path from 'node:path';import crypto from 'node:crypto';
 import {createStore,StoreError,type Store} from './storage.ts';
 import {blankProject} from '../studio/domain/projectSetup.ts';
@@ -10,7 +9,9 @@ const hash=(bytes:Buffer|string)=>crypto.createHash('sha256').update(bytes).dige
 const inside=(base:string,relative:string)=>{const p=path.resolve(base,relative),rel=path.relative(base,p);if(rel.startsWith('..')||path.isAbsolute(rel))throw new StoreError(400,'Недопустимый путь ресурса.');return p;};
 async function atomic(file:string,value:unknown){const tmp=file+'.'+crypto.randomUUID()+'.tmp';await fs.writeFile(tmp,JSON.stringify(value,null,2));await fs.rename(tmp,file)}
 export function createProjectActions(store:Store,root:string,onCreated?:(p:Project)=>void,templates?:ReturnType<typeof createTemplateCatalog>){
- const base=path.join(localDataDir(root),'project-actions'),pending=new Map<string,Promise<Project>>();
+ // Receipts and staging belong to the actual store, including an explicit dataRoot.
+ // Keeping staging on the destination volume preserves the atomic rename.
+ const base=path.join(path.dirname(store.root),'project-actions'),pending=new Map<string,Promise<Project>>();
  async function run(kind:'new'|'copy'|'template',input:Record<string,unknown>,sourceId?:string):Promise<Project>{
   const requestId=input.requestId;if(typeof requestId!=='string'||!/^[a-zA-Z0-9][a-zA-Z0-9_-]{7,80}$/.test(requestId))throw new StoreError(400,'Нужен идентификатор операции создания.');
   const signature=hash(JSON.stringify({kind,sourceId,input})),key=requestId+':'+signature;
