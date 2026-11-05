@@ -5,6 +5,9 @@
 // вставляется в кадр той же матрицей.
 
 import type { Project, SceneNode } from '../domain/schema.ts';
+import {drawScreenGuide} from './screenGuide.ts';
+import {videoSourceTime} from '../domain/screenGuide.ts';
+import {videoSample} from '../domain/video.ts';
 import {evaluateFrame} from './evaluate.ts';
 import {transitionAtFrame} from '../domain/transitions.ts';
 import {renderShader} from './shaderRenderer.ts';
@@ -178,6 +181,7 @@ function drawNode(
       }
       break;
     }
+    case 'video': {const sample=videoSample(project,node,state.frame);if(!sample)break;const bmp=bitmaps.get(sample.key);if(bmp){ctx.save();ctx.beginPath();ctx.rect(0,0,node.geometry.width,node.geometry.height);ctx.clip();if(node.screenGuide)drawScreenGuide(ctx,bmp,node,videoSourceTime(project,node,state.frame));else drawImageFitted(ctx,bmp,node.geometry.width,node.geometry.height,node.fit);ctx.restore();}else{result.missingAssets.push(sample.key);drawAssetPlaceholder(ctx,node,project);}break;}
     case 'scene3d':
       if (threeLayer) {
         const layerCanvas = threeLayer.render(item, state);
@@ -199,7 +203,7 @@ function drawImageFitted(ctx: CanvasRenderingContext2D, bmp: CanvasImageSource &
   ctx.drawImage(bmp, (w - dw) / 2, (h - dh) / 2, dw, dh);
 }
 
-function drawAssetPlaceholder(ctx: CanvasRenderingContext2D, node: SceneNode & { kind: 'image' }, _project: Project): void {
+function drawAssetPlaceholder(ctx: CanvasRenderingContext2D, node: SceneNode & { kind: 'image'|'video' }, _project: Project): void {
   ctx.fillStyle = '#22282f';
   ctx.fillRect(0, 0, node.geometry.width, node.geometry.height);
   ctx.strokeStyle = '#4a5563';

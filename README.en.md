@@ -1,5 +1,15 @@
 # Motivelium
 
+By **androman** · [androman.pro](https://androman.pro) · [Telegram](https://t.me/andromanpro1c)
+
+**0.2.0-beta.2:** native video layers and ScreenGuide. [Release notes](docs/RELEASE_BETA2.md).
+
+## Product inventory
+
+[Existing capabilities](docs/CAPABILITIES.md) · [Prospective branches](docs/DEVELOPMENT.md) (currently in Russian). Before implementing a feature, run `node tools/capability-map.mjs --find "topic"` and `--check`; the inventory separates released, development-only and external/lab features.
+
+**Development build after beta.1:** [video clips](docs/VIDEO_CLIPS.md) and [cursor, clicks and smooth zoom](docs/SCREEN_GUIDE.en.md), with studio preview and MCP. These additions are not included in the published beta.1 installer yet.
+
 [Русский](README.md) · [Quick start](docs/FIRST_VIDEO.en.md) · [AI connection](docs/MCP.en.md)
 
 Motivelium lets an AI build videos that remain editable. The agent creates scenes, selects effects, inspects rendered frames and proposes changes. You preview the result, refine it in the studio and control Apply, Undo and Redo.

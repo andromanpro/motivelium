@@ -5,7 +5,7 @@ import {countLabel} from './localeFormat.ts';
 export function layerDescription(project:Project,node:SceneNode):string{
  if(node.kind==='text')return node.text.replace(/\s+/g,' ').trim()||ui('Пустой текст');
  if(node.kind==='shape')return ui(node.shape==='ellipse'?'Круг / эллипс':'Прямоугольник')+' · '+node.fill;
- if(node.kind==='image')return project.assets.find(a=>a.id===node.assetId)?.title??ui('Изображение');
+ if(node.kind==='image'||node.kind==='video')return project.assets.find(a=>a.id===node.assetId)?.title??ui('Изображение');
  if(node.kind==='scene3d')return '3D · '+uiLabel(PRESET_LABELS[node.preset]);
  return ui('Группа')+' · '+countLabel(project.nodes.filter(n=>n.parentId===node.id).length,{en:['layer','layers'],ru:['слой','слоя','слоёв']});
 }

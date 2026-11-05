@@ -1,0 +1,1988 @@
+{
+  "schemaVersion": 1,
+  "asOf": "2026-10-31",
+  "purpose": "Карта реализованных возможностей и новых приращений. Не заменяет исходники, проверку и решение пользователя.",
+  "currentBuild": {
+    "version": "0.2.0-beta.2",
+    "buildId": "20261031-beta2-candidate-r3",
+    "readerFeatures": [
+      "storyboard-v1",
+      "shared-audio-v1",
+      "story-montage-v1",
+      "audio-clips-v1",
+      "kinetic-type-v1",
+      "electric-arc-v1",
+      "studio-stage-v1",
+      "storm-lightning-v1",
+      "discharge3d-v1",
+      "video-clips-v1",
+      "screen-guide-v1"
+    ]
+  },
+  "releaseBaseline": {
+    "version": "0.2.0-beta.1",
+    "buildId": "20261030-beta1",
+    "sourceArchive": "Поставки/2026-10-30_Motivelium_0.2.0-beta.1/Motivelium-0.2.0-beta.1-Source.zip",
+    "sourceArchiveSha256": "edcf53d4b710b89b0d890fa6faafd43a101818ee07e68ea67ba79a538d7939a4",
+    "method": "Для каждой нативной возможности проверено наличие всех указанных production-файлов/маркеров в неизменяемом архиве выпуска. Это подтверждает состав исходников, не новый Windows/GPU-прогон."
+  },
+  "catalog": {
+    "effects": 42,
+    "generators": 66,
+    "filters": 110,
+    "transitions": 176,
+    "compositions": 3,
+    "mcpTools": 37,
+    "toolNames": [
+      "sound_catalog",
+      "propose_sound",
+      "analyze_audio",
+      "propose_music_grid",
+      "assemble_storyboard",
+      "capabilities",
+      "run_status",
+      "preview_transition",
+      "catalog",
+      "list_projects",
+      "get_project",
+      "project_overview",
+      "list_nodes",
+      "list_effects",
+      "list_storyboard",
+      "get_story_card",
+      "preview_story_card",
+      "propose_story_capture",
+      "create_project",
+      "propose_changes",
+      "propose_screen_guide",
+      "propose_composition",
+      "propose_timing",
+      "refine_draft",
+      "get_draft",
+      "apply_draft",
+      "render_preview",
+      "render_clip",
+      "undo",
+      "redo",
+      "history",
+      "import_media",
+      "import_model",
+      "export_video",
+      "export_status",
+      "cancel_export",
+      "export_project"
+    ],
+    "countMeaning": "42 определения эффектов и352элемента shader-bank — разные уровни; не складывать как394независимые художественные возможности. Количество не равно качеству."
+  },
+  "groups": [
+    {
+      "id": "core",
+      "title": "Основа и история"
+    },
+    {
+      "id": "plan",
+      "title": "Замысел и раскадровка"
+    },
+    {
+      "id": "edit",
+      "title": "Ручная шлифовка"
+    },
+    {
+      "id": "ai",
+      "title": "Создание и проверка через ИИ"
+    },
+    {
+      "id": "fx",
+      "title": "Визуальный язык"
+    },
+    {
+      "id": "media",
+      "title": "Материалы и скринкасты"
+    },
+    {
+      "id": "audio",
+      "title": "Звук и музыкальный монтаж"
+    },
+    {
+      "id": "output",
+      "title": "Экспорт и перенос"
+    },
+    {
+      "id": "product",
+      "title": "Приложение и поставка"
+    },
+    {
+      "id": "lab",
+      "title": "Лаборатория и внешнее производство"
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "CORE-01",
+      "area": "core",
+      "title": "Документ, сцены и ресурсы",
+      "scope": "Project v2, строгая схема, иерархия узлов, рациональный FPS, идентификаторы, ресурсы и семена.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "generic",
+      "acceptance": "technical",
+      "limits": "Изменение размера/FPS готового монтажа не равно созданию проекта нового формата.",
+      "aliases": [],
+      "evidence": [
+        {
+          "path": "studio/domain/schema.ts",
+          "marker": "validateProject"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/schema.test.ts",
+          "marker": ""
+        },
+        {
+          "path": "studio/tests/schema-strict.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "CORE-02",
+      "area": "core",
+      "title": "Операции, ревизии и история",
+      "scope": "Пакеты правок, проверка ревизии, явное применение, Undo/Redo и защита повторных запросов.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "dedicated",
+      "acceptance": "technical",
+      "limits": "История отмен локальна и не переносится как прежняя история через ZIP.",
+      "aliases": [
+        "M1",
+        "M2",
+        "Undo",
+        "отмена"
+      ],
+      "evidence": [
+        {
+          "path": "studio/domain/operations.ts",
+          "marker": "applyOperations"
+        },
+        {
+          "path": "server/storage.ts",
+          "marker": "expectedRevision"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/transaction.test.ts",
+          "marker": ""
+        },
+        {
+          "path": "studio/tests/storage-protocol.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "CORE-03",
+      "area": "core",
+      "title": "Общий покадровый рендер",
+      "scope": "Один расчёт кадра для студии, PNG/MCP и MP4, обычные и двухкадровые переходы.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "dedicated",
+      "acceptance": "technical",
+      "limits": "Равенство графа/времени не обещает побитно одинаковую картинку на разных GPU.",
+      "aliases": [],
+      "evidence": [
+        {
+          "path": "studio/render/evaluate.ts",
+          "marker": "evaluateFrame"
+        },
+        {
+          "path": "studio/render/renderFrame.ts",
+          "marker": "renderFrame"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/render.test.ts",
+          "marker": ""
+        },
+        {
+          "path": "studio/tests/time-matrix.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "PLAN-01",
+      "area": "plan",
+      "title": "Раскадровка внутри проекта",
+      "scope": "Замысел, карточки, эскизы, снимки монтажа, источники, замечания и связь со сценами.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "dedicated",
+      "acceptance": "technical",
+      "limits": "Состояние «Выбран» не означает приёмку; перестановка карточки сама не перестраивает монтаж.",
+      "aliases": [
+        "рассценарий",
+        "STORYBOARD"
+      ],
+      "evidence": [
+        {
+          "path": "studio/domain/storyboard.ts",
+          "marker": "storySignature"
+        },
+        {
+          "path": "mcp/storyboard.ts",
+          "marker": "listStoryboard"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/storyboard.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "PLAN-02",
+      "area": "plan",
+      "title": "Сборка сцен из раскадровки",
+      "scope": "Редактируемая заготовка из выбранных карточек: screen/poster/data, примерка, применение и отмена.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "dedicated",
+      "acceptance": "technical",
+      "limits": "Заготовку нужно режиссировать; это не автоматический качественный фильм по любой статье.",
+      "aliases": [],
+      "evidence": [
+        {
+          "path": "studio/domain/storyMontage.ts",
+          "marker": "buildStoryMontage"
+        },
+        {
+          "path": "mcp/bridge.ts",
+          "marker": "assemble_storyboard"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/storyboard.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "EDIT-01",
+      "area": "edit",
+      "title": "Ручная работа со слоями",
+      "scope": "Добавление, удаление, выбор, миниатюры, видимость, блокировка и свойства.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "generic",
+      "acceptance": "technical",
+      "limits": "Детали 3D выбираются в отдельной мастерской модели.",
+      "aliases": [],
+      "evidence": [
+        {
+          "path": "studio/src/editor/TreePanel.tsx",
+          "marker": "data-node-id"
+        },
+        {
+          "path": "studio/src/editor/LayerDialog.tsx",
+          "marker": "LayerDialog"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/layers.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "EDIT-02",
+      "area": "edit",
+      "title": "Перемещение и размер на холсте",
+      "scope": "Перетаскивание, углы размера, порядок слоёв перетаскиванием, обычная отмена.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "generic",
+      "acceptance": "technical",
+      "limits": "Это редактирование узлов, не отдельный свободный видеомонтаж NLE.",
+      "aliases": [],
+      "evidence": [
+        {
+          "path": "studio/src/editor/useCanvasTransform.ts",
+          "marker": "useCanvasTransform"
+        },
+        {
+          "path": "studio/src/editor/useLayerOrder.ts",
+          "marker": "useLayerOrder"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/direct-manipulation.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "EDIT-03",
+      "area": "edit",
+      "title": "Ключи движения и размера",
+      "scope": "Transform keys положения, масштаба, поворота и прозрачности; smooth/linear/hold.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "generic",
+      "acceptance": "technical",
+      "limits": "Графического редактора произвольных кривых пока нет.",
+      "aliases": [
+        "ключи",
+        "keyframes"
+      ],
+      "evidence": [
+        {
+          "path": "studio/domain/animation.ts",
+          "marker": "transformAtFrame"
+        },
+        {
+          "path": "studio/src/editor/KeyframePanel.tsx",
+          "marker": "KeyframePanel"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/animation.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "EDIT-04",
+      "area": "edit",
+      "title": "Камеры и пролёты",
+      "scope": "Общая камера и камеры интервалов; числовая ручная правка scoped-камер в «Композиции → Камера и звук».",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "partial",
+      "mcp": "generic",
+      "acceptance": "technical",
+      "limits": "Не считать камеры отсутствующими. Единая визуальная дорожка всех камер/траекторий и кривых — отдельное расширение.",
+      "aliases": [],
+      "evidence": [
+        {
+          "path": "studio/render/evaluate.ts",
+          "marker": "cameraAtFrame"
+        },
+        {
+          "path": "studio/src/editor/CompositionLibrary.tsx",
+          "marker": "function CameraEditor"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/compositions.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "EDIT-05",
+      "area": "edit",
+      "title": "Сравнение версий",
+      "scope": "Синхронное сопоставление проектов/версий с перемоткой и общим звуком.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "generic",
+      "acceptance": "technical",
+      "limits": "HTML-страницы истории роликов отдельно; наличие сравнения не означает автоматическое слияние версий.",
+      "aliases": [],
+      "evidence": [
+        {
+          "path": "studio/src/editor/ProjectComparison.tsx",
+          "marker": "ProjectComparison"
+        },
+        {
+          "path": "studio/domain/comparison.ts",
+          "marker": "export"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/comparison.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "AI-01",
+      "area": "ai",
+      "title": "Внешний MCP для сборки ролика",
+      "scope": "Проекты, импорт, сцены, узлы, эффекты, раскадровка, звук, примерки и экспорт через stdio.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "partial",
+      "mcp": "dedicated",
+      "acceptance": "technical",
+      "limits": "Модель живёт во внешнем ИИ-клиенте; встроенный GLM и MCP — разные подключения.",
+      "aliases": [
+        "MCP",
+        "AI-first",
+        "M4"
+      ],
+      "evidence": [
+        {
+          "path": "mcp/server.mjs",
+          "marker": "serveStdio"
+        },
+        {
+          "path": "mcp/bridge.ts",
+          "marker": "createBridge"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/mcp.test.ts",
+          "marker": ""
+        },
+        {
+          "path": "studio/tests/mcp-installed-config.test.ts"
+        }
+      ]
+    },
+    {
+      "id": "AI-02",
+      "area": "ai",
+      "title": "Компактное чтение и каталоги",
+      "scope": "Пагинация объектов/эффектов/карточек, свойства по ID, каталоги и стабильные идентификаторы категорий.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "dedicated",
+      "acceptance": "technical",
+      "limits": "Усечённые поля помечены; их нельзя возвращать как полную замену.",
+      "aliases": [
+        "MCP.3",
+        "MCP.2"
+      ],
+      "evidence": [
+        {
+          "path": "mcp/query.ts",
+          "marker": "QUERY_MAX_BYTES"
+        },
+        {
+          "path": "mcp/catalog.ts",
+          "marker": "searchCatalog"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/catalogIds.test.ts",
+          "marker": ""
+        },
+        {
+          "path": "studio/tests/mcp.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "AI-03",
+      "area": "ai",
+      "title": "Рецепты времени и превью переходов",
+      "scope": "Появление/уход без предварительного показа текста, настоящие A→B образцы переходов.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "partial",
+      "mcp": "dedicated",
+      "acceptance": "technical",
+      "limits": "Наличие рецепта не снимает проверки первого/последнего кадра и стыка.",
+      "aliases": [],
+      "evidence": [
+        {
+          "path": "mcp/recipes.ts",
+          "marker": "timingOperations"
+        },
+        {
+          "path": "mcp/transitions.ts",
+          "marker": "transitionSample"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/motionTiming.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "AI-04",
+      "area": "ai",
+      "title": "Черновики, реальные кадры и бюджет",
+      "scope": "propose/refine/render/apply, PNG и короткий клип, общий лимит итераций/превью/времени.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "dedicated",
+      "acceptance": "technical",
+      "limits": "Короткий MCP render_clip без звука; для звука есть студия и полный MP4. Новый draft не сбрасывает бюджет.",
+      "aliases": [],
+      "evidence": [
+        {
+          "path": "mcp/budget.ts",
+          "marker": "createRunBudget"
+        },
+        {
+          "path": "mcp/bridge.ts",
+          "marker": "renderSnapshot"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/mcp.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "AI-05",
+      "area": "ai",
+      "title": "Встроенный GLM видит и проверяет объект",
+      "scope": "Видит кадры до/после выбранного объекта, предлагает правку, ограниченно проверяет и дорабатывает.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "none",
+      "acceptance": "technical",
+      "limits": "Это проверка примерки объекта, не встроенный аудит всего фильма, речи и непрерывного движения.",
+      "aliases": [
+        "автопроверка",
+        "M4-vision"
+      ],
+      "evidence": [
+        {
+          "path": "studio/src/editor/AIEditor.tsx",
+          "marker": "AIEditor"
+        },
+        {
+          "path": "server/ai/auto.ts",
+          "marker": ""
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/ai-visual.test.ts",
+          "marker": ""
+        },
+        {
+          "path": "studio/tests/ai-auto.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "FX-01",
+      "area": "fx",
+      "title": "Накопление, шлейфы и дым",
+      "scope": "Готовые многопроходные эффекты, память движения, восстановление состояния при перемотке.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "generic",
+      "acceptance": "technical",
+      "limits": "Ограниченные поля/allowlist; не универсальный импорт любого ISF/compute. История видеокадров пока отключена.",
+      "aliases": [
+        "FX-01",
+        "multipass",
+        "feedback"
+      ],
+      "evidence": [
+        {
+          "path": "studio/render/stateReplay.ts",
+          "marker": ""
+        },
+        {
+          "path": "studio/render/feedbackRenderer.ts",
+          "marker": "renderFeedback"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/feedback.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "FX-02",
+      "area": "fx",
+      "title": "Превращения контуров и маски",
+      "scope": "Формы, SVG-контур, контурное окно, органическое раскрытие и растворение.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "generic",
+      "acceptance": "technical",
+      "limits": "Не любое превращение произвольных объектов и топологий.",
+      "aliases": [
+        "FX-02",
+        "морфинг форм"
+      ],
+      "evidence": [
+        {
+          "path": "studio/effects/contours.ts",
+          "marker": "morphContour"
+        },
+        {
+          "path": "studio/render/layerMasks.ts",
+          "marker": "maskLayer"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/contours.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "FX-03",
+      "area": "fx",
+      "title": "Детали 3D и импорт моделей",
+      "scope": "Статические GLB/GLTF, выбор деталей, разборка/сборка, ключи частей и 3D-камеры.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "dedicated",
+      "acceptance": "technical",
+      "limits": "Универсальный проигрыватель animation clips, skins и morph targets не реализован.",
+      "aliases": [
+        "FX-03",
+        "Anatomy"
+      ],
+      "evidence": [
+        {
+          "path": "studio/domain/model3d.ts",
+          "marker": "PartEdit"
+        },
+        {
+          "path": "studio/src/editor/ModelWorkshop.tsx",
+          "marker": "ModelWorkshop"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/model3d.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "FX-04",
+      "area": "fx",
+      "title": "Объёмный свет и материалы",
+      "scope": "Глубина/туман, материалы, свечение, обработка и отдельный полноразмерный основной 3D-проход.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "generic",
+      "acceptance": "technical",
+      "limits": "Лимиты GPU/качества сохраняются. Проверка одного устройства не означает все GPU.",
+      "aliases": [
+        "FX-04",
+        "FX-Q1"
+      ],
+      "evidence": [
+        {
+          "path": "studio/render/volume3d.ts",
+          "marker": ""
+        },
+        {
+          "path": "studio/effects/lighting3d.ts",
+          "marker": ""
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/lighting3d.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "FX-05",
+      "area": "fx",
+      "title": "Готовые редактируемые сочетания",
+      "scope": "Фокус, Реплика, Орбита: камера, текст, частицы, свет и звуковой акцент.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "dedicated",
+      "acceptance": "technical",
+      "limits": "Три встроенных сочетания; пользовательская библиотека рецептов — отдельное расширение.",
+      "aliases": [
+        "FX-05"
+      ],
+      "evidence": [
+        {
+          "path": "studio/domain/compositions.ts",
+          "marker": "COMPOSITIONS"
+        },
+        {
+          "path": "mcp/bridge.ts",
+          "marker": "propose_composition"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/compositions.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "FX-06",
+      "area": "fx",
+      "title": "Шейдерный банк и галерея",
+      "scope": "Генераторы фона, фильтры и двухкадровые переходы, живые образцы и примерка.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "dedicated",
+      "acceptance": "technical",
+      "limits": "Количество элементов не гарантирует художественное качество каждой композиции.",
+      "aliases": [
+        "M3",
+        "галерея"
+      ],
+      "evidence": [
+        {
+          "path": "studio/effects/shaders/library.ts",
+          "marker": "SHADERS"
+        },
+        {
+          "path": "studio/src/editor/ShaderLibrary.tsx",
+          "marker": "ShaderLibrary"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/shader-library.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "FX-07",
+      "area": "fx",
+      "title": "Кинетическая типографика",
+      "scope": "Шрифты/начертания, движение глифов, сборка фрагментов и контурный леттеринг.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "generic",
+      "acceptance": "technical",
+      "limits": "Контурный леттеринг использует встроенный атлас; произвольный загруженный шрифт не становится автоматически морфингом.",
+      "aliases": [
+        "буквы",
+        "letter-morph"
+      ],
+      "evidence": [
+        {
+          "path": "studio/effects/typography.ts",
+          "marker": ""
+        },
+        {
+          "path": "studio/render/glyphMotion.ts",
+          "marker": "drawGlyphMotion"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/typography.test.ts",
+          "marker": ""
+        },
+        {
+          "path": "studio/tests/glyphMotion.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "FX-08",
+      "area": "fx",
+      "title": "ASCII-анимация",
+      "scope": "Преобразование слоя в ASCII, волны/вихрь/дождь/рыбки, параметры и примерка.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "generic",
+      "acceptance": "technical",
+      "limits": "Ограниченная сетка; это нативный эффект, а не установка всех найденных ASCII-проектов.",
+      "aliases": [
+        "ASCII",
+        "рыбки"
+      ],
+      "evidence": [
+        {
+          "path": "studio/render/typography.ts",
+          "marker": "asciiLayer"
+        },
+        {
+          "path": "studio/effects/registry.ts",
+          "marker": "'ascii-screen'"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/typography.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "FX-09",
+      "area": "fx",
+      "title": "Электричество и предметная сцена",
+      "scope": "Дуги, Storm Lance, 3D-разряд с освещением, подиум и предметная постановка.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "generic",
+      "acceptance": "technical",
+      "limits": "Готовый технический эффект не равен принятому дизайну кадра.",
+      "aliases": [
+        "Разряд",
+        "FX-Q2"
+      ],
+      "evidence": [
+        {
+          "path": "studio/effects/registry.ts",
+          "marker": "'3d-discharge'"
+        },
+        {
+          "path": "studio/render/lightningBolt.ts",
+          "marker": ""
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/dischargePilot.test.ts",
+          "marker": ""
+        },
+        {
+          "path": "studio/tests/electricArc.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "MEDIA-01",
+      "area": "media",
+      "title": "Импорт изображений, аудио и моделей",
+      "scope": "Ресурсы PNG/JPEG/WebP, WAV/MP3, статические модели, проверка и добавление в сцену.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "dedicated",
+      "acceptance": "technical",
+      "limits": "Общий ресурс до64МиБ; модели имеют отдельный более строгий лимит.",
+      "aliases": [
+        "M5",
+        "импорт"
+      ],
+      "evidence": [
+        {
+          "path": "server/mediaAssets.ts",
+          "marker": "createMediaService"
+        },
+        {
+          "path": "studio/src/editor/ResourcePanel.tsx",
+          "marker": "ResourcePanel"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/media-assets.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "MEDIA-02",
+      "area": "media",
+      "title": "Нативный MP4-видеослой",
+      "scope": "H264/AAC CFR, обрезка, скорость, hold/hide, связанный звук, общий декодер UI/MCP/MP4.",
+      "implementation": "ready",
+      "delivery": "working",
+      "manual": "full",
+      "mcp": "generic",
+      "acceptance": "review",
+      "limits": "Только рабочая сборка после beta.1. До64МиБ, CFR1–120, до4096px; скорость меняет высоту звука. Начало видео привязано к началу сцены.",
+      "aliases": [
+        "видеослои",
+        "MP4 import"
+      ],
+      "evidence": [
+        {
+          "path": "studio/domain/schema.ts",
+          "marker": "kind:'video'"
+        },
+        {
+          "path": "server/videoFrames.ts",
+          "marker": "createVideoFrames"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/video-clips.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "MEDIA-03",
+      "area": "media",
+      "title": "Курсор, щелчки и автозум записи",
+      "scope": "Точки внимания во времени/координатах исходника, локальное приближение, ручная постановка и JSON.",
+      "implementation": "ready",
+      "delivery": "working",
+      "manual": "full",
+      "mcp": "dedicated",
+      "acceptance": "review",
+      "limits": "Только рабочая сборка. Точки заданы/импортированы, а не распознаны из пикселей. Захвата экрана пока нет; проба4.4с на ревью.",
+      "aliases": [
+        "IN-03",
+        "автозум",
+        "ScreenGuide"
+      ],
+      "evidence": [
+        {
+          "path": "studio/domain/screenGuide.ts",
+          "marker": "screenGuideAt"
+        },
+        {
+          "path": "mcp/bridge.ts",
+          "marker": "propose_screen_guide"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/screenGuide.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "AUDIO-01",
+      "area": "audio",
+      "title": "Дорожки и общий микс",
+      "scope": "Громкость/смещение/mute, trim/fade/pan/duck, общий PCM предпросмотра и MP4.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "generic",
+      "acceptance": "technical",
+      "limits": "Нет визуальной обрезки за края полос, шин/плагинов DAW и сохранения высоты при скорости видео.",
+      "aliases": [],
+      "evidence": [
+        {
+          "path": "studio/domain/audio.ts",
+          "marker": "mixProjectAudio"
+        },
+        {
+          "path": "studio/src/editor/AudioWorkshop.tsx",
+          "marker": "AudioWorkshop"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/audio-montage.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "AUDIO-02",
+      "area": "audio",
+      "title": "Звуки на действия",
+      "scope": "CC0-библиотека, прослушивание, постановка начала/пика/конца на кадр, кредиты и синтезированные акценты.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "dedicated",
+      "acceptance": "technical",
+      "limits": "Это библиотека SFX и короткие акценты, не генератор полной музыки.",
+      "aliases": [
+        "IN-01",
+        "SFX"
+      ],
+      "evidence": [
+        {
+          "path": "server/soundLibrary.ts",
+          "marker": ""
+        },
+        {
+          "path": "mcp/bridge.ts",
+          "marker": "propose_sound"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/audio-montage.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "AUDIO-03",
+      "area": "audio",
+      "title": "Музыкальная сетка и метки",
+      "scope": "Локальные BPM/атаки/волна, ручная правка первой доли и темпа, авторские метки и привязка ключа.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "dedicated",
+      "acceptance": "technical",
+      "limits": "Это собственный JS-анализ, не установленная librosa. Музыкальный смысл/фразы автоматически не распознаются.",
+      "aliases": [
+        "IN-02",
+        "ритм"
+      ],
+      "evidence": [
+        {
+          "path": "studio/domain/musicAnalysis.ts",
+          "marker": "analyzeMusic"
+        },
+        {
+          "path": "mcp/bridge.ts",
+          "marker": "propose_music_grid"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/audio-montage.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "OUT-01",
+      "area": "output",
+      "title": "Экспорт MP4 со звуком",
+      "scope": "Экспорт неизменяемой ревизии, статус/отмена/готовый файл, проверка параметров и числа кадров.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "dedicated",
+      "acceptance": "technical",
+      "limits": "Одно задание; до5мин/36000кадров/120fps/4096px. Внешние Chrome/FFmpeg/FFprobe.",
+      "aliases": [
+        "M7",
+        "MP4 export"
+      ],
+      "evidence": [
+        {
+          "path": "server/videoExport.ts",
+          "marker": "snapshot.json"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/video-export.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "OUT-02",
+      "area": "output",
+      "title": "Переносимый ZIP",
+      "scope": "Документ, модели/картинки/музыка/видео, SHA и требования читателя; импорт независимой копией.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "dedicated",
+      "acceptance": "technical",
+      "limits": "История отмен и готовые MP4 в ZIP проекта не входят;256МиБ/64МиБ на ресурс.",
+      "aliases": [
+        "ZIP",
+        "архив"
+      ],
+      "evidence": [
+        {
+          "path": "studio/domain/projectPackage.ts",
+          "marker": "packageFeatures"
+        },
+        {
+          "path": "server/projectPackage.ts",
+          "marker": "exportProject"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/project-package.test.ts",
+          "marker": ""
+        },
+        {
+          "path": "studio/tests/package-api.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "UX-01",
+      "area": "product",
+      "title": "Проекты, навигация и хранилище",
+      "scope": "Новый проект, копии, настройки, папка данных, безопасный перенос из другой библиотеки.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "dedicated",
+      "acceptance": "technical",
+      "limits": "Разные установки могут смотреть в разные папки; автоматического молчаливого объединения нет.",
+      "aliases": [
+        "UX-01",
+        "R1",
+        "R2"
+      ],
+      "evidence": [
+        {
+          "path": "studio/src/editor/ProjectHome.tsx",
+          "marker": "ProjectHome"
+        },
+        {
+          "path": "server/libraryImport.ts",
+          "marker": ""
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/project-start.test.ts",
+          "marker": ""
+        },
+        {
+          "path": "studio/tests/onboarding.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "UX-02",
+      "area": "product",
+      "title": "Шаблоны и примеры",
+      "scope": "Четыре примера, три шаблона, просмотр без изменения, своя копия, замена материалов, RU/EN-контент.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "dedicated",
+      "acceptance": "technical",
+      "limits": "Сохранения своих шаблонов в общий каталог пока нет; художественное качество — отдельная оценка.",
+      "aliases": [
+        "UX-02",
+        "R3"
+      ],
+      "evidence": [
+        {
+          "path": "server/examples.ts",
+          "marker": ""
+        },
+        {
+          "path": "studio/domain/templates.ts",
+          "marker": ""
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/templates.test.ts",
+          "marker": ""
+        },
+        {
+          "path": "studio/tests/allLanguages.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "UX-03",
+      "area": "product",
+      "title": "Темы и языки",
+      "scope": "Системная/светлая/тёмная, RU/EN UI и справка, отдельные языковые варианты встроенного контента.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "none",
+      "acceptance": "technical",
+      "limits": "Язык не переводит пользовательский проект; тема не меняет кадр/экспорт.",
+      "aliases": [
+        "UX-04",
+        "EN-01",
+        "EN-02",
+        "EN-03",
+        "EN-04"
+      ],
+      "evidence": [
+        {
+          "path": "studio/src/editor/appearance.ts",
+          "marker": "setAppearance"
+        },
+        {
+          "path": "studio/src/editor/locale.ts",
+          "marker": "setInterfaceLocale"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/appearance.test.ts",
+          "marker": ""
+        },
+        {
+          "path": "studio/tests/locale.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "UX-04",
+      "area": "product",
+      "title": "Иллюстрированная справка и компоненты",
+      "scope": "Короткие маршруты с настоящими снимками, диагностика Chrome/FFmpeg/FFprobe, локальная помощь.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "none",
+      "acceptance": "technical",
+      "limits": "Новые разделы видеослоя/автозума есть только в рабочей сборке; сам механизм справки уже в beta.1.",
+      "aliases": [
+        "UX-03",
+        "справка"
+      ],
+      "evidence": [
+        {
+          "path": "studio/src/editor/HelpGuide.tsx",
+          "marker": "HelpGuide"
+        },
+        {
+          "path": "server/runtime.ts",
+          "marker": "runtimeTools"
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/onboarding.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "DIST-01",
+      "area": "product",
+      "title": "Windows EXE, Setup, portable и лицензии",
+      "scope": "Собственный код MIT, комплект runtime, UAC установки, обычный запуск, сохранение проектов при обновлении/удалении.",
+      "implementation": "ready",
+      "delivery": "beta.1",
+      "manual": "full",
+      "mcp": "none",
+      "acceptance": "technical",
+      "limits": "Новые видео/ScreenGuide не включены в опубликованную beta.1. Нет сертификата издателя/автообновления; не все GPU/Windows проверены.",
+      "aliases": [
+        "R4",
+        "R5",
+        "R6"
+      ],
+      "evidence": [
+        {
+          "path": "desktop/Program.cs",
+          "marker": "GetDataRoot"
+        },
+        {
+          "path": "tools/prepare-runtime.mjs",
+          "marker": ""
+        }
+      ],
+      "checks": [
+        {
+          "path": "studio/tests/runtime-installation.test.ts",
+          "marker": ""
+        }
+      ]
+    },
+    {
+      "id": "LAB-01",
+      "area": "lab",
+      "title": "Исторические HTML-фильмы и раскадровки",
+      "scope": "Постановки и собственные сцены из www/demos и www/storyboards; источник художественных решений.",
+      "implementation": "partial",
+      "delivery": "lab",
+      "manual": "external",
+      "mcp": "none",
+      "acceptance": "technical",
+      "limits": "Готовый HTML/MP4 не равен редактируемому нативному механизму студии.",
+      "aliases": [],
+      "evidence": [
+        {
+          "path": "www/player.js",
+          "marker": ""
+        }
+      ],
+      "checks": []
+    },
+    {
+      "id": "LAB-02",
+      "area": "lab",
+      "title": "Платная двухголосая озвучка урока",
+      "scope": "Внешний производственный процесс уже использован для практического урока.",
+      "implementation": "partial",
+      "delivery": "lab",
+      "manual": "external",
+      "mcp": "none",
+      "acceptance": "technical",
+      "limits": "Это результат внешних скриптов/сервиса, а не встроенная TTS-панель или MCP-инструмент Motivelium.",
+      "aliases": [],
+      "evidence": [
+        {
+          "path": "Поставки/2026-10-30_Motivelium_Видеоурок/Результат.md",
+          "marker": ""
+        }
+      ],
+      "checks": []
+    }
+  ],
+  "branches": [
+    {
+      "id": "NEXT-01",
+      "area": "product",
+      "title": "Довести рабочие видео-возможности до Windows-выпуска",
+      "priority": "P1",
+      "implementation": "planned",
+      "delivery": "none",
+      "decision": "authorized",
+      "extends": [
+        "MEDIA-02",
+        "MEDIA-03",
+        "DIST-01",
+        "UX-04"
+      ],
+      "dependsOn": [],
+      "delta": "Новый канонический кандидат, проверка именно новых полей/декодера/ресурсов в EXE. Не писать заново Setup, MP4, ZIP или темы.",
+      "doneWhen": "Именно этот Setup/portable → импорт/примерка/Undo → MP4 → ZIP/restart на прежней VM; сохранность старых проектов. Публикация отдельным решением.",
+      "aliases": [],
+      "progress": "Windows-кандидат r3: после подтверждённого 30с timeout уменьшены пакеты FullHD16→4 и ускорен losslessPNG; повторный контроль конечного EXE/MP4/ZIP."
+    },
+    {
+      "id": "NEXT-02",
+      "area": "media",
+      "title": "Запись экрана с настоящей телеметрией курсора",
+      "priority": "P1",
+      "implementation": "planned",
+      "delivery": "none",
+      "decision": "recommended",
+      "extends": [
+        "MEDIA-02",
+        "MEDIA-03"
+      ],
+      "dependsOn": [],
+      "delta": "Получать запись, координаты, времена и щелчки при захвате; преобразовывать в уже существующий ScreenGuide.",
+      "doneWhen": "3–5с настоящего действия: координаты и время совпадают после trim/speed; ручная коррекция/Apply/Undo/ZIP.",
+      "aliases": [
+        "IN-03.capture"
+      ]
+    },
+    {
+      "id": "NEXT-03",
+      "area": "ai",
+      "title": "Проверка целого фильма, стыков, движения и звука",
+      "priority": "P1",
+      "implementation": "planned",
+      "delivery": "none",
+      "decision": "recommended",
+      "extends": [
+        "AI-04",
+        "AI-05",
+        "OUT-01"
+      ],
+      "dependsOn": [],
+      "delta": "Расширить существующую проверку объекта до событий/соседних кадров/речи/звука; без бесконечных повторов.",
+      "doneWhen": "На заранее известных дефектах находит ранний текст, мерцание/наложение и неверный акцент; максимум2цикла; итог применяет человек.",
+      "aliases": [
+        "IN-05"
+      ]
+    },
+    {
+      "id": "NEXT-04",
+      "area": "plan",
+      "title": "Варианты кадра и визуальные замечания",
+      "priority": "P2",
+      "implementation": "planned",
+      "delivery": "none",
+      "decision": "proposed",
+      "extends": [
+        "PLAN-01",
+        "PLAN-02",
+        "EDIT-05"
+      ],
+      "dependsOn": [],
+      "delta": "Несколько эскизов на карточку, выбор варианта, пометки поверх картинки и сравнение поз. Сборку из карточек не реализовывать повторно.",
+      "doneWhen": "Варианты/пометки/выбор сохраняются в ZIP и доступны MCP; не теряют связь после правки монтажа.",
+      "aliases": []
+    },
+    {
+      "id": "NEXT-05",
+      "area": "edit",
+      "title": "Единая дорожка камер и редактор кривых",
+      "priority": "P2",
+      "implementation": "planned",
+      "delivery": "none",
+      "decision": "proposed",
+      "extends": [
+        "EDIT-03",
+        "EDIT-04"
+      ],
+      "dependsOn": [],
+      "delta": "Показать общую/scoped/3D-камеры и их траектории согласованно; настраиваемые кривые. Числовые камеры уже существуют.",
+      "doneWhen": "Траектория/изгиб меняются в UI и MCP с примеркой/Undo; нет прыжка при входе/выходе интервала.",
+      "aliases": []
+    },
+    {
+      "id": "NEXT-06",
+      "area": "media",
+      "title": "Свободный монтаж видеоклипов на таймлайне",
+      "priority": "P2",
+      "implementation": "planned",
+      "delivery": "none",
+      "decision": "proposed",
+      "extends": [
+        "MEDIA-02",
+        "AUDIO-01"
+      ],
+      "dependsOn": [],
+      "delta": "Независимое начало видеоклипа внутри сцены, разрезание/перестановка и визуальный trim аудио/видео вместо отдельной сцены на каждый сдвиг.",
+      "doneWhen": "Два перекрывающихся клипа с разными in/out/start, связанный звук; общий preview/MP4 и одна история.",
+      "aliases": []
+    },
+    {
+      "id": "NEXT-07",
+      "area": "media",
+      "title": "Более длинные и разнообразные исходники",
+      "priority": "P2",
+      "implementation": "planned",
+      "delivery": "none",
+      "decision": "proposed",
+      "extends": [
+        "MEDIA-01",
+        "MEDIA-02"
+      ],
+      "dependsOn": [],
+      "delta": "Политика прокси/перекодирования VFR и других кодеков, большие ресурсы при ограниченной памяти. Не просто поднять64МиБ.",
+      "doneWhen": "Исходник, прокси, ресурсы ZIP и длительность проверены; не обещать кодек без воспроизводимой пробы.",
+      "aliases": []
+    },
+    {
+      "id": "NEXT-08",
+      "area": "fx",
+      "title": "Анимационные клипы собственных 3D-моделей",
+      "priority": "P2",
+      "implementation": "planned",
+      "delivery": "none",
+      "decision": "proposed",
+      "extends": [
+        "FX-03",
+        "FX-04"
+      ],
+      "dependsOn": [],
+      "delta": "Поддержанный поднабор glTF animation clips, затем skins/morph с явной матрицей совместимости. Статический импорт/выбор частей уже есть.",
+      "doneWhen": "Свой GLB с движением проигрывается/перематывается/экспортируется одинаково; ручные части не ломаются.",
+      "aliases": []
+    },
+    {
+      "id": "NEXT-09",
+      "area": "fx",
+      "title": "Свои шрифты для контурного морфинга",
+      "priority": "P2",
+      "implementation": "planned",
+      "delivery": "none",
+      "decision": "proposed",
+      "extends": [
+        "FX-02",
+        "FX-07"
+      ],
+      "dependsOn": [],
+      "delta": "Преобразование разрешённого пользовательского шрифта в контуры/отверстия и сопоставление глифов.",
+      "doneWhen": "Кириллица/латиница/отверстия/многоточия; нет предварительного сырого текста; шрифт и права переносятся корректно.",
+      "aliases": []
+    },
+    {
+      "id": "NEXT-10",
+      "area": "fx",
+      "title": "ORB-пакет и дополнительные конвейеры эффектов",
+      "priority": "P2",
+      "implementation": "planned",
+      "delivery": "none",
+      "decision": "proposed",
+      "extends": [
+        "FX-01",
+        "FX-06",
+        "FX-09"
+      ],
+      "dependsOn": [],
+      "delta": "Отобрать конкретные ещё не перенесённые алгоритмы слияния/огня/осколков. Общий multipass/seek, дуги и shader-bank уже есть.",
+      "doneWhen": "У каждого нового эффекта уникальный ID/источник/лицензия и 3–5с сравнимая проба; галерея/примерка/Undo/MP4.",
+      "aliases": [
+        "ORB-FX2",
+        "IN-04"
+      ]
+    },
+    {
+      "id": "NEXT-11",
+      "area": "media",
+      "title": "История и накопление для видеослоёв",
+      "priority": "P3",
+      "implementation": "planned",
+      "delivery": "none",
+      "decision": "proposed",
+      "extends": [
+        "FX-01",
+        "MEDIA-02"
+      ],
+      "dependsOn": [],
+      "delta": "Подать правильные прошлые видеокадры в feedback/memory с контролем памяти и стоимостью произвольного seek.",
+      "doneWhen": "Прямой и обратный seek дают тот же результат; MP4 совпадает с примеркой; лимиты явные.",
+      "aliases": []
+    },
+    {
+      "id": "NEXT-12",
+      "area": "audio",
+      "title": "Речь, субтитры и черновой монтаж пауз",
+      "priority": "P2",
+      "implementation": "planned",
+      "delivery": "none",
+      "decision": "proposed",
+      "extends": [
+        "MEDIA-02",
+        "AUDIO-01",
+        "AI-04"
+      ],
+      "dependsOn": [],
+      "delta": "Тайминги слов/спикеров и редактируемые субтитры; предложенные, а не молча удалённые паузы.",
+      "doneWhen": "Проверенный небольшой русский отрывок, ручная правка слов/границ, Undo и перенос всех данных; модель/стоимость явны.",
+      "aliases": []
+    },
+    {
+      "id": "NEXT-13",
+      "area": "audio",
+      "title": "Встроенные голоса и музыкальные заготовки",
+      "priority": "P3",
+      "implementation": "planned",
+      "delivery": "none",
+      "decision": "proposed",
+      "extends": [
+        "AUDIO-01",
+        "AUDIO-02",
+        "LAB-02"
+      ],
+      "dependsOn": [],
+      "delta": "Интерфейс провайдеров TTS/музыки, пакет реплик/две роли, стоимость и ресурсы; внешний уже сделанный урок не считать API приложения.",
+      "doneWhen": "Свой профиль, предварительная стоимость, результат как редактируемые дорожки и явные права; без автоплатежа по чужому профилю.",
+      "aliases": []
+    },
+    {
+      "id": "NEXT-14",
+      "area": "product",
+      "title": "Свои шаблоны, сочетания и пакеты ресурсов",
+      "priority": "P2",
+      "implementation": "planned",
+      "delivery": "none",
+      "decision": "proposed",
+      "extends": [
+        "FX-05",
+        "UX-02",
+        "OUT-02"
+      ],
+      "dependsOn": [],
+      "delta": "Сохранение пользовательского рецепта/шаблона и перенос с зависимостями. Не переписывать3встроенных сочетания/шаблоны.",
+      "doneWhen": "Из своего проекта получить повторно используемый шаблон; две независимые копии; метаданные источников/шрифтов.",
+      "aliases": []
+    },
+    {
+      "id": "NEXT-15",
+      "area": "edit",
+      "title": "Адаптация под вертикаль и другой формат",
+      "priority": "P2",
+      "implementation": "planned",
+      "delivery": "none",
+      "decision": "proposed",
+      "extends": [
+        "CORE-01",
+        "EDIT-03",
+        "EDIT-04"
+      ],
+      "dependsOn": [],
+      "delta": "Осмысленное переразмещение кадра/текста/областей интереса для9:16/1:1 с ручной доводкой. Размер при создании уже задаётся.",
+      "doneWhen": "Один принятый проект в16:9 и9:16 без случайной обрезки текста; результат редактируем и сравним.",
+      "aliases": []
+    },
+    {
+      "id": "NEXT-16",
+      "area": "product",
+      "title": "Надёжная поставка и профили производительности",
+      "priority": "P2",
+      "implementation": "planned",
+      "delivery": "none",
+      "decision": "proposed",
+      "extends": [
+        "CORE-03",
+        "FX-04",
+        "DIST-01"
+      ],
+      "dependsOn": [],
+      "delta": "Матрица слабых/разных GPU, доступные компоненты, дисковый кэш и диагностируемые сбои; затем подпись/обновления.",
+      "doneWhen": "Явно проверенные конфигурации и воспроизводимый сценарий; не выдавать старый Windows-прогон за проверку новой сборки.",
+      "aliases": []
+    }
+  ],
+  "sources": {
+    "studio/domain/schema.ts": {
+      "sha256": "e2d31401f05f99cdba1b851c26a72e827cbfdd1bf71137747beae2220964a186"
+    },
+    "studio/tests/schema.test.ts": {
+      "sha256": "e7478c4f126b832127e8df0ec3af72ed2cf648bdd13054defca63846b10cfbf4"
+    },
+    "studio/tests/schema-strict.test.ts": {
+      "sha256": "0eb5eb52bbef8d98462beb68688436cc2ba200432a252dffb1ec5e5ea0c1dc94"
+    },
+    "studio/domain/operations.ts": {
+      "sha256": "fcaf827a79c07f34dc1adcc429f32e534adb2a5b25bcad8c9feb7e1b369d010e"
+    },
+    "server/storage.ts": {
+      "sha256": "2604bce53670becafac35baba905d69d583364d9c8fda37c671fd445fc1f7509"
+    },
+    "studio/tests/transaction.test.ts": {
+      "sha256": "1ede1875f67680be85354b391b7f7fa2d951ae83ebe5b54a0787b1a3f3ac01e9"
+    },
+    "studio/tests/storage-protocol.test.ts": {
+      "sha256": "e0fdc1b37b994c62a51de1727ddb32ae7097768ca34e200de2aa2f2374732913"
+    },
+    "studio/render/evaluate.ts": {
+      "sha256": "c66417f17400538c66b19e43c7f95e959978bc782cf670b3f713bb55a0dcaa1d"
+    },
+    "studio/render/renderFrame.ts": {
+      "sha256": "ead9e3f77bae23bd9d044a15ac108b996b837b9ae5bf771f9abe13b10c40ac39"
+    },
+    "studio/tests/render.test.ts": {
+      "sha256": "b713c28f2e79f2c87ccf8e0425338aec8bd73a428203cb27a289e7d41314760c"
+    },
+    "studio/tests/time-matrix.test.ts": {
+      "sha256": "92450a61168c5a61dd7554bdc9b169516f9b2069f1d3ff5f379822de3dd4837c"
+    },
+    "studio/domain/storyboard.ts": {
+      "sha256": "93584f063558e935aa3e7ade1590de38641b0ff5639c6e87229fe6cfd29eea26"
+    },
+    "mcp/storyboard.ts": {
+      "sha256": "8ec9ae6d36de619e7a369875b0931b928a73136dd32388a2cce29abc8d8a3a2b"
+    },
+    "studio/tests/storyboard.test.ts": {
+      "sha256": "e925e6b859a047fa228a539b5569b9bf4b9bde36e19801fd48eaa2370b78ece0"
+    },
+    "studio/domain/storyMontage.ts": {
+      "sha256": "7b70dfa7db82eed479ab2b9b736286c57868c04ca5cca325a30d231241c779d4"
+    },
+    "mcp/bridge.ts": {
+      "sha256": "5d6065b5d8f19428650f3087b5328055d8969c6791724576406abfab62e4899e"
+    },
+    "studio/src/editor/TreePanel.tsx": {
+      "sha256": "8c90e79e0b0ae133a386025c01583d9efa11ac6cf0ae9381f02f45a770dcbb2b"
+    },
+    "studio/src/editor/LayerDialog.tsx": {
+      "sha256": "4c8ee4f2658e2a3bdcf6a13c170876f504d90936704f6c1f26c6709830562c97"
+    },
+    "studio/tests/layers.test.ts": {
+      "sha256": "9aeebba2d040661057675ef6a48a0b1eed581007146e3b162ca787bca9ec900b"
+    },
+    "studio/src/editor/useCanvasTransform.ts": {
+      "sha256": "9de7f55783ad8c415f62478f2ae00163421ddf3862e64f66f16466094409440c"
+    },
+    "studio/src/editor/useLayerOrder.ts": {
+      "sha256": "d470012f61221b784ec76097ec20dd0ba09ba9e1ac204de763ed47a30b7cffa9"
+    },
+    "studio/tests/direct-manipulation.test.ts": {
+      "sha256": "6d64d7c09e4b0e765d27c057b71acd8b012181a22a2d943653d6bc6c1375251d"
+    },
+    "studio/domain/animation.ts": {
+      "sha256": "36d6f4ef0d330c6dd39e35ea7f208fa3859f8396bcb317c0ed00a139473a0d88"
+    },
+    "studio/src/editor/KeyframePanel.tsx": {
+      "sha256": "b6efce0163435f47b259ae4179207efc5c9d0f93d9381c82b3473e078809fa5f"
+    },
+    "studio/tests/animation.test.ts": {
+      "sha256": "900e3e32c743c544ae977e059d16e0c2b24c317937c6f46fb44952d34737ad23"
+    },
+    "studio/src/editor/CompositionLibrary.tsx": {
+      "sha256": "7be877efe07b4cf8634f41303df809aafb04fac3c03d0ab51eed98236d1f8f6d"
+    },
+    "studio/tests/compositions.test.ts": {
+      "sha256": "9e9e80198a85ef464a39eea1a7eead1293adb5cd5f76f9f88d3b6a60d18186d9"
+    },
+    "studio/src/editor/ProjectComparison.tsx": {
+      "sha256": "3e4f3adccd978f0f9e53476ac21dc1e9ad7e2d55f96168e8f89bd63486b8a9f3"
+    },
+    "studio/domain/comparison.ts": {
+      "sha256": "7d627f64dce20cf17fe4d27027dc7bfdea2638359f0fb24392afc6a2cf8b9ed1"
+    },
+    "studio/tests/comparison.test.ts": {
+      "sha256": "645b5e82f90f12046994c6155fd4b75094652a775971684820713ec15dff15b6"
+    },
+    "mcp/server.mjs": {
+      "sha256": "ba4e8fd5c4a46f09fadfdc2cafbb3133e6b53357fc9c037982f51b17800d1355"
+    },
+    "studio/tests/mcp.test.ts": {
+      "sha256": "008a0e450e5b2b972b009a023485c93928e4150af5dfbf83288d8eeb09144a65"
+    },
+    "mcp/query.ts": {
+      "sha256": "46e9159e2a137a859abd59ff6ac56f0ca3913ed6b4669a414e9efab60c2dfbc2"
+    },
+    "mcp/catalog.ts": {
+      "sha256": "e720f339a696ee9081d8c26a4bcc8ab506542236d8249ec95a117487f60e3e69"
+    },
+    "studio/tests/catalogIds.test.ts": {
+      "sha256": "8c7ae63b384e969fe002b9ab8aaca68349d4135e00a3e0b3a6a4774a4f16cd01"
+    },
+    "mcp/recipes.ts": {
+      "sha256": "86416a5757a36306c79248519847eb724097385ba70ff64da8106c896c60c783"
+    },
+    "mcp/transitions.ts": {
+      "sha256": "fb3926a320969ea714e0bb2a8a64f7529ea3adc25c6629708b18445ef33a066a"
+    },
+    "studio/tests/motionTiming.test.ts": {
+      "sha256": "c9bf3702fb2590d5d8c388f7e80b42b5d45fb9869dafae226300aba6897d328a"
+    },
+    "mcp/budget.ts": {
+      "sha256": "7d1b89ff4e43dec94c82b6c10e0f3bdfb1c9df453aae03ca36eba10ac576de7a"
+    },
+    "studio/src/editor/AIEditor.tsx": {
+      "sha256": "eb9f63bc7b12bd8d608b0d316a81dea97cf86256cfd874917c5db3e475c3fbf1"
+    },
+    "server/ai/auto.ts": {
+      "sha256": "3d0a3d553d50a499b17d57aed39db0e2361b780aea649d91bab329734d055f1e"
+    },
+    "studio/tests/ai-visual.test.ts": {
+      "sha256": "25b9d452b22a791c2c9c2cebc68fc0708d768fd66f679b56a8747d5c6b5e2dde"
+    },
+    "studio/tests/ai-auto.test.ts": {
+      "sha256": "731263801a01c6cca3f9ab5e346be8251d70ab49fefb1d2a0e0158457b307a31"
+    },
+    "studio/render/stateReplay.ts": {
+      "sha256": "1161adbb4a5d4c89fd134a2eddfa4cb21b9d2ff737aebb24cfe0dbd450c61c2a"
+    },
+    "studio/render/feedbackRenderer.ts": {
+      "sha256": "d771369d0de909a691ae0f14268abe8a9affb766e1aa1b59e0ea08ccf6f8c2f7"
+    },
+    "studio/tests/feedback.test.ts": {
+      "sha256": "8a8b01b0058a3b0e908fdc7ccd6cdc1c5e39728d04e7e03ab273d2deb544fb54"
+    },
+    "studio/effects/contours.ts": {
+      "sha256": "45330c13f94de7f0af6c045d24b8ac7de6b43bbc09521a1369479bfba8af28bc"
+    },
+    "studio/render/layerMasks.ts": {
+      "sha256": "24fb9bc42a41db4e20e5d1d8a04d123e08cdad6c643c22fb5d179a557b136cb3"
+    },
+    "studio/tests/contours.test.ts": {
+      "sha256": "53a72124aec8af83f96ce91072bc16343033c919c34b9b10da58bb7754a4d09c"
+    },
+    "studio/domain/model3d.ts": {
+      "sha256": "8bda7d0767a262690d486f5178e65d2c3163b1cc9f99dfaaa7137c27d42f5c7a"
+    },
+    "studio/src/editor/ModelWorkshop.tsx": {
+      "sha256": "47178cb10b82187cced5c26172071100adf9bbab348ba568e9dd78ad19eb96b6"
+    },
+    "studio/tests/model3d.test.ts": {
+      "sha256": "0781a68f930abc5a9594c1c3f75990fe551bd7d0656eb11b14cc4ebd61d2f973"
+    },
+    "studio/render/volume3d.ts": {
+      "sha256": "6ba1f628d32efbe25895a38424e6560687f08d973c4bcf05333f1b69a3c7eade"
+    },
+    "studio/effects/lighting3d.ts": {
+      "sha256": "3d15212ca59bcbfbe4707115e45488d48c83ffb54c66d879f554718b4bbadf44"
+    },
+    "studio/tests/lighting3d.test.ts": {
+      "sha256": "115a30d552b438d11adcaf50b5ab001bb5b6d906d97760409bd671d0eddfa525"
+    },
+    "studio/domain/compositions.ts": {
+      "sha256": "2822d8929b30e936a49918894cd3edf74fd8869e40991def4308da87666dc79c"
+    },
+    "studio/effects/shaders/library.ts": {
+      "sha256": "56d2597864881687fb1a3955e45b49f58c0f3b89a1538df6745a67beeed0fa40"
+    },
+    "studio/src/editor/ShaderLibrary.tsx": {
+      "sha256": "21e53484634575d60165378b864554631b07f5fb228d68b03a376c881938d063"
+    },
+    "studio/tests/shader-library.test.ts": {
+      "sha256": "6c25e12c8d02fc6ac214dc45dd2f7672ae4850b2c66e1fd16866c855d76255a9"
+    },
+    "studio/effects/typography.ts": {
+      "sha256": "3a4e45c837316d0bd058cbba16d4079bf87fac4c6a712501f025fc4c0192b17a"
+    },
+    "studio/render/glyphMotion.ts": {
+      "sha256": "ea81a1f8d4c39303aff480ddaf6d02e8793dd21ef0d7e4603711c3c9fc845a38"
+    },
+    "studio/tests/typography.test.ts": {
+      "sha256": "b41a592ad7ef8c2b922f18945eafc7f3ec9365e7b57589b7b2e8ba594c735a47"
+    },
+    "studio/tests/glyphMotion.test.ts": {
+      "sha256": "f05bf23e85e2dfef29f4fa676b7ff0db1d6f47d2907c8c661f1a34ee43153a3f"
+    },
+    "studio/render/typography.ts": {
+      "sha256": "b35682a671f795eb2faed14c0cbe5d991235f2f60a7e0407208a2b754a3a90ec"
+    },
+    "studio/effects/registry.ts": {
+      "sha256": "1042869c8d82cdd7f68c4f16e05f7a744e3633fe3d2fb6742851a6a43cf55d57"
+    },
+    "studio/render/lightningBolt.ts": {
+      "sha256": "e81e98838deb872e2031d3b3dc6c9663d8cf30800d2950a34f9f707e01516651"
+    },
+    "studio/tests/dischargePilot.test.ts": {
+      "sha256": "eab545009355f1456141d93bc281b08634b12fc8a22fe91c7ee33618c490d5ea"
+    },
+    "studio/tests/electricArc.test.ts": {
+      "sha256": "47e4d8056a75427c21e4df4f99ebf0f410404f870572c84f79458537001ddc49"
+    },
+    "server/mediaAssets.ts": {
+      "sha256": "de3f4451cbb8a18c46ce4de19a2ea4673197e9a7df5dc6f0173f1cdf44eeefe0"
+    },
+    "studio/src/editor/ResourcePanel.tsx": {
+      "sha256": "659aab446803ddeed815e19d35e2e80fb9006c87cfc09a7ac0e56ed2734c2e70"
+    },
+    "studio/tests/media-assets.test.ts": {
+      "sha256": "be3a13e51eb6aec341906f37d719a7966a25298418aa99668a95b67cb43ef846"
+    },
+    "server/videoFrames.ts": {
+      "sha256": "e9981f799bc746e1bd82436cc2649b638dbd8884b1b18c85a6ffd701e6f24ed9"
+    },
+    "studio/tests/video-clips.test.ts": {
+      "sha256": "4020e249141bea7bbf562d779d4837473307829736d828722c155fb422864426"
+    },
+    "studio/domain/screenGuide.ts": {
+      "sha256": "71014dd76fa21f3d68fc2f26368ae47635d9a2a244368a0b6b6be69edf4e1bf8"
+    },
+    "studio/tests/screenGuide.test.ts": {
+      "sha256": "afeff858d2488d449ecba1985c69ed079dca7399f762f9de34448171cad6c223"
+    },
+    "studio/domain/audio.ts": {
+      "sha256": "98c78424f8d0660e684298f0d61bd049882c493fb232ffbaf8814a1aed301a9f"
+    },
+    "studio/src/editor/AudioWorkshop.tsx": {
+      "sha256": "fbd38415ec4a423c6917810c390d3dab99a971f9a666f56148779c139e4ddcf8"
+    },
+    "studio/tests/audio-montage.test.ts": {
+      "sha256": "f986c692972c04d1b37e57b135168e536c8c87b28ec8e4889893ea1b9f342d9e"
+    },
+    "server/soundLibrary.ts": {
+      "sha256": "7bebb3491db5855e560ea8caef8b0a4d78cd399466f37098b00d8df6ea08d286"
+    },
+    "studio/domain/musicAnalysis.ts": {
+      "sha256": "0eb58598ef44ee61d8bbbf723d5182efbc4ee452d410e2b5403ec0c7700fc049"
+    },
+    "server/videoExport.ts": {
+      "sha256": "a42c42aad971a7b98d4a9a84f41f718a1c3ce25332b46245464e5e9913f6d5c3"
+    },
+    "studio/tests/video-export.test.ts": {
+      "sha256": "fee9d76744498a33a647d8bee2be5c89b72af3a64545dcc6925a8c60eceb98f1"
+    },
+    "studio/domain/projectPackage.ts": {
+      "sha256": "aa434c354bcdc16dc3fd01c3e5e41d76f20ba4810224e5ab1ee63dbc6eed058a"
+    },
+    "server/projectPackage.ts": {
+      "sha256": "83dde649d2e6033b9878795dad6a2f3f955b2cd13eec5eedd2b234e88da7ca08"
+    },
+    "studio/tests/project-package.test.ts": {
+      "sha256": "59138835f15e9472a6fb41395e3f7e85c6d0462bf27dcaa5286dacfded1c7b15"
+    },
+    "studio/tests/package-api.test.ts": {
+      "sha256": "3ed4f87893bef2fa20dcd5bafd0efb77733fa32101976da980444149f147ecff"
+    },
+    "studio/src/editor/ProjectHome.tsx": {
+      "sha256": "fbdd38aef84c026367f4ff14ac2b5fe0ba1d68dfc1e46c72b2bab9e19df1c27c"
+    },
+    "server/libraryImport.ts": {
+      "sha256": "ce6753c027d9edd906930ab7870dae5f19c56fce7482fc3b1c02487fe1fa1d11"
+    },
+    "studio/tests/project-start.test.ts": {
+      "sha256": "72d3d1ab2593812aa3fb20d8869ac58ecfc6f27c755f9575c98f686e13d33ab9"
+    },
+    "studio/tests/onboarding.test.ts": {
+      "sha256": "8471b24e641245671725067e59dbfd6c4fbe5dcff0ca5aa2385eb3540d51fefa"
+    },
+    "server/examples.ts": {
+      "sha256": "f6bfd521babbcbd4fdcd150648c6b87b4a55bfa6b097abd96606e1e5cb513f4f"
+    },
+    "studio/domain/templates.ts": {
+      "sha256": "e418420fc0ff6cfc4dd175ed760fa40e1656444d5f225360313a70ca11fa11b0"
+    },
+    "studio/tests/templates.test.ts": {
+      "sha256": "9dc926b0d06a7dc3eebfad68d89ab8485a956602e9dc0e02049cdce12304eee0"
+    },
+    "studio/tests/allLanguages.test.ts": {
+      "sha256": "6622d03d67da24c79a2b695af06a4076290c961d990c74e25ad4d278c1f29f86"
+    },
+    "studio/src/editor/appearance.ts": {
+      "sha256": "fe94ded159fb506e522494b6ced452a708e9d1a665ed8a211009c5acd37d8540"
+    },
+    "studio/src/editor/locale.ts": {
+      "sha256": "3a4baec4e3f7302bb9dcc8df986e6e5d04e507c0e3e50a121154cf9839c64da2"
+    },
+    "studio/tests/appearance.test.ts": {
+      "sha256": "820658e0577889d278efed203805a340ef6dd23c3e0c02a08c900d3af4694495"
+    },
+    "studio/tests/locale.test.ts": {
+      "sha256": "c13de04af09849e0cabb40e60a9b3ef23872875ab07838a6db61da40bf60d927"
+    },
+    "studio/src/editor/HelpGuide.tsx": {
+      "sha256": "2491e7b8e84aaa50b3c5c8743f13d21ca323f4f7bfa455dd462062731d22dd4e"
+    },
+    "server/runtime.ts": {
+      "sha256": "aee6f4c83424ac6fcdad606b9c5306e311043fd09d6127cc02171a2c06cafbb8"
+    },
+    "desktop/Program.cs": {
+      "sha256": "c0bba8dd1c1ea4ad6deb2def3d5fc6d7692045d7d73352f7ae1f3ebc935d029a"
+    },
+    "tools/prepare-runtime.mjs": {
+      "sha256": "246cc60b6af01be8d5c78ae37bdc29a7713579c0346da992788d80d99ee9ccdd"
+    },
+    "studio/tests/runtime-installation.test.ts": {
+      "sha256": "0df794bed1d00a3a99d4ee20a8bd11de46c3d8add2b0e67f516165a6cc246112"
+    },
+    "www/player.js": {
+      "sha256": "3f5c9d48f59f4a284033dde5a8381ae74f8c3cc286dde0956a66c5b2c5d1654c"
+    },
+    "Поставки/2026-10-30_Motivelium_Видеоурок/Результат.md": {
+      "sha256": "b3371f961222c84891705b5518d3270f1f4fb0b5ed719f27bd20c02d70edebbb"
+    },
+    "studio/tests/mcp-installed-config.test.ts": {
+      "sha256": "eab23c1b056371f290b53f1a14f31355fa8b0a7d384b95ebcecc7f80392bf1c8"
+    }
+  },
+  "verification": {
+    "kind": "Сверка исходников/документации/архива и сохранённых квитанций; не новый полный аудит качества всех функций.",
+    "recentEvidence": [
+      {
+        "date": "2026-10-31",
+        "tests": 425,
+        "scope": "Видеослои/ScreenGuide: tsc, настоящий MCP/UI/Undo, browser/onboarding, MP4/ZIP, RU/EN/темы/390px.",
+        "limitations": "ScreenGuide — проба4.4с на ревью; GLM-разбор не выполнен из-за занятого воркера; новой Windows-сборки нет."
+      }
+    ],
+    "artisticAcceptance": "Технический ready не равен одобрению дизайна автором. Варианты и примеры оцениваются отдельно.",
+    "installedBuild": "Текущая версия конкретного ярлыка этим проходом не проверялась; не выводить её из версии исходников."
+  }
+}

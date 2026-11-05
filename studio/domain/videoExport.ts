@@ -10,7 +10,7 @@ export function videoExportPlan(p:Project){
  if(!Number.isInteger(p.size.width)||!Number.isInteger(p.size.height)||p.size.width>4096||p.size.height>4096||p.size.width*p.size.height>8_847_360)throw Error('MP4: размер кадра — целые числа до 4096 по стороне и до 8,8 млн пикселей.');
  if(duration>300||p.durationFrames>36_000||p.fps.num/p.fps.den>120)throw Error('MP4: первая версия поддерживает ролики до 5 минут, 36 000 кадров и 120 fps.');
  const audio=audioPlan(p).tracks;
- for(const t of audio){if(!t.synth&&!p.assets.find(a=>a.id===t.assetId&&a.mime.startsWith('audio/')))throw Error('Звуковая дорожка ссылается не на аудиоресурс: '+t.id);}
+ for(const t of audio){if(!t.synth&&!p.assets.find(a=>a.id===t.assetId&&(a.mime.startsWith('audio/')||a.mime==='video/mp4')))throw Error('Звуковая дорожка ссылается не на аудиоресурс: '+t.id);}
  if(audio.length>64)throw Error('MP4: не более 64 активных звуковых дорожек.');
  return{duration,width:Math.ceil(p.size.width/2)*2,height:Math.ceil(p.size.height/2)*2,audio};
 }

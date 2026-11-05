@@ -18,7 +18,7 @@ export function LayerDialog({ project, frame, selectedId, onClose, onCreate, onI
     const stale = base.revision !== project.revision, images = base.assets.filter(a => a.mime.startsWith('image/')), groups = base.nodes.filter(n => n.kind === 'group' && n.sequenceId === sequenceId && !layerLockReason(base, n.id));
     async function submit(e: React.FormEvent) { e.preventDefault(); if (saving || stale)
         return; setSaving(true); setError(''); try {
-        const node = createLayer(base, { kind, sequenceId, parentId, frame, name: name || ({ text: ui("Надпись"), rect: ui("Прямоугольник"), ellipse: ui("Круг"), group: ui("Новая группа"), scene3d: uiLabel(PRESET_LABELS[preset]), image: ui("Изображение") }[kind]), text, color, assetId, preset });
+        const node = createLayer(base, { kind, sequenceId, parentId, frame, name: name || ({ text: ui("Надпись"), rect: ui("Прямоугольник"), ellipse: ui("Круг"), group: ui("Новая группа"), scene3d: uiLabel(PRESET_LABELS[preset]), image: ui("Изображение"),video:ui("Видео") }[kind]), text, color, assetId, preset });
         if (await onCreate(node, base.revision))
             onClose();
         else

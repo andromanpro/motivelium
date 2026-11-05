@@ -2,7 +2,8 @@ import {ui} from './i18n.ts';
 import { api } from './api.ts';
 import type { AssetRef } from '../../domain/schema.ts';
 const base64 = (file: File) => new Promise<string>((resolve, reject) => { const reader = new FileReader(); reader.onerror = () => reject(Error(ui("Не удалось прочитать файл."))); reader.onabort = () => reject(Error(ui("Чтение файла отменено."))); reader.onload = () => resolve(String(reader.result).split(',')[1]!); reader.readAsDataURL(file); });
-async function browserCheck(file: File, asset: AssetRef) { if (asset.mime.startsWith('image/')) {
+async function browserCheck(file: File, asset: AssetRef) { if(asset.video)return; // frames are decoded by the shared FFmpeg service
+ if (asset.mime.startsWith('image/')) {
     const bitmap = await createImageBitmap(new Blob([file], { type: asset.mime }));
     const valid = bitmap.width === asset.width && bitmap.height === asset.height;
     bitmap.close();

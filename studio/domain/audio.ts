@@ -1,4 +1,5 @@
 import type {AssetRef, AudioTrack, Project} from './schema.ts';
+import {videoAudioTracks} from './video.ts';
 import {accentSamples} from './synthAudio.ts';
 
 export const AUDIO_RATE = 48000;
@@ -10,9 +11,9 @@ export function audioSourceEnd(tracks:AudioTrack[],assetId:string,duration:numbe
 }
 export function audioPlan(p: Project): AudioPlan {
   const duration = p.durationFrames * p.fps.den / p.fps.num;
-  const tracks = p.audioTracks.filter(t => !t.mute && t.gain > 0 && (t.synth || t.assetId) && t.offsetSeconds < duration);
+  const tracks = videoAudioTracks(p).filter(t => !t.mute && t.gain > 0 && (t.synth || t.assetId) && t.offsetSeconds < duration);
   if (duration > 300 || tracks.length > 64) throw Error('Звук: до 5 минут и 64 активных дорожек.');
-  for (const t of tracks) if (!t.synth && !p.assets.some(a => a.id === t.assetId && a.mime.startsWith('audio/'))) throw Error('Звуковая дорожка ссылается не на аудиоресурс: ' + t.id);
+  for (const t of tracks) if (!t.synth && !p.assets.some(a => a.id === t.assetId && (a.mime.startsWith('audio/')||a.mime==='video/mp4'))) throw Error('Звуковая дорожка ссылается не на аудиоресурс: ' + t.id);
   return {duration, frames: Math.ceil(duration * AUDIO_RATE), tracks};
 }
 
@@ -52,7 +53,7 @@ async function mixLegacyAudio(p: Project, load: (asset: AssetRef) => Promise<PCM
 
 /** Clip edits and ducking share this exact PCM path in preview and export. Old projects retain their previous samples. */
 export async function mixProjectAudio(p:Project,load:(asset:AssetRef)=>Promise<PCM>,check:()=>void=()=>{}){
- if(!p.audioTracks.some(t=>t.clip))return mixLegacyAudio(p,load,check);
+ if(!p.audioTracks.some(t=>t.clip||t.videoNodeId))return mixLegacyAudio(p,load,check);
  const plan=audioPlan(p),musicL=new Float32Array(plan.frames),musicR=new Float32Array(plan.frames),left=new Float32Array(plan.frames),right=new Float32Array(plan.frames),duck=new Float32Array(plan.frames);
  const decoded=new Map<string,PCM>();
  for(const t of plan.tracks){
@@ -60,11 +61,11 @@ export async function mixProjectAudio(p:Project,load:(asset:AssetRef)=>Promise<P
   if(t.synth)pcm={sampleRate:AUDIO_RATE,channels:[accentSamples(t.synth,AUDIO_RATE)]};
   else{const a=p.assets.find(a=>a.id===t.assetId)!;pcm=decoded.get(a.id)??await load(a);decoded.set(a.id,pcm);}
   if(!pcm.channels.length||pcm.sampleRate!==AUDIO_RATE)throw Error('Нужен декодированный звук 48 кГц.');
-  const c=t.clip,start=Math.round(t.offsetSeconds*AUDIO_RATE),source=Math.round((c?.sourceStartSeconds??0)*AUDIO_RATE),available=Math.max(0,pcm.channels[0]!.length-source),count=Math.min(available,c?Math.round(c.durationSeconds*AUDIO_RATE):available);
+  const rate=t.playbackRate??1,c=t.clip,start=Math.round(t.offsetSeconds*AUDIO_RATE),source=Math.round((c?.sourceStartSeconds??0)*AUDIO_RATE),available=Math.max(0,pcm.channels[0]!.length-source),count=Math.floor(Math.min(available,c?Math.round(c.durationSeconds*AUDIO_RATE):available)/rate);
   const a=pcm.channels[0]!,b=pcm.channels[1]??a,targetL=t.kind==='music'?musicL:left,targetR=t.kind==='music'?musicR:right,pan=c?.pan??0,panL=pan>0?1-pan:1,panR=pan<0?1+pan:1;
   const fadeIn=Math.min(count/2,(c?.fadeInSeconds??0)*AUDIO_RATE),fadeOut=Math.min(count/2,(c?.fadeOutSeconds??0)*AUDIO_RATE);
   for(let j=Math.max(0,-start);j<count&&start+j<plan.frames;j++){
-   const k=start+j,fade=Math.min(fadeIn?Math.sin(Math.min(1,j/fadeIn)*Math.PI/2):1,fadeOut?Math.sin(Math.min(1,(count-1-j)/fadeOut)*Math.PI/2):1),gain=t.gain*Math.max(0,fade),l=a[source+j]!*gain*panL,r=b[source+j]!*gain*panR;
+   const k=start+j,fade=Math.min(fadeIn?Math.sin(Math.min(1,j/fadeIn)*Math.PI/2):1,fadeOut?Math.sin(Math.min(1,(count-1-j)/fadeOut)*Math.PI/2):1),gain=t.gain*Math.max(0,fade),si=source+j*rate,lo=Math.floor(si),alpha=si-lo,l=((a[lo]??0)*(1-alpha)+(a[lo+1]??a[lo]??0)*alpha)*gain*panL,r=((b[lo]??0)*(1-alpha)+(b[lo+1]??b[lo]??0)*alpha)*gain*panR;
    targetL[k]!+=l;targetR[k]!+=r;
    if(t.kind!=='music'&&(c?.duckMusicDb??0)>0&&Math.max(Math.abs(l),Math.abs(r))>.006)duck[k]=Math.max(duck[k]!,c!.duckMusicDb);
   }

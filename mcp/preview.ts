@@ -1,3 +1,4 @@
+import {createVideoFrames} from '../server/videoFrames.ts';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
@@ -26,11 +27,14 @@ export function createPreviewRenderer(root:string){
    const {chromium}=require('playwright-core') as typeof import('playwright-core');
    browser=await chromium.launch({headless:true,executablePath:runtimeTools(root).chrome,args:['--no-proxy-server','--mute-audio'],timeout:30000});
    const page=await browser.newPage({viewport:{width:p.size.width,height:p.size.height},deviceScaleFactor:1});page.setDefaultTimeout(45000);
+   const videoFiles=new Map<string,string>();for(const a of p.assets.filter(a=>a.video)){const file=path.join(input.directory,a.sha256+'.mp4');await fs.writeFile(file,assets.get(a.id)!);videoFiles.set(a.id,file);}
+   const videoFrames=createVideoFrames(root,path.join(input.directory,'video-cache'));
    const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
    await page.route('**/*',async route=>{
     const url=new URL(route.request().url());if(url.origin!==input.origin){await route.abort();return;}
     const match=/^\/api\/v1\/projects\/([^/]+)\/assets\/([^/]+)$/.exec(url.pathname);
     if(match){const a=p.assets.find(a=>a.id===match[2]),bytes=match[1]===p.id?assets.get(match[2]!):undefined;await route.fulfill(bytes&&a?{status:200,body:bytes,contentType:a.mime}:{status:404,body:'Missing snapshot asset'});return;}
+    const vm=/^\/api\/v1\/projects\/([^/]+)\/video-frames\/([^/]+)$/.exec(url.pathname);if(vm){const a=p.assets.find(a=>a.id===vm[2]),file=a&&videoFiles.get(a.id);if(vm[1]!==p.id||!a||!file||a.sha256!==url.searchParams.get('sha')){await route.fulfill({status:404,body:'Missing snapshot video'});return;}try{await route.fulfill({status:200,body:await videoFrames.frame(file,a,Number(url.searchParams.get('index')),url.searchParams.has('width')?Number(url.searchParams.get('width')):a.width!),contentType:'image/png'});}catch(e){await route.fulfill({status:400,json:{error:(e as Error).message}});}return;}
     await route.continue();
    });
    await page.goto(input.origin+'/studio/export/',{waitUntil:'networkidle'});
@@ -39,7 +43,7 @@ export function createPreviewRenderer(root:string){
    const frames:PreviewResult['frames']=[];
    for(const [index,frame] of input.frames.entries()){
     signal.throwIfAborted();
-    const png=await page.evaluate(({frame,width,height})=>{const raw=(window as any).motiveliumExport.frame(frame);const source=document.querySelector('canvas')!;if(source.width===width&&source.height===height)return raw;const target=document.createElement('canvas');target.width=width;target.height=height;target.getContext('2d')!.drawImage(source,0,0,width,height);return target.toDataURL('image/png')},{frame,width,height});
+    const png=await page.evaluate(async({frame,width,height})=>{const raw=await (window as any).motiveliumExport.frame(frame);const source=document.querySelector('canvas')!;if(source.width===width&&source.height===height)return raw;const target=document.createElement('canvas');target.width=width;target.height=height;target.getContext('2d')!.drawImage(source,0,0,width,height);return target.toDataURL('image/png')},{frame,width,height});
     const bytes=Buffer.from(png.slice('data:image/png;base64,'.length),'base64');if(bytes.subarray(0,8).toString('hex')!=='89504e470d0a1a0a'||bytes.readUInt32BE(16)!==width||bytes.readUInt32BE(20)!==height)throw Error('Рендер не вернул ожидаемый PNG.');
     const file=path.join(input.directory,String(index).padStart(6,'0')+'.png');await fs.writeFile(file,bytes);frames.push({frame,path:file,sha256:crypto.createHash('sha256').update(bytes).digest('hex'),width,height});
    }

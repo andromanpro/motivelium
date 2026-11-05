@@ -18,8 +18,8 @@ using Microsoft.Web.WebView2.WinForms;
 [assembly:AssemblyProduct("Motivelium")]
 [assembly:AssemblyCompany("Motivelium")]
 [assembly:AssemblyVersion("0.2.0.0")]
-[assembly:AssemblyFileVersion("0.2.0.10001")]
-[assembly:AssemblyInformationalVersion("0.2.0-beta.1")]
+[assembly:AssemblyFileVersion("0.2.0.10002")]
+[assembly:AssemblyInformationalVersion("0.2.0-beta.2")]
 namespace MotiveliumDesktop {
  static class Program {
   internal static bool English=System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName!="ru";

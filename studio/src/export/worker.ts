@@ -1,3 +1,4 @@
+import {prepareVideoFrame} from '../../render/videoFrames.ts';
 import type {Project} from '../../domain/schema.ts';
 import {evaluateFrame} from '../../render/evaluate.ts';
 import {renderFrame,type AssetBitmaps} from '../../render/renderFrame.ts';
@@ -19,8 +20,9 @@ async function prepare(snapshot:Project){
  if(project.nodes.some(n=>n.kind==='scene3d')){adapter=createThreeAdapter(project);await adapter.layer.prepare?.(project);}
  return{width:canvas.width,height:canvas.height};
 }
-function frame(index:number){
+async function frame(index:number){
  if(!Number.isInteger(index)||index<0||index>=project.durationFrames)throw Error('Кадр вне проекта');
+ await prepareVideoFrame(project,index,bitmaps);
  const result=renderFrame(evaluateFrame(project,index),{ctx,project,bitmaps,threeLayer:adapter?.layer});
  if(result.missingAssets.length)throw Error('Отсутствуют ресурсы кадра: '+result.missingAssets.join(', '));
  return canvas.toDataURL('image/png');

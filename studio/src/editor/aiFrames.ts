@@ -1,3 +1,4 @@
+import {prepareVideoFrame} from '../../render/videoFrames.ts';
 import { ui } from './i18n.ts';
 import type { Project } from '../../domain/schema.ts';
 import { evaluateFrame } from '../../render/evaluate.ts';
@@ -9,10 +10,10 @@ export function visualSampleFrames(project: Project, nodeId: string, current: nu
     return [...new Set([Math.max(range.fromFrame, Math.min(range.toFrame - 1, current)), range.fromFrame + Math.min(span - 1, Math.max(1, Math.round(span * .15))), range.fromFrame + Math.min(span - 1, Math.round(span * .75))])].sort((a, b) => a - b);
 }
 /** Captures the same compositor as preview; no editor chrome or selection is painted. */
-export function captureAIFrames(project: Project, nodeId: string, frames: number[], bitmaps: AssetBitmaps, threeLayer: ThreeLayerRenderer | undefined, after?: Project, restore?: {
+export async function captureAIFrames(project: Project, nodeId: string, frames: number[], bitmaps: AssetBitmaps, threeLayer: ThreeLayerRenderer | undefined, after?: Project, restore?: {
     project: Project;
     frame: number;
-}): VisualFrame[] {
+}): Promise<VisualFrame[]> {
     const full = document.createElement('canvas'), small = document.createElement('canvas');
     full.width = project.size.width;
     full.height = project.size.height;
@@ -29,6 +30,7 @@ export function captureAIFrames(project: Project, nodeId: string, frames: number
                 const state = evaluateFrame(snapshot, frame);
                 if (state.items.some(i => i.node.kind === 'scene3d') && !threeLayer)
                     throw Error(ui("Дождись загрузки3D перед отправкой кадра."));
+                await prepareVideoFrame(snapshot,frame,bitmaps);
                 const rendered = renderFrame(state, { ctx, project: snapshot, bitmaps, threeLayer });
                 if (rendered.missingAssets.length)
                     throw Error(ui("Дождись загрузки изображений перед отправкой кадра."));

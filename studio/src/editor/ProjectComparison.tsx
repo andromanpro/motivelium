@@ -4,7 +4,7 @@ import { ui } from './i18n.ts';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Project } from '../../domain/schema.ts';
 import { comparisonChanges, comparisonDuration, comparisonFrame } from '../../domain/comparison.ts';
-import { accentSamples } from '../../domain/synthAudio.ts';
+import {mixProjectAudio,AUDIO_RATE} from '../../domain/audio.ts';
 import { createThreeAdapter, type ThreeAdapter } from '../../render/threeAdapter.ts';
 import { captureComparison, type ComparisonSnapshot } from './comparisonAssets.ts';
 import { FrameCanvas } from './PreviewCanvas.tsx';
@@ -53,7 +53,7 @@ function ComparisonSound({ snapshot, seconds, playing, onError }: {
             return;
         let cancelled = false, ctx: AudioContext;
         try {
-            ctx = new AudioContext();
+            ctx = new AudioContext({sampleRate:AUDIO_RATE});
         }
         catch {
             onError(ui("Браузер не разрешил звук."));
@@ -65,34 +65,8 @@ function ComparisonSound({ snapshot, seconds, playing, onError }: {
         void (async () => {
             try {
                 await ctx.resume();
-                for (const track of snapshot.project.audioTracks) {
-                    if (cancelled || track.mute || !track.gain)
-                        continue;
-                    let buffer: AudioBuffer;
-                    if (track.synth) {
-                        const samples = accentSamples(track.synth, ctx.sampleRate);
-                        buffer = ctx.createBuffer(1, samples.length, ctx.sampleRate);
-                        buffer.copyToChannel(samples as Float32Array<ArrayBuffer>, 0);
-                    }
-                    else {
-                        const bytes = track.assetId ? snapshot.audio.get(track.assetId) : null;
-                        if (!bytes)
-                            continue;
-                        buffer = await ctx.decodeAudioData(bytes.slice(0));
-                    }
-                    if (cancelled)
-                        return;
-                    const t = latest.current - track.offsetSeconds;
-                    if (t >= buffer.duration)
-                        continue;
-                    const source = ctx.createBufferSource(), gain = ctx.createGain();
-                    source.buffer = buffer;
-                    gain.gain.value = track.gain;
-                    source.connect(gain);
-                    gain.connect(output);
-                    sources.push(source);
-                    source.start(ctx.currentTime + Math.max(0, -t), Math.max(0, t));
-                }
+                const mix=await mixProjectAudio(snapshot.project,async asset=>{const bytes=snapshot.audio.get(asset.id);if(!bytes)throw Error('Missing comparison audio');const b=await ctx.decodeAudioData(bytes.slice(0));return{sampleRate:b.sampleRate,channels:Array.from({length:b.numberOfChannels},(_,i)=>b.getChannelData(i))};},()=>{if(cancelled)throw new DOMException('Cancelled','AbortError');});
+                if(cancelled)return;const buffer=ctx.createBuffer(2,mix.left.length,AUDIO_RATE);buffer.copyToChannel(mix.left as Float32Array<ArrayBuffer>,0);buffer.copyToChannel(mix.right as Float32Array<ArrayBuffer>,1);const source=ctx.createBufferSource();source.buffer=buffer;source.connect(output);sources.push(source);source.start(0,Math.max(0,latest.current));
             }
             catch (e) {
                 if (!cancelled)
@@ -114,7 +88,8 @@ function ComparisonSound({ snapshot, seconds, playing, onError }: {
     }, [snapshot, playing, onError]);
     return null;
 }
-function ComparisonStage({ snapshot, frame, label }: {
+function ComparisonStage({ snapshot, frame, label,playing }: {
+    playing:boolean;
     snapshot: ComparisonSnapshot;
     frame: number;
     label: string;
@@ -133,7 +108,7 @@ function ComparisonStage({ snapshot, frame, label }: {
         }
         return () => { a?.dispose(); };
     }, [snapshot]);
-    return <>{error ? <div role="alert" className="field-warning"><DiagnosticText message={error}/></div> : <FrameCanvas project={snapshot.project} bitmaps={snapshot.bitmaps} threeLayer={adapter?.layer} frame={frame} label={label}/>}</>;
+    return <>{error ? <div role="alert" className="field-warning"><DiagnosticText message={error}/></div> : <FrameCanvas playing={playing} project={snapshot.project} bitmaps={snapshot.bitmaps} threeLayer={adapter?.layer} frame={frame} label={label}/>}</>;
 }
 export function ProjectComparison({ project, candidate, onClose, onApply, initialReference, initialSeconds = 0 }: {
     project: Project;
@@ -256,7 +231,7 @@ export function ProjectComparison({ project, candidate, onClose, onApply, initia
   <div className="compare-body">{(loading || before && !pair && !error) && <p role="status" className="compare-empty">{ui("Готовлю кадры и ресурсы…")}</p>}{(loadError || error) && <p role="alert" className="field-warning">{loadError || error}</p>}{!before && !loading && !loadError && <div className="compare-empty"><Icon name="layers" size={38}/><h3>{ui("Один момент. Два варианта.")}</h3><p>{ui("Выбери сохранённую версию. Для следующей правки можно заранее создать копию через меню «Файл».")}</p></div>}
    {pair && <><div className="compare-headings"><div><b>{ui("ДО")}</b><strong>{pair.before.project.title}</strong><small>v{pair.before.project.revision}{" " + ui("· кадр") + " "}{comparisonFrame(pair.before.project, seconds)}{seconds >= comparisonDuration(pair.before.project) ? " " + ui("· конец") : ''}</small></div><div><b>{ui("ПОСЛЕ")}</b><strong>{pair.after.project.title}</strong><small>{candidate ? ui("Примерка") : `v${pair.after.project.revision}`}{" " + ui("· кадр") + " "}{comparisonFrame(pair.after.project, seconds)}{seconds >= comparisonDuration(pair.after.project) ? " " + ui("· конец") : ''}</small></div></div>
     <div className={'compare-stages ' + (mode === 'wipe' && sameRatio ? 'wipe' : 'side')} style={{ '--wipe': wipe + '%', '--ratio': after.size.width + '/' + after.size.height } as React.CSSProperties}>
-     <div className="compare-stage compare-before"><ComparisonStage snapshot={pair.before} frame={comparisonFrame(pair.before.project, seconds)} label={ui("Кадр до изменения")}/></div><div className="compare-stage compare-after"><ComparisonStage snapshot={pair.after} frame={comparisonFrame(pair.after.project, seconds)} label={ui("Кадр после изменения")}/></div>
+     <div className="compare-stage compare-before"><ComparisonStage playing={playing} snapshot={pair.before} frame={comparisonFrame(pair.before.project, seconds)} label={ui("Кадр до изменения")}/></div><div className="compare-stage compare-after"><ComparisonStage playing={playing} snapshot={pair.after} frame={comparisonFrame(pair.after.project, seconds)} label={ui("Кадр после изменения")}/></div>
      {mode === 'wipe' && sameRatio && <><span className="compare-wipe-line"/><input className="compare-wipe-input" type="range" aria-label={ui("Граница сравнения")} min="0" max="100" value={wipe} onChange={e => setWipe(Number(e.target.value))}/></>}
     </div>
    </>}

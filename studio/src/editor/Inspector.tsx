@@ -30,7 +30,7 @@ function read(n: SceneNode, project: Project, keyMode = false): Values {
     }
     return values;
 }
-export function Inspector({ project, node, onCommit, onClose, onDirty, onAddEffect, onEditAI, onModel, interactionBusy = false, frame = 0, recordKeys = false }: {
+export function Inspector({ project, node, onCommit, onClose, onDirty, onAddEffect, onEditAI, onModel, onVideo, interactionBusy = false, frame = 0, recordKeys = false }: {
     frame?: number;
     recordKeys?: boolean;
     interactionBusy?: boolean;
@@ -42,6 +42,7 @@ export function Inspector({ project, node, onCommit, onClose, onDirty, onAddEffe
     onAddEffect: () => void;
     onEditAI: () => void;
     onModel: () => void;
+    onVideo:()=>void;
 }) {
     const lockReason = node ? layerLockReason(project, node.id) : '';
     const [values, setValues] = useState<Values>({}), [dirty, setDirty] = useState(false), [baseRevision, setBaseRevision] = useState(project.revision), [error, setError] = useState(''), [saving, setSaving] = useState(false);
@@ -194,14 +195,14 @@ export function Inspector({ project, node, onCommit, onClose, onDirty, onAddEffe
         }
     }
     const number = (key: string, label: string, step = 1, min?: number, max?: number) => <label key={key}>{label}<input aria-label={label} type="number" value={values[key] ?? ''} step={step} min={min} max={max} onChange={e => change(key, e.target.value)}/></label>;
-    const kindNames: Record<string, string> = { group: ui("Группа"), shape: ui("Фигура"), text: ui("Текст"), image: ui("Изображение"), scene3d: ui("3D-сцена") };
+    const kindNames: Record<string, string> = { group: ui("Группа"), shape: ui("Фигура"), text: ui("Текст"), image: ui("Изображение"),video:ui("Видео"), scene3d: ui("3D-сцена") };
     const nodeEffects = node ? effectStack(project, node.id) : [];
     return <aside className="inspector">
   <div className="panel-title"><span>{ui("Свойства")}</span><button className="icon-button" onClick={onClose} aria-label={ui("Закрыть свойства")}><Icon name="close" size={15}/></button></div>
   {node ? <><div className="inspector-content" ref={content}>
    <div className="selection-heading"><span className="eyebrow">{kindNames[node.kind]}</span><h2>{node.name}</h2></div>
    {lockReason && <p className="field-warning">{lockReason}{" " + ui("Разблокируй его в панели слоёв.")}</p>}<fieldset className="layer-property-fields" disabled={!!lockReason || interactionBusy || saving}>
-   <div className="object-tools">{node.kind === 'scene3d' && <button className="object-model-edit" disabled={dirty || saving} onClick={onModel}><Icon name="cube" size={15}/>{ui("Детали и камера 3D")}</button>}<button className="ai-object-edit" disabled={dirty || saving} onClick={onEditAI}><Icon name="wand" size={15}/>{ui("Изменить через ИИ")}</button>
+   <div className="object-tools">{node.kind==='video'&&<button disabled={dirty||saving} onClick={onVideo}>{ui("Видео: обрезка и оформление")}</button>}{node.kind === 'scene3d' && <button className="object-model-edit" disabled={dirty || saving} onClick={onModel}><Icon name="cube" size={15}/>{ui("Детали и камера 3D")}</button>}<button className="ai-object-edit" disabled={dirty || saving} onClick={onEditAI}><Icon name="wand" size={15}/>{ui("Изменить через ИИ")}</button>
    <button className="add-object-effect" disabled={dirty || saving} onClick={onAddEffect}><Icon name="sparkles" size={15}/>{ui("Добавить эффект")}</button>
    </div>
 

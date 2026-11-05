@@ -1,3 +1,5 @@
+import {inspectMp4} from './videoMetadata.ts';
+import {runtimeTools} from './runtime.ts';
 import {APP_VERSION} from '../studio/domain/version.ts';
 import fs from 'node:fs/promises';
 import {createReadStream,createWriteStream} from 'node:fs';
@@ -56,6 +58,7 @@ export async function readProjectZip(file:string,destination:string){
   for(const a of project.assets){const record=manifest.assets.find(r=>r.id===a.id),entry=record&&entries.get(record.entry);if(!record||record.bytes!==a.bytes||record.sha256!==a.sha256||!entry||entry.bytes!==a.bytes||entry.sha256!==a.sha256)throw Error('Отсутствует или повреждён ресурс: '+(a.title??a.id));allowed.add(record.entry);assets.set(a.id,entry.file);}
   for(const name of entries.keys())if(!allowed.has(name))throw Error('Есть незаявленные ресурсы архива.');
   for(const a of project.assets.filter(a=>a.mime.startsWith('model/'))){const inspected=inspectGltf(await fs.readFile(assets.get(a.id)!));for(const node of project.nodes)if(node.kind==='scene3d'&&node.model?.assetId===a.id&&JSON.stringify(inspected.parts)!==JSON.stringify(node.model.parts))throw Error('Иерархия модели не совпала: '+node.name);}
+  for(const a of project.assets.filter(a=>a.video)){const meta=await inspectMp4(runtimeTools(fileURLToPath(new URL('../',import.meta.url))).ffprobe,assets.get(a.id)!);if(meta.width!==a.width||meta.height!==a.height||Math.abs(meta.durationSeconds!-a.durationSeconds!)>.00001||meta.video!.fps.num/meta.video!.fps.den!==a.video!.fps.num/a.video!.fps.den||meta.video!.hasAudio!==a.video!.hasAudio)throw Error('Метаданные MP4 не совпали: '+a.id);}
   return{project,manifest,assets};
  }finally{zip.close();}
 }

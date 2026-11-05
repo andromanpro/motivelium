@@ -9,6 +9,7 @@ import {SHADER_MAP,shaderParamErrors,type ShaderParams} from '../effects/shaders
 import {contourParamErrors} from '../effects/contours.ts';
 import {typographyErrors,unsupportedLetters} from '../effects/typography.ts';
 import {validate3d,type ModelRef,type PartEdit,type CameraPose3d,type CameraKey3d} from './model3d.ts';
+import {screenGuideErrors,type ScreenGuide} from './screenGuide.ts';
 import {validateStoryboard,type Storyboard} from './storyboard.ts';
 
 export type Vec2 = { x: number; y: number };
@@ -24,7 +25,7 @@ export type Transform = {
 export type Geometry = { width: number; height: number };
 export type TransformKey = {frame:number;transform:Transform;easing:'smooth'|'linear'|'hold'};
 
-export type NodeKind = 'group' | 'text' | 'image' | 'shape' | 'scene3d';
+export type NodeKind = 'group' | 'text' | 'image' | 'video' | 'shape' | 'scene3d';
 
 export type NodeBase = {
   id: string;
@@ -42,17 +43,19 @@ export type NodeBase = {
 
 export type TextNode = NodeBase & { kind: 'text'; text: string; fontFamily: string; fontSize: number; fontWeight?:number; color: string; align: 'left' | 'center' | 'right'; lineHeight: number };
 export type ImageNode = NodeBase & { kind: 'image'; assetId: string; fit: 'contain' | 'cover' | 'fill' };
+export type VideoNode = NodeBase & {kind:'video';assetId:string;fit:'contain'|'cover'|'fill';sourceIn:number;sourceOut:number;speed:number;endBehavior:'hold'|'hide';screenGuide?:ScreenGuide|null};
 export type ShapeNode = NodeBase & { kind: 'shape'; shape: 'rect' | 'ellipse'; fill: string; fillOpacity?: number; stroke?: string; strokeWidth?: number; generator?:{shaderId:string;params:ShaderParams;speed:number;hue:number} };
 export type GroupNode = NodeBase & { kind: 'group' };
 export type Scene3dNode = NodeBase & { kind: 'scene3d'; adapter: 'three'; preset: 'gear-cluster' | 'logo-monolith' | 'neon-reactor' | 'ribbon-tunnel' | 'anatomy-device' | 'imported-model'; spin: number; explode: number;model?:ModelRef;parts3d?:PartEdit[];camera3d?:CameraPose3d;camera3dKeys?:CameraKey3d[];cameraTargetPart?:string };
 
-export type SceneNode = TextNode | ImageNode | ShapeNode | GroupNode | Scene3dNode;
+export type SceneNode = TextNode | ImageNode | VideoNode | ShapeNode | GroupNode | Scene3dNode;
 
 export type AssetOrigin = 'photo' | 'diagram' | 'staged' | 'generated';
 export type AssetRef = {
   id: string; path: string; mime: string; bytes: number; sha256: string;
   width?: number; height?: number; durationSeconds?: number;
   origin: AssetOrigin; title?: string;
+  video?:{codec:'h264';fps:Fps;hasAudio:boolean};
 };
 
 export type SceneTransition={shaderId:string;durationFrames:number;params:ShaderParams};
@@ -76,7 +79,7 @@ export type SynthAccent = {voice:'impact'|'chime'|'sweep';durationSeconds:number
 
 export type AudioClip = {sourceStartSeconds:number;durationSeconds:number;fadeInSeconds:number;fadeOutSeconds:number;pan:number;duckMusicDb:number};
 export type SoundCredit = {author:string;source:string;license:string};
-export type AudioTrack = { id: string; kind: 'music' | 'voice' | 'sfx'; assetId: string | null; gain: number; offsetSeconds: number; mute: boolean; synth?:SynthAccent;name?:string;clip?:AudioClip;credit?:SoundCredit };
+export type AudioTrack = { id: string; kind: 'music' | 'voice' | 'sfx'; assetId: string | null; gain: number; offsetSeconds: number; mute: boolean; synth?:SynthAccent;name?:string;clip?:AudioClip;credit?:SoundCredit;videoNodeId?:string;playbackRate?:number };
 export type Cue = { id: string; trackId: string | null; frame: number; kind: 'beat' | 'bar' | 'accent' | 'drop' | 'phrase' | 'mark'; label: string };
 
 export type Project = {
@@ -151,6 +154,7 @@ const NODE_KIND_KEYS: Record<NodeKind, Set<string>> = {
   group: new Set(['kind']),
   text: new Set(['kind','text','fontFamily','fontSize','fontWeight','color','align','lineHeight']),
   image: new Set(['kind','assetId','fit']),
+  video: new Set(['kind','assetId','fit','sourceIn','sourceOut','speed','endBehavior','screenGuide']),
   shape: new Set(['kind','shape','fill','fillOpacity','stroke','strokeWidth','generator']),
   scene3d: new Set(['kind','adapter','preset','spin','explode','model','parts3d','camera3d','camera3dKeys','cameraTargetPart']),
 };
@@ -190,10 +194,11 @@ function validateNode(n: unknown, project: { durationFrames: number }, errors: s
     if (!['left','center','right'].includes(String(o.align))) errors.push(`nodes[${id}].align: left|center|right`);
     fin(o.lineHeight, 0.5, 4, `nodes[${id}].lineHeight`, errors);
   }
-  if (kind === 'image') {
+  if (kind === 'image' || kind === 'video') {
     str(o.assetId, 64, `nodes[${id}].assetId`, errors);
     if (!['contain','cover','fill'].includes(String(o.fit))) errors.push(`nodes[${id}].fit: contain|cover|fill`);
   }
+  if(kind==='video'){errors.push(...screenGuideErrors(o.screenGuide));fin(o.sourceIn,0,3600,`nodes[${id}].sourceIn`,errors);fin(o.sourceOut,0.001,3600,`nodes[${id}].sourceOut`,errors);fin(o.speed,.25,4,`nodes[${id}].speed`,errors);if(Number(o.sourceOut)<=Number(o.sourceIn))errors.push(`nodes[${id}]: sourceIn < sourceOut`);if(!['hold','hide'].includes(String(o.endBehavior)))errors.push(`nodes[${id}]: endBehavior hold|hide`);}
   if (kind === 'shape') {
     if (!['rect','ellipse'].includes(String(o.shape))) errors.push(`nodes[${id}].shape: rect|ellipse`);
     if (!HEX_COLOR.test(String(o.fill))) errors.push(`nodes[${id}].fill: формат #rrggbb`);
@@ -264,9 +269,11 @@ export function validateProject(input: unknown, registry: ReadonlyMap<string, Ef
   }
 
   for (const ao of assetsRaw) {
-    checkUnknown(ao, new Set(['id','path','mime','bytes','sha256','width','height','durationSeconds','origin','title']), `assets[${String(ao.id)}]`, errors);
+    checkUnknown(ao, new Set(['id','path','mime','bytes','sha256','width','height','durationSeconds','origin','title','video']), `assets[${String(ao.id)}]`, errors);
     claim(str(ao.id, 64, 'assets.id', errors), 'asset');
     str(ao.path, 500, `assets[${String(ao.id)}].path`, errors);
+    if(ao.mime==='video/mp4'){const v=ao.video as AssetRef['video'];if(!v||v.codec!=='h264'||!(()=>{try{validFps(v.fps);return true}catch{return false}})()||v.fps.num/v.fps.den>120||typeof v.hasAudio!=='boolean')errors.push('assets.video: H264, fps 1..120, hasAudio');fin(ao.width,1,4096,'assets.video.width',errors,true);fin(ao.height,1,4096,'assets.video.height',errors,true);fin(ao.durationSeconds,.001,3600,'assets.video.durationSeconds',errors);if(v)checkUnknown(v as unknown as Record<string,unknown>,new Set(['codec','fps','hasAudio']),'assets.video',errors);}
+    else if(ao.video!==undefined)errors.push('assets.video: только video/mp4');
     str(ao.mime, 100, `assets[${String(ao.id)}].mime`, errors);
     fin(ao.bytes, 0, 1e12, `assets[${String(ao.id)}].bytes`, errors);
     str(ao.sha256, 64, `assets[${String(ao.id)}].sha256`, errors);
@@ -307,6 +314,7 @@ export function validateProject(input: unknown, registry: ReadonlyMap<string, Ef
       if (parent && parent.sequenceId !== n.sequenceId) errors.push(`nodes[${n.id}]: последовательность отличается от родительской ${parent.sequenceId}`);
     }
     if (n.kind === 'image' && !assetIds.has(n.assetId)) errors.push(`nodes[${n.id}].assetId "${n.assetId}": ассет не найден`);
+    if(n.kind==='video'){const a=assetsRaw.find(a=>a.id===n.assetId);errors.push(...screenGuideErrors(n.screenGuide,Number(a?.durationSeconds??3600)));if(a?.mime!=='video/mp4'||!a.video)errors.push(`nodes[${n.id}]: нужен проверенный MP4`);else if(n.sourceOut>Number(a.durationSeconds)+1e-6)errors.push(`nodes[${n.id}]: sourceOut вне исходника`);}
     if(n.kind==='scene3d'&&n.model){const asset=assetsRaw.find(a=>a.id===n.model!.assetId);if(!asset||!['model/gltf-binary','model/gltf+json'].includes(String(asset.mime)))errors.push(`nodes[${n.id}].model: ресурс GLB/GLTF не найден`);}
     const sequence=project.sequences.find(s=>s.id===n.sequenceId);if(sequence&&Array.isArray(n.transformKeys))for(const k of n.transformKeys)if(k&&typeof k==='object'&&(k.frame<sequence.fromFrame||k.frame>=sequence.toFrame))errors.push(`nodes[${n.id}].transformKeys: кадр ${k.frame} вне сцены`);
   }
@@ -403,7 +411,8 @@ export function validateProject(input: unknown, registry: ReadonlyMap<string, Ef
   }
 
   for (const t of audioRaw) {
-    checkUnknown(t, new Set(['id','kind','assetId','gain','offsetSeconds','mute','synth','name','clip','credit']), `audioTracks[${String(t.id)}]`, errors);
+    checkUnknown(t, new Set(['id','kind','assetId','gain','offsetSeconds','mute','synth','name','clip','credit','videoNodeId']), `audioTracks[${String(t.id)}]`, errors);
+    if(t.videoNodeId!==undefined){const n=nodesTyped.find(n=>n.id===t.videoNodeId),a=assetsRaw.find(a=>a.id===t.assetId);if(n?.kind!=='video'||n.assetId!==t.assetId||!(a?.video as AssetRef['video'])?.hasAudio||t.clip||t.synth)errors.push('audioTracks.videoNodeId: нужна связанная видеодорожка со звуком без clip/synth');}
     if(t.name!==undefined)str(t.name,160,'audioTracks.name',errors);
     if(t.clip!==undefined){const c=t.clip as Record<string,unknown>;
       if(!c||typeof c!=='object'||Array.isArray(c))errors.push('audioTracks.clip: требуется объект');

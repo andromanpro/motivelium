@@ -5,7 +5,7 @@ Motivelium is a local studio for AI-created videos with manual refinement. The M
 ## Connect
 
 1. Keep Motivelium running. Open **Settings → AI**.
-2. Copy the MCP configuration into your client. Use the exact command, arguments and local URL shown by your instance. Do not copy another user's paths or credentials.
+2. Copy the entire MCP configuration into your client, including `env`. Use the exact command, arguments and local URL shown by your instance. `MOTIVELIUM_DATA_DIR` selects the same library and FFmpeg/Chrome settings as the installed studio; omitting it can break video previews. No keys are included. Do not copy another user's paths or credentials.
 3. Reconnect the MCP server in your client. Start with `capabilities` and the compact catalog. The built-in GLM profile is separate and is not required for external MCP.
 
 The configuration includes a run key and a shared work budget. Starting another project or restarting MCP does not reset that budget. Use `run_status` to inspect it. Existing English tool IDs and operation names are stable. Some protocol explanations and technical diagnostics remain in their original language; they do not depend on the studio's interface language.
@@ -33,3 +33,7 @@ On a revision conflict, read the current project and reconsider the draft. Prese
 ## Example task
 
 > Work through Motivelium MCP. Start with capabilities and a compact catalog. Make a short editable video about one idea becoming a finished object. Propose key frames first. Use one clear camera move, readable text and a purposeful transition. Inspect actual frames and a short motion preview. Refine at most twice within the shared budget, then show the best draft before applying. Preserve all manual edits and make the final result reversible.
+
+## Screen recordings — development build after beta.1
+
+`capabilities(section:"screencast")` describes `propose_screen_guide` with source times, normalised coordinates, cursor, clicks and smooth zoom. Drafts require Apply; the common budget and Undo/Redo apply. Use `list_nodes(ids:[nodeId],detail:"screen-points")` for paginated points. [Guide](SCREEN_GUIDE.en.md).

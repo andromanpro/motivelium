@@ -234,7 +234,7 @@ Section "$(MVText13)" Core
   Goto integration_done
  ${EndIf}
  ClearErrors
- WriteRegStr HKCU $RegistryKey "DisplayName" "$MenuGroup 0.1 alpha"
+ WriteRegStr HKCU $RegistryKey "DisplayName" "$MenuGroup ${MV_VERSION}"
  WriteRegStr HKCU $RegistryKey "DisplayVersion" "${MV_VERSION}"
  WriteRegStr HKCU $RegistryKey "InstallLocation" "$INSTDIR"
  WriteRegStr HKCU $RegistryKey "DisplayIcon" "$INSTDIR\Motivelium.exe,0"

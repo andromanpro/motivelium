@@ -2,7 +2,7 @@ import type {Project,SceneNode} from '../studio/domain/schema.ts';
 import {REGISTRY} from '../studio/effects/registry.ts';
 
 export const QUERY_MAX_BYTES=8_000;
-export type QueryOptions={offset?:number;limit?:number;query?:string;sequenceId?:string;ids?:string[];parentId?:string|null;kind?:string;targetId?:string;includeDescendants?:boolean;definitionId?:string;enabled?:boolean;detail?:'summary'|'properties'|'keys';section?:'project'|'scenes'|'assets'|'tracks'|'cues'};
+export type QueryOptions={offset?:number;limit?:number;query?:string;sequenceId?:string;ids?:string[];parentId?:string|null;kind?:string;targetId?:string;includeDescendants?:boolean;definitionId?:string;enabled?:boolean;detail?:'summary'|'properties'|'keys'|'screen-points';section?:'project'|'scenes'|'assets'|'tracks'|'cues'};
 const size=(v:unknown)=>Buffer.byteLength(JSON.stringify(v),'utf8');
 const cut=(s:string,max=240)=>s.length>max?s.slice(0,max)+'…':s;
 // Projection never changes the source document. Long user values are labelled, not
@@ -30,9 +30,13 @@ export function page<T>(p:Project,kind:string,items:T[],options:QueryOptions,pro
  return result;
 }
 const match=(text:string,query='')=>query.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean).every(w=>text.toLocaleLowerCase().includes(w));
-function baseNode(p:Project,n:SceneNode){return{id:n.id,name:cut(n.name,120),kind:n.kind,parentId:n.parentId,sequenceId:n.sequenceId,visible:n.visible,locked:n.locked,transform:n.transform,geometry:n.geometry,keyCount:n.transformKeys?.length??0,effectCount:p.effects.filter(e=>e.targetId===n.id).length,...(n.kind==='text'?{text:cut(n.text),textLength:n.text.length,textTruncated:n.text.length>240}:{}),...(n.kind==='image'?{assetId:n.assetId,fit:n.fit}:{}),...(n.kind==='shape'?{shape:n.shape,fill:n.fill}:{}),...(n.kind==='scene3d'?{preset:n.preset,partCount:n.parts3d?.length??0,cameraKeyCount:n.camera3dKeys?.length??0}: {})};}
+function baseNode(p:Project,n:SceneNode){return{id:n.id,name:cut(n.name,120),kind:n.kind,parentId:n.parentId,sequenceId:n.sequenceId,visible:n.visible,locked:n.locked,transform:n.transform,geometry:n.geometry,keyCount:n.transformKeys?.length??0,effectCount:p.effects.filter(e=>e.targetId===n.id).length,...(n.kind==='text'?{text:cut(n.text),textLength:n.text.length,textTruncated:n.text.length>240}:{}),...(n.kind==='image'?{assetId:n.assetId,fit:n.fit}:{}),...(n.kind==='video'?{assetId:n.assetId,fit:n.fit,sourceIn:n.sourceIn,sourceOut:n.sourceOut,speed:n.speed,endBehavior:n.endBehavior,screenPointCount:n.screenGuide?.points.length??0}:{}),...(n.kind==='shape'?{shape:n.shape,fill:n.fill}:{}),...(n.kind==='scene3d'?{preset:n.preset,partCount:n.parts3d?.length??0,cameraKeyCount:n.camera3dKeys?.length??0}: {})};}
 export function listNodes(p:Project,q:QueryOptions={}){
  const nodes=p.nodes.filter(n=>(!q.ids||q.ids.includes(n.id))&&(!q.sequenceId||n.sequenceId===q.sequenceId)&&(!q.kind||n.kind===q.kind)&&(q.parentId===undefined||n.parentId===q.parentId)&&match(n.id+' '+n.name+' '+(n.kind==='text'?n.text:''),q.query));
+ if(q.detail==='screen-points'){
+  const n=nodes[0];if(q.ids?.length!==1||nodes.length!==1||n?.kind!=='video')throw Error('screen-points: select one video ID.');
+  return{...page(p,'screen-points',n.screenGuide?.points??[],q),nodeId:n.id,timeUnit:'source seconds',coordinates:'normalised source x/y'};
+ }
  if(q.detail==='keys'){
   if(q.ids?.length!==1||nodes.length!==1)throw Error('Ключи: укажите ids с одним существующим объектом, без конфликтующих фильтров.');
   return{...page(p,'node-keys',nodes[0]!.transformKeys??[],q),nodeId:nodes[0]!.id};

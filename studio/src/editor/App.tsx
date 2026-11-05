@@ -9,6 +9,8 @@ import { api, type ProjectSummary } from './api.ts';
 import type { Project, SceneNode } from '../../domain/schema.ts';
 import type { Transaction } from '../../domain/transaction.ts';
 import { evaluateFrame } from '../../render/evaluate.ts';
+import {VideoClipEditor} from './VideoClipEditor.tsx';
+import {prepareVideoFrame,warmVideoPlayback} from '../../render/videoFrames.ts';
 import { renderFrame, type AssetBitmaps, type ThreeLayerRenderer } from '../../render/renderFrame.ts';
 import { hitTest } from '../../render/hitTest.ts';
 import { createThreeAdapter } from '../../render/threeAdapter.ts';
@@ -78,6 +80,9 @@ export function App() {
     const [orderingLayers, setOrderingLayers] = useState(false);
     const [addingLayer, setAddingLayer] = useState(false), [hoveredId, setHoveredId] = useState<string | null>(null);
     const hoverLayer = useCallback((id: string | null) => setHoveredId(id), []);
+    const [videoOpen,setVideoOpen]=useState(false),[bufferingVideo,setBufferingVideo]=useState(false);
+    const videoRender=useRef<{next:{project:Project;state:ReturnType<typeof evaluateFrame>;bitmaps:AssetBitmaps;playing:boolean;render:()=>void}|null;latest:{project:Project;state:ReturnType<typeof evaluateFrame>;bitmaps:AssetBitmaps;playing:boolean;render:()=>void}|null;running:boolean;controller:AbortController|null}>({next:null,latest:null,running:false,controller:null});
+    useEffect(()=>()=>{videoRender.current.next=null;videoRender.current.latest=null;videoRender.current.controller?.abort();},[]);
     const audio = useAudioPlayback(project, audioMuted);
     useEffect(() => {
         if (audio.error) {
@@ -94,7 +99,7 @@ export function App() {
     const fps = project ? project.fps.num / project.fps.den : 30, has3D = project?.nodes.some(n => n.kind === 'scene3d') ?? false;
     const baseState = useMemo(() => project ? evaluateFrame(project, frame) : null, [project, frame]);
     const activeTransition = project ? transitionAtFrame(project, frame) : null;
-    const modalOpen = audioWorkshopOpen || storyboardOpen || newProjectOpen || !!studioDialog || !!projectAction || compositionOpen || compareOpen || !!packageMode || videoExportOpen || modelOpen || modelImportOpen || shaderOpen || galleryOpen || aiOpen || addingLayer;
+    const modalOpen = videoOpen || audioWorkshopOpen || storyboardOpen || newProjectOpen || !!studioDialog || !!projectAction || compositionOpen || compareOpen || !!packageMode || videoExportOpen || modelOpen || modelImportOpen || shaderOpen || galleryOpen || aiOpen || addingLayer;
     useEffect(() => {
         if (modalOpen || playing)
             document.querySelectorAll<HTMLAudioElement>('.resource-panel audio').forEach(a => a.pause());
@@ -300,8 +305,19 @@ export function App() {
         const ctx = canvas.getContext('2d');
         if (!ctx)
             return;
-        renderFrame(state, { ctx, project, bitmaps, threeLayer: threeRef.current?.layer });
-    }, [project, state, bitmaps, renderEpoch]);
+        const render=()=>{renderFrame(state,{ctx,project,bitmaps,threeLayer:threeRef.current?.layer});canvas.dataset.renderedFrame=String(state.frame);canvas.removeAttribute('aria-busy');};
+        const queue=videoRender.current;
+        if(!project.nodes.some(n=>n.kind==='video')){queue.latest=null;queue.next=null;queue.controller?.abort();render();return;}
+        const job={project,state,bitmaps,playing,render};queue.next=queue.latest=job;canvas.setAttribute('aria-busy','true');
+        if(!queue.running)void(async()=>{
+          queue.running=true;
+          try{while(queue.next){const item=queue.next;queue.next=null;const controller=new AbortController();queue.controller=controller;
+            try{await prepareVideoFrame(item.project,item.state.frame,item.bitmaps,controller.signal,item.playing);
+              if(queue.latest===item||(queue.latest?.project===item.project&&queue.latest?.playing&&item.playing))item.render();
+            }catch(e){if(!controller.signal.aborted&&queue.latest?.project===item.project){setPlaying(false);setNotice({kind:'info',text:errorText(e)});}}
+          }}finally{queue.running=false;queue.controller=null;}
+        })();
+    }, [project, state, bitmaps, renderEpoch,playing]);
     useEffect(() => {
         if (overlayRef.current && project && state)
             drawLayerOverlay(overlayRef.current, project, state, activeTransition || selectedPart ? null : selectedId, activeTransition ? null : hoveredId, fit.width);
@@ -336,7 +352,7 @@ export function App() {
         if (!playing || !project)
             return;
         let raf = 0;
-        void audio.play(frameRef.current / fps);
+        let cancelled=false;void(async()=>{try{if(project.nodes.some(n=>n.kind==='video')){setBufferingVideo(true);await warmVideoPlayback(project,frameRef.current);}if(!cancelled){setBufferingVideo(false);await audio.play(frameRef.current/fps);}}catch(e){if(!cancelled){setPlaying(false);setNotice({kind:'info',text:errorText(e)});}}})();
         const tick = () => {
             const time = audio.time();
             if (time !== null) {
@@ -350,7 +366,7 @@ export function App() {
             raf = requestAnimationFrame(tick);
         };
         raf = requestAnimationFrame(tick);
-        return () => { cancelAnimationFrame(raf); audio.pause(); };
+        return () => { cancelled=true;setBufferingVideo(false);cancelAnimationFrame(raf); audio.pause(); };
     }, [playing, project?.id, project?.durationFrames, fps, JSON.stringify(project?.audioTracks)]);
     useEffect(() => {
         const handler = (e: KeyboardEvent) => {
@@ -680,6 +696,7 @@ export function App() {
                 const evaluated = evaluateFrame(snapshot, f), target = currentOnly && canvasRef.current ? canvasRef.current : off, targetContext = target.getContext('2d');
                 if (!targetContext)
                     throw Error(ui("Canvas недоступен"));
+                await prepareVideoFrame(snapshot,f,bitmaps);
                 const rendered = renderFrame(evaluated, { ctx: targetContext, project: snapshot, bitmaps, threeLayer: layer });
                 if (rendered.missingAssets.length)
                     throw Error(ui("Не все изображения загружены"));
@@ -875,7 +892,7 @@ export function App() {
                 setPropertiesOpen(v => !v);
             }
         }}>{selected && <Icon name={kindIcons[selected.kind] ?? 'shape'} size={13}/>}<span>{selectedPartName ?? selected?.name ?? ui("Объект не выбран")}</span></button></div>
-    <div className="stage-viewport" ref={viewportRef}><div className="canvas-fit" {...canvasEdit.events} style={{ width: fit.width, height: fit.height }}><canvas ref={canvasRef} className={"preview " + (canvasEdit.active ? "transforming" : "")} data-transforming={canvasEdit.active} style={{ cursor: canvasEdit.cursor }} onClick={canvasClick} aria-label={ui("Предпросмотр композиции")}/><canvas ref={overlayRef} className="overlay" aria-hidden="true"/>{selectedId && !selectedPart && state && !activeTransition && <svg className="canvas-frame-extensions" viewBox={"0 0 " + project.size.width + " " + project.size.height} aria-hidden="true"><polygon points={(layerQuad(viewProject!, state, selectedId) ?? []).map(p => p.x + "," + p.y).join(" ")} fill="none" stroke="#ffae79" strokeWidth="1.5" vectorEffect="non-scaling-stroke"/>{(layerQuad(viewProject!, state, selectedId) ?? []).map((p, i) => handlePosition(p).clipped ? <line key={i} x1={p.x} y1={p.y} x2={handlePosition(p).left / fit.width * project.size.width} y2={handlePosition(p).top / fit.height * project.size.height} stroke="#d78b58" strokeWidth="1.5" strokeDasharray="4 4" vectorEffect="non-scaling-stroke"/> : null)}</svg>}{selectedId && !selectedPart && state && !activeTransition && (layerQuad(viewProject!, state, selectedId) ?? []).map((p, i) => <button key={i} type="button" className={"canvas-corner " + (handlePosition(p).clipped ? "off-frame" : "")} title={handlePosition(p).clipped ? ui("Угол за пределами просмотра — потяни эту ручку") : ui("Потяни угол · Shift — сохранить пропорции")} data-corner={i} aria-label={ui("Изменить размер —") + " " + [ui("левый верхний"), ui("правый верхний"), ui("правый нижний"), ui("левый нижний")][i] + (" " + ui("угол"))} disabled={busy || hasDraft || resourceBusy || !!layerLockReason(project, selectedId)} style={{ left: handlePosition(p).left, top: handlePosition(p).top, cursor: i % 2 ? "nesw-resize" : "nwse-resize" }}/>)}</div>{!project.nodes.length && !opening && <div className="empty-scene"><span className="empty-scene-symbol"><Icon name="plus" size={26}/></span><strong>{project.storyboard?.cards.length ? ui("Пока только раскадровка") : ui("Сцена готова к работе")}</strong><p>{project.storyboard?.cards.length ? ui("Откройте раскадровку и соберите монтажные сцены.") : ui("Добавьте изображение, текст или модель.")}</p><div><button className="text-button" onClick={openResources} disabled={commandBlocked}><Icon name="image" size={15}/>{ui("Изображение")}</button><button className="text-button" onClick={addLayer} disabled={commandBlocked}><Icon name="text" size={15}/>{ui("Текст")}</button><button className="text-button" onClick={openModelImport} disabled={commandBlocked}><Icon name="cube" size={15}/>{ui("Модель 3D")}</button></div></div>}{canvasEdit.active && <div className="canvas-gesture-hint" role="status">{busy ? ui("Сохраняю…") : ui("Перетаскивание · Shift — пропорции · Esc — отменить")}</div>}{opening && <div className="stage-loading">{ui("Открываю проект…")}</div>}</div>
+    <div className="stage-viewport" ref={viewportRef}><div className="canvas-fit" {...canvasEdit.events} style={{ width: fit.width, height: fit.height }}><canvas ref={canvasRef} className={"preview " + (canvasEdit.active ? "transforming" : "")} data-transforming={canvasEdit.active} style={{ cursor: canvasEdit.cursor }} onClick={canvasClick} aria-label={ui("Предпросмотр композиции")}/><canvas ref={overlayRef} className="overlay" aria-hidden="true"/>{selectedId && !selectedPart && state && !activeTransition && <svg className="canvas-frame-extensions" viewBox={"0 0 " + project.size.width + " " + project.size.height} aria-hidden="true"><polygon points={(layerQuad(viewProject!, state, selectedId) ?? []).map(p => p.x + "," + p.y).join(" ")} fill="none" stroke="#ffae79" strokeWidth="1.5" vectorEffect="non-scaling-stroke"/>{(layerQuad(viewProject!, state, selectedId) ?? []).map((p, i) => handlePosition(p).clipped ? <line key={i} x1={p.x} y1={p.y} x2={handlePosition(p).left / fit.width * project.size.width} y2={handlePosition(p).top / fit.height * project.size.height} stroke="#d78b58" strokeWidth="1.5" strokeDasharray="4 4" vectorEffect="non-scaling-stroke"/> : null)}</svg>}{selectedId && !selectedPart && state && !activeTransition && (layerQuad(viewProject!, state, selectedId) ?? []).map((p, i) => <button key={i} type="button" className={"canvas-corner " + (handlePosition(p).clipped ? "off-frame" : "")} title={handlePosition(p).clipped ? ui("Угол за пределами просмотра — потяни эту ручку") : ui("Потяни угол · Shift — сохранить пропорции")} data-corner={i} aria-label={ui("Изменить размер —") + " " + [ui("левый верхний"), ui("правый верхний"), ui("правый нижний"), ui("левый нижний")][i] + (" " + ui("угол"))} disabled={busy || hasDraft || resourceBusy || !!layerLockReason(project, selectedId)} style={{ left: handlePosition(p).left, top: handlePosition(p).top, cursor: i % 2 ? "nesw-resize" : "nwse-resize" }}/>)}</div>{!project.nodes.length && !opening && <div className="empty-scene"><span className="empty-scene-symbol"><Icon name="plus" size={26}/></span><strong>{project.storyboard?.cards.length ? ui("Пока только раскадровка") : ui("Сцена готова к работе")}</strong><p>{project.storyboard?.cards.length ? ui("Откройте раскадровку и соберите монтажные сцены.") : ui("Добавьте изображение, текст или модель.")}</p><div><button className="text-button" onClick={openResources} disabled={commandBlocked}><Icon name="image" size={15}/>{ui("Изображение")}</button><button className="text-button" onClick={addLayer} disabled={commandBlocked}><Icon name="text" size={15}/>{ui("Текст")}</button><button className="text-button" onClick={openModelImport} disabled={commandBlocked}><Icon name="cube" size={15}/>{ui("Модель 3D")}</button></div></div>}{canvasEdit.active && <div className="canvas-gesture-hint" role="status">{busy ? ui("Сохраняю…") : ui("Перетаскивание · Shift — пропорции · Esc — отменить")}</div>}{bufferingVideo && <div className="stage-loading" role="status">{ui("Подготовка видео…")}</div>}{opening && <div className="stage-loading">{ui("Открываю проект…")}</div>}</div>
     {notice && <div className={'notice ' + notice.kind} role={notice.kind === 'error' ? 'alert' : 'status'}><span><DiagnosticText message={notice.text}/></span><button className="icon-button" aria-label={ui("Закрыть сообщение")} onClick={() => setNotice(null)}><Icon name="close" size={14}/></button></div>}
     <div className="timeline"><div className="transport"><div className="transport-buttons"><button className="icon-button" onClick={() => seek(0)} aria-label={ui("В начало")} title={ui("В начало")}><Icon name="back" size={15}/></button><button className="step-button" onClick={() => seek(frame - 1)} aria-label={ui("Кадр назад")}>−1</button><button className="play-button" onClick={toggle} aria-label={playing ? ui("Пауза") : ui("Воспроизвести")}><Icon name={playing ? 'pause' : 'play'} size={17}/></button><button className="step-button" onClick={() => seek(frame + 1)} aria-label={ui("Кадр вперёд")}>+1</button></div><div className="time-readout"><strong>{seconds(frame, project)}</strong><span>/ {seconds(project.durationFrames, project)}{" " + ui("с")}</span></div>{project.audioTracks.length > 0 && <button className="icon-button sound-button" title={audioMuted ? ui("Включить звук") : ui("Выключить звук")} aria-label={audioMuted ? ui("Включить звук") : ui("Выключить звук")} aria-pressed={!audioMuted} onClick={() => { const next = !audioMuted; setAudioMuted(next); localStorage.setItem('motivelium-audio-muted', String(next)); }}><Icon name={audioMuted ? 'muted' : 'volume'} size={17}/></button>}<label className="frame-field">{ui("Кадр")}<input aria-label={ui("Номер кадра")} type="number" min="0" max={project.durationFrames - 1} value={timeDraft ?? frame} onFocus={() => { setPlaying(false); setTimeDraft(String(frame)); }} onChange={e => setTimeDraft(e.target.value)} onBlur={() => {
             if (timeDraft !== null && timeDraft.trim() && Number.isFinite(Number(timeDraft)))
@@ -891,7 +908,7 @@ export function App() {
                     return;
                 }
                 setPropertiesOpen(false);
-            }} onModel={openModel} onDirty={onDirty} onAddEffect={openGallery} onEditAI={openAI}/>}</div>
+            }} onVideo={()=>{setPlaying(false);setVideoOpen(true);}} onModel={openModel} onDirty={onDirty} onAddEffect={openGallery} onEditAI={openAI}/>}</div>
   {storyboardOpen && <Storyboard key={project.id} project={project} token={token} currentFrame={frame} bitmaps={bitmaps} threeLayer={threeRef.current?.layer} canUndo={canUndo} canRedo={canRedo} busy={busy} onDirty={setStoryDraft} onApply={commit} onHistory={history} onMontage={openStoryMontage} onClose={closeStoryboard}/>}
   {workspaceDialogs}
   {packageMode && <ProjectPackage mode={packageMode} project={project} onClose={() => setPackageMode(null)} onImported={async (id) => { setPackageMode(null); setVideoExportOpen(false); const u = new URL(window.location.href); u.searchParams.delete('panel'); window.history.replaceState(null, '', u); await refreshList(); await openProject(id); }}/>}
@@ -905,6 +922,7 @@ export function App() {
             }}/>}
   {videoExportOpen && <VideoExport project={project} token={token} onClose={() => setVideoExportOpen(false)}/>}
   {compositionOpen && <CompositionLibrary project={project} frame={frame} bitmaps={bitmaps} threeLayer={threeRef.current?.layer} onApply={commit} onSelect={select} onSeek={seek} onClose={() => { setCompositionOpen(false); setRenderEpoch(v => v + 1); }}/>}
+  {videoOpen && selected?.kind==='video' && <VideoClipEditor project={project} node={selected} frame={frame} bitmaps={bitmaps} threeLayer={threeRef.current?.layer} onApply={commit} onClose={()=>{setVideoOpen(false);setRenderEpoch(v=>v+1);}}/>}
   {modelOpen && selected?.kind === 'scene3d' && <ModelWorkshop key={project.id + selected.id} project={project} nodeId={selected.id} initialPart={selectedPart} currentFrame={frame} bitmaps={bitmaps} onApply={commit} onClose={() => { setModelOpen(false); setRenderEpoch(v => v + 1); }}/>}
   {modelImportOpen && <ModelImport project={project} token={token} frame={frame} onApply={async (description, ops, revision, id) => {
                 const ok = await commit(description, ops, revision);

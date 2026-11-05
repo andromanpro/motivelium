@@ -1,4 +1,4 @@
-Motivelium 0.2.0-beta.1
+Motivelium 0.2.0-beta.2
 Own code: MIT, see LICENSE.
 Full current third-party inventory: THIRD_PARTY.md and licenses/manifest.json.
 All full license texts and preserved original shader notices: licenses/.

@@ -1,3 +1,4 @@
+import {prepareVideoFrame} from '../../render/videoFrames.ts';
 import { DiagnosticText } from './DiagnosticText.tsx';
 import { errorText } from './errorText.ts';
 import { ui, uiLabel } from './i18n.ts';
@@ -182,6 +183,7 @@ export function Storyboard({ project, token, currentFrame, bitmaps, threeLayer, 
             const ctx = canvas.getContext('2d');
             if (!ctx)
                 throw Error(ui("Canvas недоступен"));
+            await prepareVideoFrame(snapshot,previewFrame,bitmaps);
             const result = renderFrame(evaluateFrame(snapshot, previewFrame), { ctx, project: snapshot, bitmaps, threeLayer });
             if (result.missingAssets.length)
                 throw Error(ui("Изображения ещё загружаются"));

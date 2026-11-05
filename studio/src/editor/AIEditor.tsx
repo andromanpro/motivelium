@@ -180,7 +180,7 @@ export function AIEditor({ project, nodeId, currentFrame, token, bitmaps, threeL
         setError('');
         try {
             await document.fonts.ready;
-            const visualFrames = raw === undefined && (withFrame || refine) ? captureAIFrames(project, nodeId, visualSampleFrames(project, nodeId, frame), bitmaps, threeLayer, refine ? trial.project ?? undefined : undefined, { project: shownProject, frame }) : undefined;
+            const visualFrames = raw === undefined && (withFrame || refine) ? await captureAIFrames(project, nodeId, visualSampleFrames(project, nodeId, frame), bitmaps, threeLayer, refine ? trial.project ?? undefined : undefined, { project: shownProject, frame }) : undefined;
             const previousJobId = refine ? job?.id : undefined;
             if (raw === undefined && !refine && autoMode && withFrame && visualFrames) {
                 const v = await auto.start({ requestId: auto.newId(), nodeId, expectedRevision: project.revision, frame, prompt: prompt.trim(), allowText, visualFrames });
@@ -213,7 +213,7 @@ export function AIEditor({ project, nodeId, currentFrame, token, bitmaps, threeL
         setError('');
         try {
             await document.fonts.ready;
-            const visualFrames = captureAIFrames(project, nodeId, visualSampleFrames(project, nodeId, frame), bitmaps, threeLayer, trial.project, { project: shownProject, frame });
+            const visualFrames = await captureAIFrames(project, nodeId, visualSampleFrames(project, nodeId, frame), bitmaps, threeLayer, trial.project, { project: shownProject, frame });
             setJob(await api.aiReview(project.id, job.id, token, { requestId: newId('vision'), expectedRevision: project.revision, visualFrames }));
         }
         catch (e) {
@@ -310,7 +310,7 @@ export function AIEditor({ project, nodeId, currentFrame, token, bitmaps, threeL
   <details className="ai-manual"><summary>{ui("Использовать ответ другой модели")}</summary><p>{ui("Скачай задание, передай его модели и вставь ответ. Проверка и примерка будут теми же.")}</p><button className="text-button" onClick={download}><Icon name="download" size={14}/>{copied ? ui("Задание скачано") : ui("Скачать задание")}</button><label>{ui("Ответ модели (JSON)")}<textarea aria-label={ui("Ответ модели JSON")} rows={5} value={manual} onChange={e => setManual(e.target.value)}/></label><button className="text-button" disabled={loading || !manual.trim() || !prompt.trim()} onClick={paste}>{ui("Проверить и примерить")}</button></details>
  </div></section><section className="ai-preview"><div className="ai-preview-scroll"><div className="ai-preview-heading"><div><span className="eyebrow">{trial.project ? ui("ПРИМЕРКА · НЕ СОХРАНЕНО") : ui("ИСХОДНЫЙ ПРОЕКТ")}</span><h3>{trial.project ? ui("Результат правки") : ui("Выбранный кадр")}</h3></div><BeforeAfter before={before} disabled={!trial.project} onChange={setBefore}/></div>
   {trial.project && <button className="text-button ai-compare-open" onClick={() => { setPlaying(false); setCompareOpen(true); }}><Icon name="layers" size={15}/>{ui("Сравнить рядом / со шторкой")}</button>}
-  <div className="ai-canvas"><FrameCanvas project={shownProject} frame={frame} bitmaps={bitmaps} threeLayer={threeLayer} label={ui("Примерка ИИ-правки")}/></div>
+  <div className="ai-canvas"><FrameCanvas playing={playing} project={shownProject} frame={frame} bitmaps={bitmaps} threeLayer={threeLayer} label={ui("Примерка ИИ-правки")}/></div>
   <div className="gallery-preview-transport"><button className="icon-button" aria-label={playing ? ui("Остановить ИИ-примерку") : ui("Воспроизвести ИИ-примерку")} onClick={() => setPlaying(v => !v)}><Icon name={playing ? 'pause' : 'play'} size={14}/></button><input type="range" aria-label={ui("Кадр ИИ-примерки")} min="0" max={Math.max(0, range.toFrame - range.fromFrame - 1)} value={preview} onChange={e => { setPlaying(false); setPreview(Number(e.target.value)); }}/><span>{ui("Кадр") + " "}{frame}</span></div><p className="gallery-loop-label">{ui("Цикл сцены · кадры") + " "}{range.fromFrame}–{range.toFrame - 1}{" " + ui("· без звука")}</p>
   {!!auto.run?.steps.length && <section className="ai-auto-history" aria-label={ui("Ход автоматического прохода")}><span className="eyebrow">{ui("ХОД ПРОВЕРКИ")}</span><ol>{auto.run.steps.map(s => <li key={s.jobId} data-chosen={auto.run?.resultJobId === s.jobId}><strong>{ui("Вариант") + " "}{s.round + 1}{auto.run?.resultJobId === s.jobId ? " " + ui("· показан тебе") : ''}</strong><p>{s.summary}</p>{s.reviewSummary && <p>{s.reviewSummary}</p>}{s.score !== undefined && <small>{ui("Исполнение пожелания · оценка ИИ:") + " "}{s.score}/100</small>}</li>)}</ol></section>}
   {trial.project && <section className={'ai-visual-review ' + (job?.visualReview?.verdict ?? '')} aria-label={ui("Визуальная проверка ИИ")}><div className="ai-visual-heading"><span className="eyebrow">{ui("ПРОВЕРКА КАДРОВ")}</span>{!job?.visualReview && <button className="text-button" aria-label={ui("Проверить примерку через ИИ")} disabled={loading || stale || changed || applying || !provider?.ready} onClick={() => void review()}><Icon name="sparkles" size={14}/>{reviewStarting ? ui("Снимаю кадры…") : ui("Проверить примерку")}</button>}</div>

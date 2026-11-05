@@ -1,6 +1,6 @@
 # Windows-сборка Motivelium
 
-Windows **0.2.0-beta.1**: WinForms/WebView2, .NET Framework 4.8, x64; собственный Node 24.12.0 и 20 production-пакетов, включая MCP SDK и Zod. Выпуск beta.1 включает MCP и RU/EN. Прежняя alpha.3 сохраняется в истории выпусков. Основная поставка — NSIS-установщик. Свой код — MIT; чужие лицензии сохраняются в `licenses/`.
+Windows-кандидат **0.2.0-beta.2**: WinForms/WebView2, .NET Framework 4.8, x64; собственный Node 24.12.0 и 20 production-пакетов, включая MCP SDK и Zod. Выпуск beta.1 включает MCP и RU/EN. Прежняя alpha.3 сохраняется в истории выпусков. Основная поставка — NSIS-установщик. Свой код — MIT; чужие лицензии сохраняются в `licenses/`.
 
 ## Сборка из архива исходников
 

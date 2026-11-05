@@ -15,7 +15,7 @@ import { LayerPreview } from './LayerPreview.tsx';
 function Swatch({ node, project }: {
     node: SceneNode;
     project: Project;
-}) { return <span className={'layer-swatch ' + node.kind} aria-hidden="true">{node.kind === 'shape' ? <i style={{ background: node.fill, opacity: node.fillOpacity ?? 1, borderRadius: node.shape === 'ellipse' ? '50%' : '3px', border: node.stroke ? `1px solid ${node.stroke}` : undefined }}/> : node.kind === 'text' ? <b style={{ color: node.color }}>{node.text.trim().slice(0, 2) || ui("Т")}</b> : node.kind === 'image' ? <img src={api.assetUrl(project.id, node.assetId)} alt=""/> : <Icon name={node.kind === 'group' ? 'group' : 'cube'} size={19}/>}</span>; }
+}) { return <span className={'layer-swatch ' + node.kind} aria-hidden="true">{node.kind === 'shape' ? <i style={{ background: node.fill, opacity: node.fillOpacity ?? 1, borderRadius: node.shape === 'ellipse' ? '50%' : '3px', border: node.stroke ? `1px solid ${node.stroke}` : undefined }}/> : node.kind === 'text' ? <b style={{ color: node.color }}>{node.text.trim().slice(0, 2) || ui("Т")}</b> : node.kind === 'image' ? <img src={api.assetUrl(project.id, node.assetId)} alt=""/> : <Icon name={node.kind === 'video'?'play':node.kind === 'group' ? 'group' : 'cube'} size={19}/>}</span>; }
 export function TreePanel({ project, state, selectedId, partId, onPartSelect, bitmaps, threeLayer, playing, busy, onSelect, onHover, onAdd, onDelete, onAction, onLocate, onClose, onOrderingChange }: {
     partId?: string | null;
     onPartSelect?: (nodeId: string, partId: string) => void;

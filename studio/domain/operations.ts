@@ -67,7 +67,7 @@ export class OpError extends Error {
   }
 }
 
-const UPDATE_NODE_ALLOWED = new Set(['name','transform','geometry','visible','locked','metadata','text','fontFamily','fontSize','fontWeight','color','align','lineHeight','assetId','fit','shape','fill','fillOpacity','stroke','strokeWidth','generator','adapter','preset','spin','explode','model','parts3d','camera3d','camera3dKeys','cameraTargetPart']);
+const UPDATE_NODE_ALLOWED = new Set(['name','transform','geometry','visible','locked','metadata','text','fontFamily','fontSize','fontWeight','color','align','lineHeight','assetId','fit','sourceIn','sourceOut','speed','endBehavior','screenGuide','shape','fill','fillOpacity','stroke','strokeWidth','generator','adapter','preset','spin','explode','model','parts3d','camera3d','camera3dKeys','cameraTargetPart']);
 
 /** Применить пакет операций к копии проекта. Бросает OpError/ValidationError. */
 export function applyOperations(project: Project, operations: unknown, registry: ReadonlyMap<string, EffectDefinition> = REGISTRY): Project {
@@ -163,6 +163,7 @@ export function applyOperations(project: Project, operations: unknown, registry:
           for (const n of p.nodes) if (n.parentId && doomed.has(n.parentId) && !doomed.has(n.id)) { doomed.add(n.id); grew = true; }
         }
         p.nodes = p.nodes.filter(n => !doomed.has(n.id));
+        const soundIds=new Set(p.audioTracks.filter(t=>t.videoNodeId&&doomed.has(t.videoNodeId)).map(t=>t.id));p.audioTracks=p.audioTracks.filter(t=>!soundIds.has(t.id));p.cues=p.cues.filter(c=>!c.trackId||!soundIds.has(c.trackId));
         p.effects = p.effects.filter(e => !doomed.has(e.targetId));
         break;
       }
@@ -296,7 +297,7 @@ export function applyOperations(project: Project, operations: unknown, registry:
       case 'removeAsset': {
         const id = String(o.targetId);
         if (!p.assets.some(x => x.id === id)) throw new OpError(i, `removeAsset: ассет ${id} не найден`);
-        if (p.nodes.some(n => n.kind === 'image' && n.assetId === id)) throw new OpError(i, `removeAsset: ассет ${id} используется узлом image`);
+        if (p.nodes.some(n => (n.kind === 'image'||n.kind==='video') && n.assetId === id)) throw new OpError(i, `removeAsset: ассет ${id} используется узлом image`);
         if (p.audioTracks.some(t => t.assetId === id)) throw new OpError(i, `removeAsset: ассет ${id} используется звуковой дорожкой`);
         if(p.storyboard?.cards.some(c=>c.image?.assetId===id))throw new OpError(i,'Изображение используется в раскадровке');
         p.assets = p.assets.filter(x => x.id !== id);
@@ -321,7 +322,7 @@ export function applyOperations(project: Project, operations: unknown, registry:
         const values = o.values as Record<string, unknown> | undefined;
         if (!values) throw new OpError(i, 'updateAudioTrack: нет values');
         for (const k of Object.keys(values)) {
-          if (!['kind','assetId','gain','offsetSeconds','mute','synth','name','clip','credit'].includes(k)) throw new OpError(i, `updateAudioTrack: свойство "${k}" не разрешено`);
+          if (!['kind','assetId','gain','offsetSeconds','mute','synth','name','clip','credit','videoNodeId'].includes(k)) throw new OpError(i, `updateAudioTrack: свойство "${k}" не разрешено`);
           (t as unknown as Record<string, unknown>)[k] = structuredClone(values[k]);
         }
         break;

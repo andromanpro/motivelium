@@ -85,7 +85,7 @@ export function useAutoEdit(input: {
                         let frames;
                         try {
                             const trial = applyOperations(current.project, v.job.operations);
-                            frames = captureAIFrames(current.project, current.nodeId, v.run.sampleFrames, current.bitmaps, current.threeLayer, trial, { project: current.shownProject, frame: current.frame });
+                            frames = await captureAIFrames(current.project, current.nodeId, v.run.sampleFrames, current.bitmaps, current.threeLayer, trial, { project: current.shownProject, frame: current.frame });
                         }
                         catch (e) {
                             const ended = await api.autoCancel(i.project.id, run!.id, i.token, 'capture-error');

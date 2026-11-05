@@ -1,6 +1,6 @@
 {
-  "version": "0.2.0-beta.1",
-  "buildId": "20261030-beta1",
+  "version": "0.2.0-beta.2",
+  "buildId": "20261031-beta2-candidate-r3",
   "readerFeatures": [
     "storyboard-v1",
     "shared-audio-v1",
@@ -10,6 +10,8 @@
     "electric-arc-v1",
     "studio-stage-v1",
     "storm-lightning-v1",
-    "discharge3d-v1"
+    "discharge3d-v1",
+    "video-clips-v1",
+    "screen-guide-v1"
   ]
 }

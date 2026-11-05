@@ -884,3 +884,31 @@ summary { cursor:pointer; list-style:none; }
 .story-montage-body{display:grid;grid-template-columns:280px 1fr;gap:24px;padding:24px;overflow:auto;max-height:72vh}.story-montage-body canvas{width:100%;border-radius:10px;background:#0c1820}
 .story-montage-body aside{display:flex;flex-direction:column;gap:12px}.story-montage-body aside p,.story-montage-body aside small{font-size:13px;color:var(--theme-muted, #6c806f)}.montage-transport{display:flex;gap:12px;margin-top:12px}.montage-transport input{flex:1}
 .audio-add-tracks{display:flex;gap:4px;flex-wrap:wrap}@media(max-width:800px){.story-montage-body{grid-template-columns:1fr}.story-montage-dialog footer{flex-wrap:wrap}}
+
+.video-clip-dialog{width:min(1100px,94vw);max-height:92vh;overflow:auto}.video-clip-dialog header,.video-clip-dialog footer{display:flex;justify-content:space-between;gap:16px;padding:20px}.video-clip-body{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:24px;padding:0 20px 20px}.video-clip-view canvas{display:block;width:100%;background:#091417;border-radius:10px}.video-clip-body fieldset{display:grid;gap:12px;align-content:start;border:0}.video-clip-body label{display:grid;gap:5px}.video-clip-play{display:flex;gap:10px;align-items:center;margin:12px 0}.video-clip-play input{min-width:0;flex:1}.video-clip-dialog footer{border-top:1px solid var(--border,#475b52)}@media(max-width:700px){.video-clip-body{grid-template-columns:1fr}}
+
+.video-clip-body label:has(input[type=checkbox]){display:flex;align-items:center;gap:10px}.video-clip-body input[type=checkbox]{width:16px;height:16px;margin:0}.video-clip-play input{accent-color:#397761}
+
+.video-clip-dialog header>div,.video-clip-body fieldset{min-width:0}.video-clip-dialog header p{overflow-wrap:anywhere}
+
+.video-clip-dialog .video-clip-body .video-audio-toggle{display:flex;flex-direction:row;justify-content:flex-start;gap:10px;align-items:center}.video-clip-dialog .video-audio-toggle input{width:16px;min-width:16px;flex:0 0 16px;margin:0}.video-clip-dialog .video-audio-toggle span{flex:1}
+/* Editable screen recordings: settings remain beside the shared film preview. */
+.screen-guide-controls{border:1px solid var(--line,#536158);border-radius:12px;padding:12px;margin-bottom:18px;min-width:0}
+.screen-guide-controls summary{cursor:pointer;font-weight:650;margin-bottom:12px}
+.screen-guide-controls p,.screen-guide-controls small{font-size:12px;line-height:1.5;opacity:.8}
+.screen-guide-points{display:flex;flex-wrap:wrap;gap:6px;max-height:160px;overflow:auto;margin:12px 0}
+.screen-point{display:flex;align-items:center;gap:7px;border:1px solid var(--line,#536158);border-radius:9px;padding:7px 9px;background:transparent;color:inherit;cursor:pointer}
+.screen-point.selected{border-color:var(--accent,#69a18c);background:color-mix(in srgb,var(--accent,#69a18c) 18%,transparent)}
+.screen-point b{font-size:11px;opacity:.65}.screen-point span{font-size:12px}
+.screen-point-properties{display:grid;grid-template-columns:1fr 1fr;gap:8px}.screen-point-properties .setting-check,.screen-point-properties button{grid-column:1/-1}
+.screen-guide-actions{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}.screen-guide-import input{max-width:100%;font-size:12px}
+.screen-guide-canvas{position:relative;line-height:0}.screen-guide-canvas.placing{cursor:crosshair;outline:2px solid var(--accent,#69a18c)}
+.screen-placement-hint{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);font-size:12px;line-height:1.4;background:#102624e8;color:#f2f0e8;padding:8px 12px;border-radius:8px;pointer-events:none;text-align:center;max-width:90%}
+.video-clip-dialog{height:min(940px,92dvh);overflow:hidden}
+.video-clip-dialog .video-clip-body{flex:1;min-height:0;overflow:hidden;grid-template-rows:minmax(0,1fr)}
+.video-clip-view,.video-clip-body>fieldset{min-height:0;overflow:auto}
+.video-clip-body>fieldset{padding-right:6px}
+.video-clip-body .screen-guide-import{display:block;border:1px solid var(--theme-border,#536158);border-radius:8px;padding:10px 12px;cursor:pointer;text-align:center;font-size:12px}
+.video-clip-body .screen-guide-import:hover{background:var(--theme-surface-raised,#20342d)}
+.video-clip-dialog>.field-warning{padding:0 20px;flex-shrink:0}
+@media(max-width:700px){.video-clip-dialog .video-clip-body{display:block;overflow:auto}.video-clip-view,.video-clip-body>fieldset{overflow:visible}.video-clip-body>fieldset{margin-top:24px}}

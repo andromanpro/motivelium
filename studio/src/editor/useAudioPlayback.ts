@@ -16,7 +16,7 @@ export function useAudioPlayback(project: Project | null, muted: boolean, assetU
         buffer: AudioBuffer;
     } | null>(null), pending = useRef<AbortController | null>(null);
     const [phase, setPhase] = useState<Phase>('idle'), [error, setError] = useState('');
-    const key = project ? JSON.stringify([project.id, project.fps, project.durationFrames, project.audioTracks, project.assets.filter(a => a.mime.startsWith('audio/')).map(a => [a.id, a.sha256])]) : '';
+    const key = project ? JSON.stringify([project.id, project.fps, project.durationFrames, project.audioTracks,project.nodes.filter(n=>n.kind==='video'),project.sequences, project.assets.filter(a => (a.mime.startsWith('audio/')||a.mime==='video/mp4')).map(a => [a.id, a.sha256])]) : '';
     function stop() {
         generation.current++;
         pending.current?.abort();

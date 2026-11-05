@@ -1,3 +1,4 @@
+import {screenGuideOperations} from '../studio/domain/screenGuide.ts';
 import {buildStoryMontage} from '../studio/domain/storyMontage.ts';
 import {APP_VERSION,BUILD_ID} from '../studio/domain/version.ts';
 import fs from 'node:fs/promises';
@@ -67,7 +68,8 @@ export function createBridge(options:{url:string;stateDir:string;assetRoot?:stri
  }
  const samples=<T>(list:T[])=>list.length<=6?list:Array.from({length:6},(_,i)=>list[Math.round(i*(list.length-1)/5)]!);
  async function renderSnapshot(project:Project,frames:number[],width:number,signal?:AbortSignal,clipFps?:number,sampleFrames?:number[]){
-  signal?.throwIfAborted();const key=hash({version:2,project,frames,width,clipFps,sampleFrames}),file=path.join(state,'render-cache',key+'.json');
+  // Version 3 includes held effect boundary states; older previews may contain a raw-text flash.
+  signal?.throwIfAborted();const key=hash({version:4,build:BUILD_ID,project,frames,width,clipFps,sampleFrames}),file=path.join(state,'render-cache',key+'.json');
   try{const cached=JSON.parse(await fs.readFile(file,'utf8'));for(const f of cached.frames)if(crypto.createHash('sha256').update(await fs.readFile(f.path)).digest('hex')!==f.sha256)throw Error('Повреждён кэш кадра.');if(cached.clip&&crypto.createHash('sha256').update(await fs.readFile(cached.clip.path)).digest('hex')!==cached.clip.sha256)throw Error('Повреждён кэш клипа.');return{...cached,cached:true,budget:await budget.status()};}catch(e){if((e as NodeJS.ErrnoException).code!=='ENOENT')throw e;}
   await budget.reserve('previews',key,false);
   const directory=path.join(state,'previews','preview-'+crypto.randomUUID());
@@ -113,6 +115,7 @@ export function createBridge(options:{url:string;stateDir:string;assetRoot?:stri
   },
   create_project:async input=>input.templateId?api(`/api/v1/templates/${id(input.templateId)}/${input.templateVersion??1}/projects`,'POST',{requestId:input.requestId,title:input.title}):api('/api/v1/projects','POST',input),
   propose_changes:async input=>{const {project}=await getProject(input.projectId);if(project.revision!==input.expectedRevision)throw Error('HTTP 409: проект изменился. Перечитайте его.');return draft(project,input.operations,input.summary)},
+  propose_screen_guide:async input=>{const {project}=await getProject(input.projectId);if(project.revision!==input.expectedRevision)throw Error('HTTP 409: проект изменился.');return draft(project,screenGuideOperations(project,input.nodeId,input.guide),'Курсор и автозум записи экрана')},
   propose_composition:async input=>{const {project}=await getProject(input.projectId);if(project.revision!==input.expectedRevision)throw Error('HTTP 409: проект изменился.');const settings={...compositionSettings(project,input.sequenceId,input.compositionId as CompositionId),...input.settings,id:input.compositionId,sequenceId:input.sequenceId};const plan=buildComposition(project,settings,'mcp-'+hash(input).slice(0,16));return draft(project,plan.operations,'Композиция '+input.compositionId)},
   propose_timing:async input=>{const {project,draft:d}=await source(input),plan=timingOperations(project,input.items as TimingItem[]);if(d)return{...await tools.refine_draft!({draftId:d.id,summary:'Рецепт появления и ухода',operations:plan.operations}),timing:plan.details};if(project.revision!==input.expectedRevision)throw Error('HTTP 409: проект изменился.');return{...await draft(project,plan.operations,'Рецепт появления и ухода'),timing:plan.details};},
   refine_draft:async input=>{const d=await readDraft(input.draftId),{project}=await getProject(d.projectId);if(project.revision!==d.baseRevision||hash(project)!==d.baseHash)throw Error('HTTP 409: исходный проект изменился.');return draft(project,[...d.operations,...input.operations],input.summary,d)},
@@ -130,6 +133,6 @@ export function createBridge(options:{url:string;stateDir:string;assetRoot?:stri
   cancel_export:async input=>api('/api/v1/projects/'+id(input.projectId)+'/video-exports/'+id(input.jobId)+'/cancel','POST',{}),
   export_project:async input=>api('/api/v1/projects/'+id(input.projectId)+'/packages','POST',{expectedRevision:input.expectedRevision}),
  };
- const iterations=new Set(['propose_sound','propose_music_grid','assemble_storyboard','propose_changes','propose_composition','propose_timing','refine_draft','propose_story_capture']);
+ const iterations=new Set(['propose_screen_guide','propose_sound','propose_music_grid','assemble_storyboard','propose_changes','propose_composition','propose_timing','refine_draft','propose_story_capture']);
  return{async call(name:string,input:any={},signal?:AbortSignal){if(!tools[name])throw Error('Неизвестный инструмент.');signal?.throwIfAborted();const{response,...body}=input;if(response&&!['compact','full'].includes(response))throw Error('response: compact или full.');const mode=response??options.responseMode??'compact';if(iterations.has(name))await budget.reserve('iterations',hash({name,input:body}));if(name==='history'&&mode==='full')return api('/api/v1/projects/'+id(body.projectId)+'/history');const result=await tools[name]!(body,signal);return mode==='full'?result:compactResponse(name,result)},dispose:()=>renderer.dispose()};
 }

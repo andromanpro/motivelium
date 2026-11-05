@@ -8,6 +8,7 @@ import {createRequire} from 'node:module';
 import {once} from 'node:events';
 import type {Browser} from 'playwright-core';
 import type {Project} from '../studio/domain/schema.ts';
+import {createVideoFrames} from './videoFrames.ts';
 import {mixProjectAudio,mixWav,AUDIO_RATE,audioSourceEnd} from '../studio/domain/audio.ts';
 import {videoExportPlan,videoExportSamples,exportTerminal,type VideoExportJob} from '../studio/domain/videoExport.ts';
 import {StoreError,type Store} from './storage.ts';
@@ -70,12 +71,14 @@ export function createVideoExportService(store:Store,root:string,options:Options
   ensure(e);const {chromium}=require('playwright-core') as typeof import('playwright-core');
   const browser=await chromium.launch({headless:true,executablePath:chrome,args:['--no-proxy-server','--mute-audio'],timeout:45000});e.browser=browser;ensure(e);
   const page=await browser.newPage({viewport:{width:e.project.size.width,height:e.project.size.height},deviceScaleFactor:1});page.setDefaultTimeout(60000);
+  const snapshotFrames=createVideoFrames(root,path.join(e.dir,'video-cache'));
   const errors:string[]=[];page.on('pageerror',err=>errors.push(err.message));
   await page.route('**/*',async route=>{
    const url=new URL(route.request().url());
    if(url.origin!==origin){await route.abort();return;}
    const match=/^\/api\/v1\/projects\/([^/]+)\/assets\/([^/]+)$/.exec(url.pathname);
    if(match){const asset=match[1]===e.project.id?e.assets.get(match[2]!):undefined;if(!asset){await route.fulfill({status:404,body:'Missing snapshot asset'});return;}await route.fulfill({status:200,path:asset.file,contentType:asset.mime});return;}
+   const videoMatch=/^\/api\/v1\/projects\/([^/]+)\/video-frames\/([^/]+)$/.exec(url.pathname);if(videoMatch){const a=e.project.assets.find(a=>a.id===videoMatch[2]),file=a&&e.assets.get(a.id);if(videoMatch[1]!==e.project.id||!a||!file||url.searchParams.get('sha')!==a.sha256){await route.fulfill({status:404,body:'Missing snapshot video'});return;}try{const data=await snapshotFrames.frame(file.file,a,Number(url.searchParams.get('index')),url.searchParams.has('width')?Number(url.searchParams.get('width')):a.width!);await route.fulfill({status:200,body:data,contentType:'image/png'});}catch(e){await route.fulfill({status:400,json:{error:(e as Error).message}});}return;}
    await route.continue();
   });
   await page.goto(origin+'/studio/export/',{waitUntil:'networkidle'});

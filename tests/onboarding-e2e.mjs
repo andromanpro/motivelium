@@ -19,5 +19,22 @@ try{
  await page.getByRole('button',{name:'Шаблоны',exact:true}).click();await page.getByRole('button',{name:'Посмотреть шаблон Спектр',exact:true}).waitFor();await shot('templates');await page.getByRole('button',{name:'Посмотреть шаблон Спектр',exact:true}).click();await page.getByRole('dialog').getByRole('button',{name:/Создать/}).click();await page.getByRole('button',{name:'Материалы шаблона',exact:true}).waitFor();await page.getByLabel('Главный заголовок',{exact:true}).waitFor();await shot('materials');await page.getByRole('button',{name:'Материалы шаблона',exact:true}).click();await shot('editor');result.checks.templateCopy=true;
  await page.getByRole('button',{name:'Ресурсы',exact:true}).click();await shot('resources');await page.getByRole('button',{name:'Ресурсы',exact:true}).click();await page.getByRole('button',{name:'Экспорт',exact:true}).click();await page.getByRole('menuitem',{name:/Видео MP4/}).click();await page.getByRole('dialog').waitFor();await page.getByRole('dialog').screenshot({path:path.join(shots,'export.png')});await page.getByRole('dialog').getByRole('button',{name:/Закрыть/}).first().click();
  await page.goto(base+'/studio/',{waitUntil:'networkidle'});await page.getByRole('button',{name:'Справка',exact:true}).click();for(const title of['Быстрый старт','ИИ и примерка','Материалы','MP4 и ZIP']){await page.getByRole('dialog').getByRole('button',{name:title,exact:true}).click();await page.getByRole('dialog').locator('img').evaluateAll(images=>Promise.all(images.map(i=>i.decode())));const broken=await page.getByRole('dialog').locator('img').evaluateAll(images=>images.filter(i=>!i.naturalWidth).length);assert.equal(broken,0)}await page.getByRole('dialog').screenshot({path:path.join(out,'help.png')});result.checks.illustratedHelp=true;
+ await page.setViewportSize({width:390,height:800});
+ const dialog=page.getByRole('dialog');
+ for(const [locale, title, author] of [['ru-RU','О программе','Автор:'],['en-US','About','Author:']]){
+  if(locale==='en-US'){
+   await dialog.getByRole('button',{name:'Закрыть окно студии',exact:true}).click();
+   await page.getByRole('button',{name:'Настройки',exact:true}).click();
+   await dialog.getByLabel('Язык / Language',{exact:true}).selectOption('en');
+   await dialog.getByRole('button',{name:'Close studio dialog',exact:true}).click();
+   await page.getByRole('button',{name:'Help',exact:true}).click();
+  }
+  await dialog.getByRole('button',{name:title,exact:true}).click();
+  await dialog.getByText(author,{exact:false}).first().waitFor();
+  assert.equal(await dialog.locator('strong').getByText('androman',{exact:true}).count(),1);
+  assert.equal(await dialog.getByRole('link',{name:'Telegram',exact:true}).getAttribute('href'),'https://t.me/andromanpro1c');
+  assert.equal(await dialog.getByRole('link',{name:'androman.pro',exact:true}).getAttribute('href'),'https://androman.pro');
+ }
+ result.checks.aboutAuthorLinks=true;
  assert.deepEqual(errors,[]);result.success=true;
 }catch(e){result.error=String(e);if(page)await page.screenshot({path:path.join(out,'failure.png')}).catch(()=>{});throw e}finally{result.browserErrors=errors;await fs.writeFile(path.join(out,'result.json'),JSON.stringify(result,null,2));await browser?.close();for(const c of children){if(c.exitCode===null){const done=new Promise(r=>c.once('exit',r));c.kill();await done}}console.log(JSON.stringify({out,...result}));}

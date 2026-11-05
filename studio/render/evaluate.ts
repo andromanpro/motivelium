@@ -1,3 +1,4 @@
+import {videoSample} from '../domain/video.ts';
 // Расчёт кадра: чистая функция проекта и номера кадра. Не зависит от истории
 // проигрывания, DOM и WebGL. Один и тот же FrameState для предпросмотра,
 // hit-test и экспорта.
@@ -73,13 +74,35 @@ export function cameraMatrix(cam: FrameCamera, size: { width: number; height: nu
 function activeEffects(project: Project, nodeId: string, frame: number, registry: ReadonlyMap<string, EffectDefinition>): EffectDeltas {
   const list: EffectDeltas[] = [];
   const instances = project.effects
-    .filter(e => e.targetId === nodeId && e.enabled && frame >= e.fromFrame && frame < e.toFrame)
+    .filter(e => e.targetId === nodeId && e.enabled)
     .sort((a, b) => a.order - b.order);
+  const fillOf = (e: EffectInstance) => {
+    const def = registry.get(e.definitionId);
+    if (!def || def.version !== e.definitionVersion) return 'none';
+    return typeof def.fill === 'function' ? def.fill(e.params) : def.fill ?? 'none';
+  };
   for (const e of instances) {
     const def = registry.get(e.definitionId);
     if (!def || def.version !== e.definitionVersion) continue; // неизвестная версия не применяется молча
-    const progress = clamp01((frame - e.fromFrame) / (e.toFrame - e.fromFrame));
-    list.push(def.evaluate(progress, frame, e.params,{fromFrame:e.fromFrame,toFrame:e.toFrame,fps:project.fps.num/project.fps.den}));
+    const fill = fillOf(e);
+    let sampleFrame = frame;
+    if (frame < e.fromFrame) {
+      if (fill !== 'backwards' && fill !== 'both') continue;
+      // A later occurrence must not hide an earlier entrance of the same effect.
+      if (instances.some(other => other !== e && other.definitionId === e.definitionId &&
+        (other.fromFrame < e.fromFrame || other.fromFrame === e.fromFrame && other.order < e.order))) continue;
+      sampleFrame = e.fromFrame;
+    } else if (frame >= e.toFrame) {
+      if (fill !== 'forwards' && fill !== 'both') continue;
+      if (instances.some(other => other !== e && other.definitionId === e.definitionId && other.fromFrame <= frame &&
+        (other.fromFrame > e.fromFrame || other.fromFrame === e.fromFrame && other.order > e.order))) continue;
+      // An explicit later entrance can bring an exited layer back.
+      if (e.definitionId === 'fade-exit' && instances.some(other => other.fromFrame >= e.toFrame && other.fromFrame <= frame &&
+        ['backwards','both'].includes(fillOf(other)))) continue;
+      sampleFrame = e.toFrame;
+    }
+    const progress = clamp01((sampleFrame - e.fromFrame) / (e.toFrame - e.fromFrame));
+    list.push(def.evaluate(progress, sampleFrame, e.params,{fromFrame:e.fromFrame,toFrame:e.toFrame,fps:project.fps.num/project.fps.den}));
   }
   return list.length ? combineDeltas(list) : { ...NEUTRAL_DELTAS };
 }
@@ -117,7 +140,7 @@ export function evaluateFrame(
   // Прямой порядок массива nodes = z-порядок отрисовки (родители раньше детей).
   for (const storedNode of project.nodes) {
     const node={...storedNode,transform:transformAtFrame(storedNode,f)};
-    if (node.sequenceId !== sequence?.id || !node.visible) {
+    if (node.sequenceId !== sequence?.id || !node.visible || node.kind==='video'&&!videoSample(project,node,f)) {
       hiddenNodeIds.push(node.id);
       continue;
     }
