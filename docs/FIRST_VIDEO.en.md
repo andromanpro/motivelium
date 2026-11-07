@@ -1,6 +1,8 @@
 # Your first video in Motivelium
 
-[Русский](FIRST_VIDEO.md) · [MCP connection](MCP.en.md)
+[Русский](FIRST_VIDEO.md) · [Overview](../README.en.md) · [MCP connection](MCP.en.md)
+
+This guide uses [Motivelium 0.2.0-beta.2 for Windows](https://github.com/andromanpro/motivelium/releases/tag/v0.2.0-beta.2). The release page offers an installer and a portable archive.
 
 ## Open a starting point
 
@@ -17,6 +19,12 @@ Open Content to edit named text slots. Apply the text and check the frame. Use A
 ![Content fields](../www/help/en/dark/materials.png)
 
 Select a layer on the canvas or in Layers. Edit Properties, drag, resize or set keys. Apply commits the draft. Undo/Redo are in the top bar.
+
+![The English Type Unleashed sample open in the editor, with layers and timeline](showcase/editor-en.png)
+
+To use your own image or soundtrack, import it from **Assets**. Audio import
+requires FFprobe. Beta.2 also accepts supported MP4 video layers; see the
+[format and size limits](VIDEO_CLIPS.md).
 
 ## Connect an AI
 
@@ -35,3 +43,17 @@ Check Settings → Components. MP4 needs Chrome, FFmpeg and FFprobe. Open Export
 Play the file and check picture and sound. File → Download project creates a ZIP with the document, models, images and audio. File → Import project creates an independent copy on another computer.
 
 Language and appearance are local preferences. Your authored project text stays as written.
+
+## Find projects from another installation
+
+Open **Settings → Storage** and check the active data folder. An installed copy
+and a portable copy may use different folders; an empty list does not mean your
+projects were deleted. Use the storage migration tool to inspect the other folder
+and copy the projects you need. The originals stay in place. To move a project
+to another computer, use the project ZIP instead.
+
+## Report a problem
+
+Include the version and build ID, Windows version, graphics card, the action
+you tried, the frame number if relevant, and the exact error. Use a sample
+project where possible. Do not attach credentials or private source media.
