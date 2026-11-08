@@ -2,6 +2,8 @@
 
 [English](FIRST_VIDEO.en.md) · [Обзор](../README.md)
 
+[Практический кейс](CASE-ANIMATED-INTRO.md): переделайте анимированную сцену под свою заставку и сохраните редактируемый ZIP.
+
 Для этой инструкции подходит [Motivelium 0.2.0-beta.2 для Windows](https://github.com/andromanpro/motivelium/releases/tag/v0.2.0-beta.2): на странице выпуска есть установщик и переносимый архив.
 
 ## Откройте пример

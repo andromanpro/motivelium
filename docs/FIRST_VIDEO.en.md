@@ -2,6 +2,8 @@
 
 [Русский](FIRST_VIDEO.md) · [Overview](../README.en.md) · [MCP connection](MCP.en.md)
 
+[Worked example](CASE-ANIMATED-INTRO.en.md): turn an animated scene into your own intro and save an editable ZIP.
+
 This guide uses [Motivelium 0.2.0-beta.2 for Windows](https://github.com/andromanpro/motivelium/releases/tag/v0.2.0-beta.2). The release page offers an installer and a portable archive.
 
 ## Open a starting point
